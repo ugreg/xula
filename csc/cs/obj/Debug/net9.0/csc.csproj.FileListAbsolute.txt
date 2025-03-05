@@ -1,0 +1,14 @@
+/Users/greg/_/xula/csc/bin/Debug/net9.0/csc
+/Users/greg/_/xula/csc/bin/Debug/net9.0/csc.deps.json
+/Users/greg/_/xula/csc/bin/Debug/net9.0/csc.runtimeconfig.json
+/Users/greg/_/xula/csc/bin/Debug/net9.0/csc.dll
+/Users/greg/_/xula/csc/bin/Debug/net9.0/csc.pdb
+/Users/greg/_/xula/csc/obj/Debug/net9.0/csc.GeneratedMSBuildEditorConfig.editorconfig
+/Users/greg/_/xula/csc/obj/Debug/net9.0/csc.AssemblyInfoInputs.cache
+/Users/greg/_/xula/csc/obj/Debug/net9.0/csc.AssemblyInfo.cs
+/Users/greg/_/xula/csc/obj/Debug/net9.0/csc.csproj.CoreCompileInputs.cache
+/Users/greg/_/xula/csc/obj/Debug/net9.0/csc.dll
+/Users/greg/_/xula/csc/obj/Debug/net9.0/refint/csc.dll
+/Users/greg/_/xula/csc/obj/Debug/net9.0/csc.pdb
+/Users/greg/_/xula/csc/obj/Debug/net9.0/csc.genruntimeconfig.cache
+/Users/greg/_/xula/csc/obj/Debug/net9.0/ref/csc.dll
