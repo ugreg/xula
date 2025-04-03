@@ -1,75 +1,15 @@
-# Students
-```java
-duyscottCS
-Jayce-Stephens
-Rhian-win
-Edwardsimonjr
-agolson2
-LeoHibbert
-BengisuKzl
-gprawl
-Fluerasrux
-```
+#### Stats
 
-### duyscottCS Stats
-![duyscottCS's Stats](https://github-readme-stats.vercel.app/api?username=duyscottCS&theme=vue-dark&show_icons=true&hide_border=true&count_private=true)
+![ugreg's Stats](https://github-readme-stats.vercel.app/api?username=ugreg&theme=vue-dark&show_icons=true&hide_border=true&count_private=true)
+
+[Made from here](https://gh-stats-gen.vercel.app/)
 
 #### Trophies
-[![trophy](https://github-profile-trophy.vercel.app/?username=duyscottCS)](https://github.com/duyscottCS/github-profile-trophy)
 
+[![trophy](https://github-profile-trophy.vercel.app/?username=ugreg)](https://github.com/ugreg/github-profile-trophy)
 
-### Jayce-Stephens Stats
-![Jayce-Stephens's Stats](https://github-readme-stats.vercel.app/api?username=Jayce-Stephens&theme=vue-dark&show_icons=true&hide_border=true&count_private=true)
+#### Social
 
-#### Trophies
-[![trophy](https://github-profile-trophy.vercel.app/?username=Jayce-Stephens)](https://github.com/Jayce-Stephens/github-profile-trophy)
-
-
-### Rhian-win Stats
-![Rhian-win's Stats](https://github-readme-stats.vercel.app/api?username=Rhian-win&theme=vue-dark&show_icons=true&hide_border=true&count_private=true)
-
-#### Trophies
-[![trophy](https://github-profile-trophy.vercel.app/?username=Rhian-win)](https://github.com/Jayce-Stephens/github-profile-trophy)
-
-
-### Edwardsimonjr Stats
-![Edwardsimonjr's Stats](https://github-readme-stats.vercel.app/api?username=Edwardsimonjr&theme=vue-dark&show_icons=true&hide_border=true&count_private=true)
-
-#### Trophies
-[![trophy](https://github-profile-trophy.vercel.app/?username=Edwardsimonjr)](https://github.com/Jayce-Stephens/github-profile-trophy)
-
-
-### agolson2 Stats
-![agolson2's Stats](https://github-readme-stats.vercel.app/api?username=agolson2&theme=vue-dark&show_icons=true&hide_border=true&count_private=true)
-
-#### Trophies
-[![trophy](https://github-profile-trophy.vercel.app/?username=agolson2)](https://github.com/Jayce-Stephens/github-profile-trophy)
-
-
-### LeoHibbert Stats
-![LeoHibbert's Stats](https://github-readme-stats.vercel.app/api?username=LeoHibbert&theme=vue-dark&show_icons=true&hide_border=true&count_private=true)
-
-#### Trophies
-[![trophy](https://github-profile-trophy.vercel.app/?username=LeoHibbert)](https://github.com/Jayce-Stephens/github-profile-trophy)
-
-
-### BengisuKzl Stats
-![BengisuKzl's Stats](https://github-readme-stats.vercel.app/api?username=BengisuKzl&theme=vue-dark&show_icons=true&hide_border=true&count_private=true)
-
-#### Trophies
-[![trophy](https://github-profile-trophy.vercel.app/?username=BengisuKzl)](https://github.com/Jayce-Stephens/github-profile-trophy)
-
-
-### Fluerasrux Stats
-![Fluerasrux's Stats](https://github-readme-stats.vercel.app/api?username=Fluerasrux&theme=vue-dark&show_icons=true&hide_border=true&count_private=true)
-
-#### Trophies
-[![trophy](https://github-profile-trophy.vercel.app/?username=Fluerasrux)](https://github.com/Jayce-Stephens/github-profile-trophy)
-
-
-### gprawl Stats
-![gprawl's Stats](https://github-readme-stats.vercel.app/api?username=gprawl&theme=vue-dark&show_icons=true&hide_border=true&count_private=true)
-
-#### Trophies
-[![trophy](https://github-profile-trophy.vercel.app/?username=gprawl)](https://github.com/Jayce-Stephens/github-profile-trophy)
-
+<a href="https://www.instagram.com/gregwiii/">
+  <img height="50" src="https://user-images.githubusercontent.com/46517096/166974368-9798f39f-1f46-499c-b14e-81f0a3f83a06.png"/>
+</a>
