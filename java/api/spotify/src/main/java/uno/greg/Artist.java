@@ -3,6 +3,7 @@ package uno.greg;
 public class Artist {
     private String id;
     private String name;
+    private String genre;    
 
     public Artist(String id, String name) {
         this.id = id;
@@ -15,5 +16,9 @@ public class Artist {
 
     public String getName() {
         return this.name;
+    }
+
+    public String getGenre() {
+        return this.genre;
     }
 }
