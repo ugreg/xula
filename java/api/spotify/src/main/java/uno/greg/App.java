@@ -28,11 +28,17 @@ public class App {
         getTrack();
     }
 
-    public static void getTrack() {
-
+    public static ClientCredentials Authenticate() {
         final ClientCredentialsRequest clientCredentialsRequest = spotifyApi.clientCredentials().build();
         final CompletableFuture<ClientCredentials> clientCredentialsFuture = clientCredentialsRequest.executeAsync();
         final ClientCredentials clientCredentials = clientCredentialsFuture.join();
+
+        return clientCredentials;
+    }
+    
+    public static void getTrack() {
+
+        final ClientCredentials clientCredentials = Authenticate();
 
         System.out.println("Expires in: " + clientCredentials.getExpiresIn());
         System.out.println("Preparing to get track");
