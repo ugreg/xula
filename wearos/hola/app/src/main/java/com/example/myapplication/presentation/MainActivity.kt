@@ -6,6 +6,7 @@
 package com.example.myapplication.presentation
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -39,7 +40,15 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun WearApp(greetingName: String) {
     MyApplicationTheme {
-        AudioPlayerScreen()
+//        AudioPlayerScreen()
+        AudioSelectionScreen(
+            onAudioSelected = { resourceId, audioName ->
+                // This is where you'd handle the selection.
+                // For now, it just logs to Logcat.
+                Log.i("WearApp", "Audio selected from WearApp: $audioName (ID: $resourceId)")
+                // update a state that your player UI observes.
+            }
+        )
 //        Box(
 //            modifier = Modifier
 //                .fillMaxSize()
