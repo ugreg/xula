@@ -71,7 +71,7 @@ class YouTubeQARAG:
 Question: {question}
 
 Relevant transcript sections:
-{context}
+model{context}
 
 Answer:"""
         

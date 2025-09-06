@@ -1,3 +1,6 @@
+import platform
+import psutil
+
 def test_cuda():
     """Test CUDA availability"""
     try:
@@ -27,7 +30,12 @@ def test_memory():
                 print("   - Use smaller LoRA rank")
                 print("   - Enable gradient checkpointing")
         else:
-            print("ℹ CPU training mode")
+            print("CPU training mode")
+            print(f"System: {platform.system()} {platform.release()}")
+            print(f"Processor: {platform.processor()}")
+            print(f"CPU cores: {psutil.cpu_count(logical=False)} physical, {psutil.cpu_count(logical=True)} logical")
+            mem = psutil.virtual_memory()
+            print(f"RAM: {mem.total / 1e9:.1f} GB")
             
     except Exception as e:
         print(f"❌ Memory test failed: {e}")
