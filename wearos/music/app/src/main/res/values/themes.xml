@@ -1,0 +1,68 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="SplashScreenTheme" parent="TealTheme">
+        <item name="android:windowSplashScreenBackground" tools:targetApi="31">?attr/colorSurfaceContainer</item>
+        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="31">@drawable/splash_screen</item>
+        <item name="android:windowSplashScreenAnimationDuration" tools:targetApi="31">6000</item>
+        <item name="android:statusBarColor">?attr/colorSurfaceContainer</item>
+        <item name="android:navigationBarColor">?attr/colorSurfaceContainer</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <style name="TealTheme" parent="DynamicTheme">
+        <item name="colorPrimary">@color/md_theme_primary_teal_theme</item>
+        <item name="colorOnPrimary">@color/md_theme_onPrimary_teal_theme</item>
+        <item name="colorPrimaryContainer">@color/md_theme_primaryContainer_teal_theme</item>
+        <item name="colorOnPrimaryContainer">@color/md_theme_onPrimaryContainer_teal_theme</item>
+        <item name="colorSecondary">@color/md_theme_secondary_teal_theme</item>
+        <item name="colorOnSecondary">@color/md_theme_onSecondary_teal_theme</item>
+        <item name="colorSecondaryContainer">@color/md_theme_secondaryContainer_teal_theme</item>
+        <item name="colorOnSecondaryContainer">@color/md_theme_onSecondaryContainer_teal_theme</item>
+        <item name="colorTertiary">@color/md_theme_tertiary_teal_theme</item>
+        <item name="colorOnTertiary">@color/md_theme_onTertiary_teal_theme</item>
+        <item name="colorTertiaryContainer">@color/md_theme_tertiaryContainer_teal_theme</item>
+        <item name="colorOnTertiaryContainer">@color/md_theme_onTertiaryContainer_teal_theme</item>
+        <item name="colorError">@color/md_theme_error_teal_theme</item>
+        <item name="colorOnError">@color/md_theme_onError_teal_theme</item>
+        <item name="colorErrorContainer">@color/md_theme_errorContainer_teal_theme</item>
+        <item name="colorOnErrorContainer">@color/md_theme_onErrorContainer_teal_theme</item>
+        <item name="android:colorBackground">@color/md_theme_background_teal_theme</item>
+        <item name="colorOnBackground">@color/md_theme_onBackground_teal_theme</item>
+        <item name="colorSurface">@color/md_theme_surface_teal_theme</item>
+        <item name="colorOnSurface">@color/md_theme_onSurface_teal_theme</item>
+        <item name="colorSurfaceVariant">@color/md_theme_surfaceVariant_teal_theme</item>
+        <item name="colorOnSurfaceVariant">@color/md_theme_onSurfaceVariant_teal_theme</item>
+        <item name="colorOutline">@color/md_theme_outline_teal_theme</item>
+        <item name="colorOutlineVariant">@color/md_theme_outlineVariant_teal_theme</item>
+        <item name="colorSurfaceInverse">@color/md_theme_inverseSurface_teal_theme</item>
+        <item name="colorOnSurfaceInverse">@color/md_theme_inverseOnSurface_teal_theme</item>
+        <item name="colorPrimaryInverse">@color/md_theme_inversePrimary_teal_theme</item>
+        <item name="colorPrimaryFixed">@color/md_theme_primaryFixed_teal_theme</item>
+        <item name="colorOnPrimaryFixed">@color/md_theme_onPrimaryFixed_teal_theme</item>
+        <item name="colorPrimaryFixedDim">@color/md_theme_primaryFixedDim_teal_theme</item>
+        <item name="colorOnPrimaryFixedVariant">@color/md_theme_onPrimaryFixedVariant_teal_theme</item>
+        <item name="colorSecondaryFixed">@color/md_theme_secondaryFixed_teal_theme</item>
+        <item name="colorOnSecondaryFixed">@color/md_theme_onSecondaryFixed_teal_theme</item>
+        <item name="colorSecondaryFixedDim">@color/md_theme_secondaryFixedDim_teal_theme</item>
+        <item name="colorOnSecondaryFixedVariant">@color/md_theme_onSecondaryFixedVariant_teal_theme</item>
+        <item name="colorTertiaryFixed">@color/md_theme_tertiaryFixed_teal_theme</item>
+        <item name="colorOnTertiaryFixed">@color/md_theme_onTertiaryFixed_teal_theme</item>
+        <item name="colorTertiaryFixedDim">@color/md_theme_tertiaryFixedDim_teal_theme</item>
+        <item name="colorOnTertiaryFixedVariant">@color/md_theme_onTertiaryFixedVariant_teal_theme</item>
+        <item name="colorSurfaceContainerLowest">@color/md_theme_surfaceContainerLowest_teal_theme</item>
+        <item name="colorSurfaceContainerLow">@color/md_theme_surfaceContainerLow_teal_theme</item>
+        <item name="colorSurfaceContainer">@color/md_theme_surfaceContainer_teal_theme</item>
+        <item name="colorSurfaceContainerHigh">@color/md_theme_surfaceContainerHigh_teal_theme</item>
+        <item name="colorSurfaceContainerHighest">@color/md_theme_surfaceContainerHighest_teal_theme</item>
+    </style>
+
+
+    <style name="DynamicTheme"  parent="Theme.Material3.DynamicColors.Dark.NoActionBar">
+        <item name="android:windowBackground">#000000</item>
+        <item name="android:windowSplashScreenBackground" tools:targetApi="31">?attr/colorSurfaceContainer</item>
+        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="31">@drawable/splash_screen</item>
+        <item name="android:windowSplashScreenAnimationDuration" tools:targetApi="31">6000</item>
+    </style>
+
+</resources>
