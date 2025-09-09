@@ -1,8 +1,13 @@
 package uno.greg.music.ui.adapter
 
+import android.content.ComponentName
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Environment
+import android.provider.ContactsContract.CommonDataKinds.Website.URL
 import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -27,7 +32,27 @@ import java.util.concurrent.Executors
 import androidx.wear.compose.material.Button
 import androidx.wear.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.concurrent.futures.await
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
+import com.google.android.gms.common.wrappers.Wrappers.packageManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
+import androidx.wear.widget.ConfirmationOverlay
+import com.google.android.gms.wearable.DataClient
+import com.google.android.gms.wearable.DataEvent
+import com.google.android.gms.wearable.DataEventBuffer
+import com.google.android.gms.wearable.DataMapItem
+import com.google.android.gms.wearable.Wearable
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
+import java.io.FileWriter
+import java.io.InputStream
+import java.net.URL
+import kotlin.io.path.exists
 
 class SettingsAdapter(
     private val activity: SettingsActivity,
@@ -150,6 +175,43 @@ class SettingsAdapter(
             binding.itemIcon.setImageResource(R.drawable.music_icon)
             binding.root.setOnClickListener {
                 Toast.makeText(activity.baseContext, "Hello World from Compose!", Toast.LENGTH_SHORT).show()
+                try {
+                    val downloadsDir = activity.baseContext.getExternalFilesDir("/storage/emulated/0/Download/Test")
+                    val directory = File("/storage/emulated/0/Download/Test")
+                    if (!directory.exists()) {
+                        directory.mkdirs()
+                    }
+                    val file = File(directory, "test.txt")
+                    val writer = FileWriter(file)
+                    writer.write("Hello World")
+                    writer.close()
+
+
+                    val mpThree = File(directory, "song.mp3")
+                    val destinationFileMusic = File(downloadsDir, "song.mp3")
+                    var inputStream: InputStream? = null
+                    var outputStream: FileOutputStream? = null
+                    inputStream = activity.baseContext.resources.openRawResource(R.raw.shuffle)
+                    outputStream = FileOutputStream(mpThree)
+                    inputStream.copyTo(outputStream)
+
+
+
+                    val driveIntent = Intent(Intent.ACTION_VIEW).apply {
+                        data = "https://drive.google.com".toUri()
+                        addCategory(Intent.CATEGORY_BROWSABLE)
+                    }
+                    val remoteActivityHelper = RemoteActivityHelper(activity, Executors.newSingleThreadExecutor())
+                    val result = remoteActivityHelper.startRemoteActivity(
+                        Intent(driveIntent),
+                        null
+                    )
+                    activity.startActivity(
+                        Intent(activity, ConfirmationActivity::class.java)
+                            .putExtra(ConfirmationActivity.EXTRA_ANIMATION_TYPE, ConfirmationActivity.OPEN_ON_PHONE_ANIMATION))
+                } catch (e: Exception) {
+                    Toast.makeText(activity.baseContext, "Error: ${e.cause}", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

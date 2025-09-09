@@ -30,7 +30,6 @@ class MenuActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.recyclerView.layoutManager = WearableLinearLayoutManager(this, CustomScrollingLayoutCallback())
-       // binding.recyclerView.addItemDecoration(SpacingItemDecoration(R.dimen.spacing, this))
         binding.recyclerView.requestFocus()
 
         val path = intent.getStringExtra("path")

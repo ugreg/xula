@@ -13,6 +13,10 @@
 
     <uses-feature android:name="android.hardware.type.watch" />
 
+    <queries>
+        <package android:name="com.google.android.apps.docs" />
+    </queries>
+
     <application
         android:name=".Music"
         android:allowBackup="true"
