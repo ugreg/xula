@@ -16,6 +16,7 @@ import uno.greg.music.databinding.ActivityMainBinding
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
@@ -35,11 +36,14 @@ import kotlin.coroutines.cancellation.CancellationException
 import com.google.android.gms.wearable.Wearable
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.tasks.Tasks
+import com.google.android.gms.wearable.DataMap
+import com.google.android.gms.wearable.PutDataMapRequest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.w3c.dom.Node
 
 class MainActivity : AppCompatActivity(), DataClient.OnDataChangedListener, MessageClient.OnMessageReceivedListener {
 
@@ -49,6 +53,11 @@ class MainActivity : AppCompatActivity(), DataClient.OnDataChangedListener, Mess
     private val dataClient by lazy { Wearable.getDataClient(this) }
     private val messageClient by lazy { Wearable.getMessageClient(this) }
     private val capabilityClient by lazy { Wearable.getCapabilityClient(this) }
+
+    companion object {
+        private const val TAG = "PhoneApp"
+        const val HELLO_MESSAGE_PATH = "/hello_message"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +71,12 @@ class MainActivity : AppCompatActivity(), DataClient.OnDataChangedListener, Mess
             Log.d("PhoneApp", "To watch")
 
 
-            CoroutineScope(Dispatchers.Main).launch { sendWatch() }
+
+
+//            CoroutineScope(Dispatchers.Main).launch { sendWatch() }
+            CoroutineScope(Dispatchers.Main).launch { sendHelloMessage() }
+
+
 
 
 
@@ -137,6 +151,31 @@ class MainActivity : AppCompatActivity(), DataClient.OnDataChangedListener, Mess
             } catch (e: Exception) {
                 Log.d("PhoneApp", "Failed to send message to Node ... " + e.toString())
                 e.printStackTrace()
+            }
+        }
+    }
+
+    suspend fun sendHelloMessage() {
+        withContext(Dispatchers.IO) {
+            try {
+                val nodes = Tasks.await(Wearable.getNodeClient(this@MainActivity).connectedNodes)
+
+                if (nodes.isEmpty()) {
+                    Log.w(TAG, "No Wear OS devices connected")
+                } else {
+                    nodes.forEach { node ->
+                        val message = "Hello from phone! Time: ${System.currentTimeMillis()}"
+                        val sendTask = messageClient.sendMessage(node.id, HELLO_MESSAGE_PATH, message.toByteArray())
+                        try {
+                            Tasks.await(sendTask)
+                            Log.d(TAG, "Hello message sent to: ${node.displayName}")
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Failed to send message to node ${node.displayName}", e)
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to send hello message", e)
             }
         }
     }
