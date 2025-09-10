@@ -214,27 +214,6 @@ class SettingsAdapter(
 
 
 
-
-                    Log.d("Wear OS", "Thread to launch phone app")
-                    thread {
-                        val nodeClient = Wearable.getNodeClient(activity)
-                        val messageClient = Wearable.getMessageClient(activity)
-
-                        val nodes = Tasks.await(nodeClient.connectedNodes)
-                        for (node in nodes) {
-                            Log.d("Wear OS node", node.toString())
-                            messageClient.sendMessage(node.id, "/launch", null)
-                        }
-                    }
-
-
-                    val putDataReq: PutDataRequest = PutDataMapRequest.create("/count").run {
-                        dataMap.putInt("uno.greg.count", count++)
-                        asPutDataRequest()
-                    }
-                    val putDataTask: Task<DataItem> = dataClient.putDataItem(putDataReq)
-
-
 //                    val phoneAppPackageName = "uno.greg.androidmusic.MainActivity"
 //                    val intent = activity.packageManager.getLaunchIntentForPackage(phoneAppPackageName)
 ////                    val driveIntent = Intent(Intent.ACTION_VIEW).apply {
