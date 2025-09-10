@@ -30,6 +30,8 @@ class MyWearListenerService(
     }
 
     override fun onMessageReceived(messageEvent: MessageEvent) {
+        Log.d(TAG, "Message received: path=${messageEvent.path}")
+        Log.d("WatchApp", "Top of message get")
         when (messageEvent.path) {
             HELLO_MESSAGE_PATH -> {
                 val message = String(messageEvent.data)
