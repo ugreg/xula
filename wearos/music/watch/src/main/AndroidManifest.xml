@@ -33,6 +33,7 @@
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
                 <data android:scheme="wear" android:host="*" android:path="/hello_message" />
+                <data android:scheme="wear" android:host="*" android:path="/mp" />
             </intent-filter>
         </service>
 

@@ -3,6 +3,7 @@ package uno.greg.music
 import android.os.Bundle
 import android.view.Menu
 import com.google.android.material.snackbar.Snackbar
+import android.app.Activity
 import com.google.android.gms.wearable.DataMapItem
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import uno.greg.music.databinding.ActivityMainBinding
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
+import android.net.Uri
 import android.bluetooth.BluetoothSocket
 import android.content.Context
 import android.content.Intent
@@ -36,6 +38,7 @@ import kotlin.coroutines.cancellation.CancellationException
 import com.google.android.gms.wearable.Wearable
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.tasks.Tasks
+import com.google.android.gms.wearable.Asset
 import com.google.android.gms.wearable.DataMap
 import com.google.android.gms.wearable.PutDataMapRequest
 import kotlinx.coroutines.CoroutineScope
@@ -57,6 +60,8 @@ class MainActivity : AppCompatActivity(), DataClient.OnDataChangedListener, Mess
     companion object {
         private const val TAG = "PhoneApp"
         const val HELLO_MESSAGE_PATH = "/hello_message"
+        const val MP_MESSAGE_PATH = "/mp"
+        private const val REQUEST_CODE_PICK_FILE = 1001
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,9 +78,7 @@ class MainActivity : AppCompatActivity(), DataClient.OnDataChangedListener, Mess
         }
 
         binding.appBarMain.fabmp.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
-                .setAnchorView(R.id.fab).show()
+            openFilePicker()
         }
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
@@ -170,6 +173,60 @@ class MainActivity : AppCompatActivity(), DataClient.OnDataChangedListener, Mess
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to send hello message", e)
+            }
+        }
+    }
+
+    private fun openFilePicker() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "audio/mpeg"
+        }
+        startActivityForResult(intent, REQUEST_CODE_PICK_FILE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_PICK_FILE && resultCode == Activity.RESULT_OK) {
+            data?.data?.also { uri ->
+                Log.d(TAG, "File selected: $uri")
+                CoroutineScope(Dispatchers.Main).launch { sendMP(uri) }
+                Snackbar.make(binding.root, "Sending file to watch...", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null)
+                    .setAnchorView(R.id.fabmp).show()
+            }
+        }
+    }
+
+    suspend fun sendMP(fileUri: Uri) {
+        withContext(Dispatchers.IO) {
+            try {
+                val inputStream = contentResolver.openInputStream(fileUri) ?: run {
+                    Log.e("PhoneApp", "Failed to open input stream for URI: $fileUri")
+                    return@withContext
+                }
+
+                Log.d("PhoneApp", "File URI is: ${fileUri}")
+
+                val bytes = inputStream.readBytes()
+                inputStream.close()
+                val asset = Asset.createFromBytes(bytes)
+                val filename = fileUri.lastPathSegment ?: "selected_audio.mp3"
+
+                Log.d("PhoneApp", "D1: ${asset}")
+                Log.d("PhoneApp", "D2: ${filename}")
+
+                val request = PutDataMapRequest.create(MP_MESSAGE_PATH).apply {
+                    dataMap.putAsset("file", asset)
+                    dataMap.putString("filename", filename)
+                    dataMap.putLong("time", System.currentTimeMillis()) // force update
+                }.asPutDataRequest()
+
+                val result = Tasks.await(Wearable.getDataClient(this@MainActivity).putDataItem(request))
+                Log.d("PhoneApp", "File sent to watch: ${result.uri}")
+            } catch (e: Exception) {
+                Log.e("PhoneApp", "Failed to send file", e)
+                e.printStackTrace()
             }
         }
     }
