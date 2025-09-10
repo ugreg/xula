@@ -6,27 +6,16 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.google.android.gms.wearable.MessageClient
-import com.google.android.gms.wearable.WearableListenerService
 import com.google.android.gms.wearable.MessageEvent
 import com.google.android.gms.wearable.Wearable
+import com.google.android.gms.wearable.WearableListenerService
 import uno.greg.music.R
 
-class MyWearListenerService(
-    private val context: Context,
-    private val onMessageReceived: (String) -> Unit = { message ->
-        Log.d("WatchApp", "Received: $message")
-    }
-) : MessageClient.OnMessageReceivedListener {
-
-    private val messageClient = Wearable.getMessageClient(context)
+class MyWearListenerService() : WearableListenerService() {
 
     companion object {
         private const val TAG = "WatchApp"
         const val HELLO_MESSAGE_PATH = "/hello_message"
-    }
-
-    init {
-        messageClient.addListener(this)
     }
 
     override fun onMessageReceived(messageEvent: MessageEvent) {
@@ -36,13 +25,8 @@ class MyWearListenerService(
             HELLO_MESSAGE_PATH -> {
                 val message = String(messageEvent.data)
                 Log.d(TAG, "Message received: $message")
-                onMessageReceived(message)
             }
         }
-    }
-
-    fun cleanup() {
-        messageClient.removeListener(this)
     }
 //    override fun onMessageReceived(event: MessageEvent) {
 //        Log.d("WearDebug", "Message received: path=${event.path}, data=${String(event.data)}")
