@@ -205,6 +205,7 @@ response = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
 ## Resources
 
+- [Ollama models](https://ollama.com/library)
 - [Hugging Face Transformers Documentation](https://huggingface.co/docs/transformers/)
 - [PEFT Documentation](https://github.com/huggingface/peft)
 - [LoRA Paper](https://arxiv.org/abs/2106.09685)

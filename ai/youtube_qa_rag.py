@@ -13,7 +13,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from perf import test_cuda, test_memory
 
 class YouTubeQARAG:
-    def __init__(self, model_name="gemma:2b"):
+    def __init__(self, model_name="deepseek-r1:8b"):
         self.model_name = model_name
         self.embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
         self.transcripts = {} 
@@ -21,23 +21,18 @@ class YouTubeQARAG:
         self.chunks = {}      
         
     def add_video_transcript(self, video_id: str, transcript: str, chunk_size: int = 200):
-        print(f"Processing transcript for video: {video_id}")
-        
-        self.transcripts[video_id] = transcript
-        
+        print(f"Processing transcript for video: {video_id}")    
+        self.transcripts[video_id] = transcript        
         chunks = self._split_into_chunks(transcript, chunk_size)
-        self.chunks[video_id] = chunks
-        
+        self.chunks[video_id] = chunks        
         print(f"Creating embeddings for {len(chunks)} chunks...")
         chunk_embeddings = self.embedding_model.encode(chunks)
-        self.embeddings[video_id] = chunk_embeddings
-        
+        self.embeddings[video_id] = chunk_embeddings        
         print(f"✅ Video {video_id} processed successfully!")
         
     def _split_into_chunks(self, text: str, chunk_size: int) -> List[str]:
         chunks = []
         start = 0
-        
         while start < len(text):
             end = start + chunk_size
             chunk = text[start:end].strip()
@@ -67,7 +62,6 @@ class YouTubeQARAG:
         context = "\n\n".join(relevant_chunks)
         
         prompt = f"""Based on the following transcript from a YouTube video, please answer this question:
-
 Question: {question}
 
 Relevant transcript sections:
@@ -89,8 +83,6 @@ Answer:"""
         except Exception as e:
             return f"❌ Error generating response: {str(e)}"
     
-    def list_videos(self) -> List[str]:
-        return list(self.transcripts.keys())
     
     def get_video_info(self, video_id: str) -> Dict:
         if video_id not in self.transcripts:
@@ -117,6 +109,8 @@ def main():
     
     questions = [
         "Is Tik Tok mentioned in the video?",
+        "How many times i the word job mentioned in the video?",
+        "What cities are mentioned?",
     ]
     
     print("\n" + "="*60)
