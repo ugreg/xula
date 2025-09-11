@@ -95,11 +95,24 @@ Answer:"""
             "first_chunk_preview": self.chunks[video_id][0][:100] + "..." if self.chunks[video_id] else ""
         }
 
+def answer_question(question, qa_system):
+    print(f"\n❓ Question: {question}")
+    answer = qa_system.answer_question("ml_basics_001", question)
+    print(f"💡 Answer: {answer}")
+    print("-" * 40)
+
+def video_stats(qa_system):
+    print(f"\n📊 Video Information:")
+    info = qa_system.get_video_info("ml_basics_001")
+    for key, value in info.items():
+        print(f"   {key}: {value}")
+
 def main():
+    qa_system = YouTubeQARAG()
+
     test_cuda()
     test_memory()
-    
-    qa_system = YouTubeQARAG()
+    video_stats(qa_system)    
     
     transcript_path = os.path.join(os.path.dirname(__file__), "data.txt")
     with open(transcript_path, "r", encoding="utf-8") as f:
@@ -107,7 +120,7 @@ def main():
     
     qa_system.add_video_transcript("ml_basics_001", sample_transcript)
     
-    questions = [
+    icebreaker_questions = [
         "Is Tik Tok mentioned in the video?",
         "How many times i the word job mentioned in the video?",
         "What cities are mentioned?",
@@ -117,16 +130,12 @@ def main():
     print("🎥 YouTube Video Q&A Demo")
     print("="*60)
     
-    for question in questions:
-        print(f"\n❓ Question: {question}")
-        answer = qa_system.answer_question("ml_basics_001", question)
-        print(f"💡 Answer: {answer}")
-        print("-" * 40)
+    for question in icebreaker_questions:
+        answer_question(question, qa_system)
     
-    print(f"\n📊 Video Information:")
-    info = qa_system.get_video_info("ml_basics_001")
-    for key, value in info.items():
-        print(f"   {key}: {value}")
+    while True:
+        question = input("What do you want to know about the video? ")
+        answer_question(question, qa_system)
 
 if __name__ == "__main__":
     main()
