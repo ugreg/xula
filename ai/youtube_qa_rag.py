@@ -122,7 +122,7 @@ def main():
     
     icebreaker_questions = [
         "Is Tik Tok mentioned in the video?",
-        "How many times i the word job mentioned in the video?",
+        "How many times is the word \"job\" mentioned in the video? Count the usage no matter if it is used in singular and plural.",
         "What cities are mentioned?",
     ]
     
@@ -134,8 +134,12 @@ def main():
         answer_question(question, qa_system)
     
     while True:
-        question = input("What do you want to know about the video? ")
-        answer_question(question, qa_system)
+        question = input("What else do you want to know about the video? ")
+        if question == "done":
+            question = input("Shutting down...")
+            print("\n"*10)
+            break
+        answer_question(question, qa_system)    
 
 if __name__ == "__main__":
     main()

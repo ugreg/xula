@@ -1,5 +1,12 @@
 # 🤖 AI Model Customization: Which Approach Should You Use?
 
+## 🎥 **Your YouTube Use Case Breakdown:**
+
+### **What You Want:**
+- Ask questions about video content
+- Get accurate answers based on transcripts
+- Handle different videos dynamically
+
 ## 🎯 **Quick Decision Guide**
 
 | Your Goal | Use This Approach | Why? |
@@ -18,8 +25,6 @@
 ✅ **Instant Results**: No training time needed  
 ✅ **Dynamic Content**: Add new videos anytime  
 ✅ **Accurate Answers**: Uses actual transcript content  
-✅ **Cost Effective**: No training costs  
-✅ **Flexible**: Works with any video length  
 
 ### **How RAG Works:**
 1. **Split** video transcript into chunks
@@ -75,24 +80,6 @@ fine_tuner.train(training_data, num_epochs=3)
 **Pros:** Permanent behavior changes, better performance  
 **Cons:** Expensive, time-consuming, requires lots of data  
 
-## 🎥 **Your YouTube Use Case Breakdown:**
-
-### **What You Want:**
-- Ask questions about video content
-- Get accurate answers based on transcripts
-- Handle different videos dynamically
-
-### **What RAG Gives You:**
-- **Accuracy**: Answers based on actual video content
-- **Flexibility**: Add new videos anytime
-- **Speed**: Instant answers, no waiting
-- **Scalability**: Handle hundreds of videos
-
-### **What Fine-tuning Would Give You:**
-- **Nothing useful** for your use case
-- The model still wouldn't know about specific video content
-- You'd still need to provide context somehow
-
 ## 🚀 **Get Started Right Now:**
 
 ### **Step 1: Install Dependencies**
@@ -103,23 +90,6 @@ pip install -r requirements.txt
 ### **Step 2: Test the RAG System**
 ```bash
 python youtube_qa_rag.py
-```
-
-### **Step 3: Use with Your Own Videos**
-```python
-from youtube_qa_rag import YouTubeQARAG
-
-# Initialize
-qa_system = YouTubeQARAG()
-
-# Add your video transcript
-with open("my_video_transcript.txt", "r") as f:
-    transcript = f.read()
-qa_system.add_video_transcript("my_video", transcript)
-
-# Ask questions!
-answer = qa_system.answer_question("my_video", "What is the main point?")
-print(answer)
 ```
 
 ## 💡 **Pro Tips for Your Use Case:**
@@ -143,15 +113,3 @@ print(answer)
 2. **Master prompt engineering** for better results
 3. **Learn fine-tuning** only if you need fundamental behavior changes
 4. **Combine approaches** for maximum effectiveness
-
-## 🎯 **Bottom Line:**
-
-**For YouTube video Q&A: Use RAG, not fine-tuning.**
-
-RAG gives you exactly what you need:
-- Accurate answers based on video content
-- No training time or costs
-- Works with any video immediately
-- Scalable to hundreds of videos
-
-Fine-tuning would be overkill and wouldn't solve your actual problem. Start with the RAG system I created - it's the right tool for your job!
