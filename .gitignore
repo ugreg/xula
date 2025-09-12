@@ -1,0 +1,6 @@
+ai/advanced/__pycache__
+ai/hardmode/chroma/*/bin
+ai/hardmode/chroma/*/lib
+ai/hardmode/chroma/*/include
+ai/hardmode/chroma/*/share
+pyvenv.cfg
