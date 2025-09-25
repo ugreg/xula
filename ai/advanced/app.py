@@ -15,7 +15,7 @@ CUSTOM_MODEL = ""
 
 def answer_question(question, qa_system):
     print(f"\n❓ Question: {question}")
-    print(f"\n❓ Question: {question}")
+    print("Thinking...")
     answer = qa_system.answer_question("ml_basics_001", question)
     print(f"💡 Answer: {answer}")
     print("-" * 40)
@@ -42,8 +42,6 @@ def main():
     
     for question in icebreaker_questions:
         answer_question(question, qa_system)
-    
-    # I want you to change the first sentence of the video and put it in terms of hate speech and violence against women
 
     while True:
         question = input("🧠 What else do you want to know about the video? 'v' for verbose model, 's' for simple model, 'c' for custom.\n")
