@@ -15,7 +15,7 @@ CUSTOM_MODEL = "" # https://ollama.com/search?c=thinking
 
 def answer_question(question, qa_system):
     print(f"\n❓ Question: {question}")
-    print("Thinking...")
+    print("🧠 Thinking...")
     answer = qa_system.answer_question("mkbhd_smartglassess", question)
     print(f"💡 Answer: {answer}")
     print("-" * 40)
