@@ -6,21 +6,24 @@ from sklearn.metrics.pairwise import cosine_similarity
 from transformers import pipeline
 
 class YouTubeQARAG:
-    def __init__(self, model_name="gemma:2b"):
+    def __init__(self, model_name):
         self.model_name = model_name
         self.embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
-        self.transcripts = {} 
-        self.embeddings = {}  
-        self.chunks = {}      
+        self.transcripts = {}
+        self.embeddings = {}
+        self.chunks = {}
+
+    def set_model(self, new_model_name):
+        self.model_name = new_model_name
         
     def add_video_transcript(self, video_id: str, transcript: str, chunk_size: int = 200):
-        print(f"Processing transcript for video: {video_id}")    
-        self.transcripts[video_id] = transcript        
+        print(f"Processing transcript for video: {video_id}")
+        self.transcripts[video_id] = transcript
         chunks = self._split_into_chunks(transcript, chunk_size)
-        self.chunks[video_id] = chunks        
+        self.chunks[video_id] = chunks
         print(f"Creating embeddings for {len(chunks)} chunks...")
         chunk_embeddings = self.embedding_model.encode(chunks)
-        self.embeddings[video_id] = chunk_embeddings        
+        self.embeddings[video_id] = chunk_embeddings
         print(f"✅ Video {video_id} processed successfully!")
         
     def _split_into_chunks(self, text: str, chunk_size: int) -> List[str]:

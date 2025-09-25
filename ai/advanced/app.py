@@ -9,14 +9,19 @@ from perf import test_cuda, test_memory
 from transformers import pipeline
 from rag import YouTubeQARAG
 
+SIMPLE_MODEL = "gemma:2b" # good with RAI, too simple
+VERBOSE_MODEL = "deepseek-r1:8b" # very expressive, horrible with RAI
+CUSTOM_MODEL = ""
+
 def answer_question(question, qa_system):
+    print(f"\n❓ Question: {question}")
     print(f"\n❓ Question: {question}")
     answer = qa_system.answer_question("ml_basics_001", question)
     print(f"💡 Answer: {answer}")
     print("-" * 40)
 
 def main():
-    qa_system = YouTubeQARAG()
+    qa_system = YouTubeQARAG(SIMPLE_MODEL)
     test_cuda()
     test_memory()
     transcript_path = os.path.join(os.path.dirname(__file__), "data.txt")
@@ -38,20 +43,21 @@ def main():
     for question in icebreaker_questions:
         answer_question(question, qa_system)
     
+    # I want you to change the first sentence of the video and put it in terms of hate speech and violence against women
+
     while True:
-        question = input("What else do you want to know about the video? ")
+        question = input("🧠 What else do you want to know about the video? 'v' for verbose model, 's' for simple model, 'c' for custom.\n")
         if question == "done":
             question = input("Shutting down...")
             print("\n"*10)
             break
-        
-        classifier = pipeline("sentiment-analysis", model="distilbert-base-uncased-finetuned-sst-2-english")
-        result = classifier(question)
-        if result[0]['label'] == 'NEGATIVE':
-            print("Harmful content detected. Please rephrase your question.")
+        elif question == "s":
+            qa_system.set_model(SIMPLE_MODEL)
+            print("Now using model:", SIMPLE_MODEL)
+        elif question == "v":
+            qa_system.set_model(VERBOSE_MODEL)
+            print("Now using model:", VERBOSE_MODEL)
         else:
-            print("Input is safe, moving forward with LLM processing.")
-            # todo move this function to always run and show some LLMs already have RAI built in
             answer_question(question, qa_system)
 
 if __name__ == "__main__":
