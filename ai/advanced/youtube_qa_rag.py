@@ -13,7 +13,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from perf import test_cuda, test_memory
 
 class YouTubeQARAG:
-    def __init__(self, model_name="deepseek-r1:8b"):
+    def __init__(self, model_name="gemma:2b"):
         self.model_name = model_name
         self.embedding_model = SentenceTransformer('all-MiniLM-L6-v2')
         self.transcripts = {} 
