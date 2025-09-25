@@ -1,3 +1,5 @@
+Smart glasses video https://youtu.be/7gtc1DW2Tgo
+
 # 🤖 AI Model Customization: Which Approach Should You Use?
 
 ## 🎥 **Your YouTube Use Case Breakdown:**

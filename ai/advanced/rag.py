@@ -68,9 +68,9 @@ Answer:"""
                 model=self.model_name,
                 prompt=prompt,
                 options={
-                    "temperature": 0.2,
-                    "top_p": 0.9,
-                    "max_tokens": 500
+                    "temperature": 0.2, # controls the randomness of the generated text. A lower temperature (e.g., 0.2) makes the model more deterministic, leading to more predictable and conservative responses.
+                    "top_p": 0.9, # A lower value of top_p (e.g., 0.9) encourages more focused and coherent responses, whereas a higher value (e.g., 1.0) allows for more varied and creative outputs.
+                    "max_tokens": 500 #  lower value (e.g., 500) ensures concise response, higher value allows for longer and more detailed responses.
                 }
             )
             return response['response']

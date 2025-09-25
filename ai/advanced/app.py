@@ -24,16 +24,16 @@ def main():
     qa_system = YouTubeQARAG(SIMPLE_MODEL)
     test_cuda()
     test_memory()
-    transcript_path = os.path.join(os.path.dirname(__file__), "data.txt")
+    transcript_path = os.path.join(os.path.dirname(__file__), "transcript.txt")
     with open(transcript_path, "r", encoding="utf-8") as f:
         sample_transcript = f.read()
     
     qa_system.add_video_transcript("ml_basics_001", sample_transcript)
     
     icebreaker_questions = [
-        "Is Tik Tok mentioned in the video?",
-        "How many times is the word \"job\" mentioned in the video? Count the usage no matter if it is used in singular and plural.",
-        "What cities are mentioned?",
+        "What is this video about?",
+        "What was your favorite part of the video?",
+        "What was the most interesting thing about the video to you?"
     ]
     
     print("\n" + "="*60)
