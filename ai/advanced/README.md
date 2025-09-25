@@ -86,12 +86,14 @@ fine_tuner.train(training_data, num_epochs=3)
 
 ### **Step 1: Install Dependencies**
 ```bash
+python -m venv myenv
+source ./myenv/bin/activate
 pip install -r requirements.txt
 ```
 
 ### **Step 2: Test the RAG System**
 ```bash
-python youtube_qa_rag.py
+python app.py
 ```
 
 ## 💡 **Pro Tips for Your Use Case:**

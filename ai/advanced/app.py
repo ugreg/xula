@@ -11,12 +11,12 @@ from rag import YouTubeQARAG
 
 SIMPLE_MODEL = "gemma:2b" # good with RAI, too simple
 VERBOSE_MODEL = "deepseek-r1:8b" # very expressive, horrible with RAI
-CUSTOM_MODEL = ""
+CUSTOM_MODEL = "" # https://ollama.com/search?c=thinking
 
 def answer_question(question, qa_system):
     print(f"\n❓ Question: {question}")
     print("Thinking...")
-    answer = qa_system.answer_question("ml_basics_001", question)
+    answer = qa_system.answer_question("mkbhd_smartglassess", question)
     print(f"💡 Answer: {answer}")
     print("-" * 40)
 
@@ -28,7 +28,7 @@ def main():
     with open(transcript_path, "r", encoding="utf-8") as f:
         sample_transcript = f.read()
     
-    qa_system.add_video_transcript("ml_basics_001", sample_transcript)
+    qa_system.add_video_transcript("mkbhd_smartglassess", sample_transcript)
     
     icebreaker_questions = [
         "What is this video about?",

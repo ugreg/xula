@@ -21,7 +21,7 @@ class YouTubeQARAG:
         self.transcripts[video_id] = transcript
         chunks = self._split_into_chunks(transcript, chunk_size)
         self.chunks[video_id] = chunks
-        print(f"Creating embeddings for {len(chunks)} chunks...")
+        print(f"Creating embeddings (to help downstream processing of which chunks are most relevant to the question) for {len(chunks)} chunks...")
         chunk_embeddings = self.embedding_model.encode(chunks)
         self.embeddings[video_id] = chunk_embeddings
         print(f"✅ Video {video_id} processed successfully!")
