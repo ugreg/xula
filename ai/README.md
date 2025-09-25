@@ -1,6 +1,6 @@
 ```
-python -m venv myenv
-source ./myenv/bin/activate
+python -m venv helloenv
+source ./helloenv/bin/activate
 pip install -r requirements.txt
 ```
 
