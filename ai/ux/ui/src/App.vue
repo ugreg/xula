@@ -1,6 +1,6 @@
 <template>
   <main class="container">
-    <h1>Local ChatGPT</h1>
+    <h1>My ChatGPT</h1>
     <div class="chat-box">
       <div v-for="(msg, idx) in messages" :key="idx" class="message">
         <strong v-if="msg.role === 'user'">You:</strong>

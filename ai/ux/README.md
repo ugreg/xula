@@ -52,5 +52,21 @@ pip install -r requirements.txt
 ### Run
 
 ```
-uvicorn main:app --host 0.0.0.0 --port 8000
+python3 main.py
 ```
+
+### Call API
+
+Chat
+```
+curl -X POST http://localhost:8000/api/chat -H "Content-Type: application/json" -d '{"prompt": "Hello, world!"}'
+```
+
+Image
+```
+curl -X POST http://localhost:8000/api/img -H "Content-Type: application/json"
+```
+
+### Imagine generation model
+
+https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5
