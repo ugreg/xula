@@ -34,17 +34,18 @@ const input = ref('')
 const sendMessage = async () => {
   if (!input.value.trim()) return
 
-  messages.value.push({ role: 'user', content: input.value })
+  messages.value.push({ role: 'user', content: ' ' + input.value })
   const userMessage = input.value
   input.value = ''
   try {
+    messages.value.push({ role: 'bot', content: ' Thinking...' })
     const response = await axios.post('http://localhost:8000/api/chat', {
       prompt: userMessage
     });
-    let reply = response.data.reply;
-    messages.value.push({ role: 'bot', content: reply })
+    let reply = response.data;
+    messages.value.push({ role: 'bot', content: ' ' + reply })
   } catch (error) {
-    messages.value.push({ role: 'bot', content: '⚠️ Error contacting backend.' })
+    messages.value.push({ role: 'bot', content: ' ⚠️ Error contacting backend.' })
     console.error(error)
   }
 }
