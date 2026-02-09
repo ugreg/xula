@@ -4,3 +4,4 @@ ai/hardmode/chroma/*/lib
 ai/hardmode/chroma/*/include
 ai/hardmode/chroma/*/share
 pyvenv.cfg
+.DS_Store
