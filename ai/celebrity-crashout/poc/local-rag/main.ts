@@ -1,7 +1,7 @@
 import ollama from 'ollama';
 
 async function getWikiPage(title: string): Promise<string> {
-  const url = `https://en.wikipedia.org/w/api.php?action=parse&page=${encodeURIComponent(title)}&prop=text&format=json`;
+  const url = `https://en.wikipedia.org/wiki/${encodeURIComponent(title)}`;
   
   console.log(`Fetching Wikipedia page: ${title}`);
   
@@ -61,21 +61,23 @@ async function askLLM(context: string, question: string, model: string = 'lfm2:2
 async function main() {
   console.log("In main function...");
   const result = await getWikiPage("Kanye_West");
-  
-  const json = JSON.parse(result);
-  const prettyJson = JSON.stringify(json, null, 2);
-  const lines = prettyJson.split('\n');
-  const numLines = 5;
-  const firstFewLines = lines.slice(0, numLines);
-  console.log(`\n--- Response (truncated to first ${numLines} lines of JSON) ---\n`);
-  console.log(firstFewLines.join('\n'));
+  const cleanedData = result.replace(/<[^>]+>/g, '').replace(/<!DOCTYPE.*?>/gi, '');
+  // const json = JSON.parse(cleanedData);
+  // const prettyJson = JSON.stringify(cleanedData, null, 2);
+  // const lines = prettyJson.split('\n');
+  const numLines = 2005;
+  // const firstFewLines = lines.slice(0, numLines);
+  console.log(`\n--- Response (truncated to first ${numLines} chars of JSON) ---\n`);
+  // console.log(firstFewLines.join('\n'));
+  console.log(result.slice(0, numLines));
   console.log("\n--- End of truncated response ---");
-  console.log("\n--- Some of the JSON text from the Wiki ---");
-  console.log(json.parse.text["*"].toString().substring(0, 550));
-  console.log("\n--- End of JSON text from the Wiki ---");
+  // console.log("\n--- Some of the JSON text from the Wiki ---");
+  // console.log(cleanedData.parse.text["*"].toString().substring(0, 550));
+  // console.log("\n--- End of JSON text from the Wiki ---");
   
   const question = "What is Kanye West infamous for?";
-  const answer = await askLLM(json.parse.text["*"].toString(), question);
+  // const answer = await askLLM(cleanedData.parse.text["*"].toString(), question);
+  const answer = await askLLM(result, question);
   console.log("\n--- LLM Answer ---");
   console.log(answer);
   console.log("\n--- End of LLM Answer ---");
