@@ -1,0 +1,60 @@
+[
+  {
+    "id": "sample",
+    "aliases": ["sample celebrity", "sample"],
+    "name": "Sample Celebrity",
+    "aura": 15,
+    "hp": 60,
+    "type": "DRAMA",
+    "timeline": [
+      {
+        "icon": "🌟",
+        "title": "Rise to Fame",
+        "description": "Starred in hit TV show 'The Big Break'",
+        "date": "January 2015"
+      },
+      {
+        "icon": "🎵",
+        "title": "Top Song",
+        "description": "Released platinum single 'Summer Banger'",
+        "date": "June 2018"
+      },
+      {
+        "icon": "🎬",
+        "title": "Top Movie",
+        "description": "Starred in 'Action Blockbuster 3'",
+        "date": "March 2020"
+      },
+      {
+        "icon": "💥",
+        "title": "The Crashout",
+        "description": "Arrested at awards show after altercation",
+        "date": "December 2023"
+      }
+    ],
+    "stats": { "fame": 5, "drama": 4 }
+  },
+  {
+    "id": "demo-star",
+    "aliases": ["demo star", "demo"],
+    "name": "Demo Star",
+    "aura": 72,
+    "hp": 72,
+    "type": "CHAOS",
+    "timeline": [
+      {
+        "icon": "📺",
+        "title": "Breakout Role",
+        "description": "Viral moment on late-night TV",
+        "date": "April 2019"
+      },
+      {
+        "icon": "💥",
+        "title": "The Crashout",
+        "description": "Livestreamed meltdown; trended worldwide",
+        "date": "August 2024"
+      }
+    ],
+    "stats": { "fame": 4, "drama": 5 }
+  }
+]
