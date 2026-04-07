@@ -1,6 +1,13 @@
 <script setup>
 import { ref } from 'vue'
 
+defineProps({
+  errorMessage: {
+    type: String,
+    default: '',
+  },
+})
+
 const emit = defineEmits(['search'])
 const celebrityName = ref('')
 
@@ -17,25 +24,7 @@ const handleSubmit = () => {
     <p class="subtitle">The Winds and Waves of Fame</p>
     <p class="tagline">Discover the rise and fall of your favorite stars</p>
 
-    <!-- Windswaves-style character decorations -->
-    <div class="character-decorations">
-      <div class="character-container wind-char">
-        <div class="character-border"></div>
-        <img 
-          src="https://windswaves.pokemon.com/_images/feb_27_2026/pikachu_1.webp" 
-          alt="Windswaves Character"
-          class="character-img"
-        />
-      </div>
-      <div class="character-container wave-char">
-        <div class="character-border"></div>
-        <img 
-          src="https://windswaves.pokemon.com/_images/feb_27_2026/pikachu_2.webp" 
-          alt="Wave Character"
-          class="character-img"
-        />
-      </div>
-    </div>
+    <p v-if="errorMessage" class="error-banner" role="alert">{{ errorMessage }}</p>
 
     <form @submit.prevent="handleSubmit" class="search-form">
       <div class="input-wrapper">
@@ -114,61 +103,17 @@ const handleSubmit = () => {
   color: #909090;
 }
 
-/* Character decorations */
-.character-decorations {
-  display: flex;
-  gap: 3rem;
-  margin-bottom: 1rem;
-}
-
-.character-container {
-  position: relative;
-  width: 80px;
-  height: 80px;
-}
-
-.character-border {
-  position: absolute;
-  inset: 0;
-  border-width: 3px;
-  border-style: solid;
-  border-radius: 50%;
-  animation: float 3s ease-in-out infinite;
-}
-
-.wind-char .character-border {
-  border-image: linear-gradient(135deg, #ff4e50, #f9d423) 1;
-  box-shadow: 0 0 20px rgba(249, 212, 35, 0.4);
-  left: -15px;
-}
-
-.wave-char .character-border {
-  border-image: linear-gradient(135deg, #4a90e2, #f9d423) 1;
-  box-shadow: 0 0 20px rgba(74, 144, 226, 0.4);
-  right: -15px;
-}
-
-.character-img {
+.error-banner {
   width: 100%;
-  height: 100%;
-  position: absolute;
-  inset: 0;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-}
-
-[data-theme="dark"] .wind-char .character-border {
-  box-shadow: 0 0 20px rgba(249, 212, 35, 0.6);
-  border-image: linear-gradient(135deg, #ff6b6b, #ffd93d) 1;
-}
-
-[data-theme="dark"] .wave-char .character-border {
-  box-shadow: 0 0 20px rgba(100, 180, 255, 0.6);
-  border-image: linear-gradient(135deg, #5a7ce6, #ffd93d) 1;
+  max-width: 400px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: 12px;
+  background: rgba(231, 76, 60, 0.15);
+  border: 2px solid #e74c3c;
+  color: #c0392b;
+  font-size: 0.95rem;
+  text-align: center;
 }
 
 .search-form {

@@ -1,6 +1,6 @@
 export const mockCelebrityData = {
   name: "Sample Celebrity",
-  hp: 15,
+  aura: 15, // 0 - 100 score representing the celebrity's aura
   type: "DRAMA",
   timeline: [
     {
