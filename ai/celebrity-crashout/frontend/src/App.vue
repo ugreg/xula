@@ -1,41 +1,56 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import SearchForm from './components/SearchForm.vue'
 import LoadingScreen from './components/LoadingScreen.vue'
 import CrashoutCard from './components/CrashoutCard.vue'
-import { mockCelebrityData } from './data/mockData.js'
+import ThemeToggle from './components/ThemeToggle.vue'
+import { searchCelebrity } from './api/celebrity.js'
 
-// App state: 'input' | 'loading' | 'result'
+const darkMode = ref(false)
+const toggleDark = () => {
+  darkMode.value = !darkMode.value
+  document.body.dataset.theme = darkMode.value ? 'dark' : 'light'
+}
+
 const currentState = ref('input')
 const searchedName = ref('')
 const celebrityData = ref(null)
+const searchError = ref('')
 
-const handleSearch = (name) => {
+const handleSearch = async (name) => {
   searchedName.value = name
+  searchError.value = ''
   currentState.value = 'loading'
 
-  // Simulate API call with 3 second delay
-  setTimeout(() => {
-    // Use mock data but replace the name with what user searched
-    celebrityData.value = {
-      ...mockCelebrityData,
-      name: name
-    }
+  try {
+    celebrityData.value = await searchCelebrity(name)
     currentState.value = 'result'
-  }, 3000)
+  } catch (e) {
+    const message =
+      e instanceof Error ? e.message : 'Could not load celebrity data.'
+    searchError.value =
+      message === 'Failed to fetch'
+        ? 'Cannot reach the server. Is the API running on port 3001?'
+        : message
+    currentState.value = 'input'
+  }
 }
 
 const handleSearchAnother = () => {
   currentState.value = 'input'
   searchedName.value = ''
   celebrityData.value = null
+  searchError.value = ''
 }
 </script>
 
 <template>
   <div class="app">
+    <ThemeToggle :dark-mode="darkMode" @toggle="toggleDark" />
+
     <SearchForm
       v-if="currentState === 'input'"
+      :error-message="searchError"
       @search="handleSearch"
     />
 

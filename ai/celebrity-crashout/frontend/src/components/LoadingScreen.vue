@@ -122,7 +122,11 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 100%);
+}
+
+[data-theme="light"] .loading-container {
+  background: linear-gradient(135deg, #f0f0f0 0%, #e8e8e8 100%);
 }
 
 .pokeball-wrapper {

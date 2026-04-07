@@ -1,6 +1,13 @@
 <script setup>
 import { ref } from 'vue'
 
+defineProps({
+  errorMessage: {
+    type: String,
+    default: '',
+  },
+})
+
 const emit = defineEmits(['search'])
 const celebrityName = ref('')
 
@@ -13,18 +20,23 @@ const handleSubmit = () => {
 
 <template>
   <div class="search-container">
-    <h1 class="title">Celebrity Crashout Tracker</h1>
-    <p class="subtitle">Discover the rise and fall of your favorite celebrities</p>
+    <h1 class="title">Celebrity Crashout</h1>
+    <p class="subtitle">The Winds and Waves of Fame</p>
+    <p class="tagline">Discover the rise and fall of your favorite stars</p>
+
+    <p v-if="errorMessage" class="error-banner" role="alert">{{ errorMessage }}</p>
 
     <form @submit.prevent="handleSubmit" class="search-form">
-      <input
-        v-model="celebrityName"
-        type="text"
-        placeholder="Enter celebrity name..."
-        class="search-input"
-      />
+      <div class="input-wrapper">
+        <input
+          v-model="celebrityName"
+          type="text"
+          placeholder="Enter celebrity name..."
+          class="search-input"
+          autocomplete="off"
+        />
+      </div>
       <button type="submit" class="search-button">
-        <span class="pokeball-icon">◓</span>
         Catch Their Story
       </button>
     </form>
@@ -38,79 +50,135 @@ const handleSubmit = () => {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  padding: 2rem;
+  padding: 4rem 2rem 2rem;
+  gap: 2rem;
+  position: relative;
 }
 
 .title {
-  font-size: 3rem;
-  font-weight: bold;
-  color: #FFCB05;
-  text-shadow:
-    3px 3px 0 #3D7DCA,
-    -1px -1px 0 #3D7DCA,
-    1px -1px 0 #3D7DCA,
-    -1px 1px 0 #3D7DCA;
-  margin-bottom: 0.5rem;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #1a1a1a;
   text-align: center;
+  margin-bottom: 0.5rem;
+  text-shadow: none;
+  position: relative;
+  background: linear-gradient(135deg, #ff4e50 0%, #f9d423 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+[data-theme="dark"] .title {
+  color: #ffffff;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ffd93d 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .subtitle {
+  font-size: clamp(1.1rem, 3vw, 1.5rem);
   color: #666;
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.tagline {
+  font-size: 0.95rem;
+  color: #888;
+  text-align: center;
+  max-width: 400px;
+  line-height: 1.6;
+}
+
+[data-theme="dark"] .subtitle {
+  color: #a0a0a0;
+}
+
+[data-theme="dark"] .tagline {
+  color: #909090;
+}
+
+.error-banner {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: 12px;
+  background: rgba(231, 76, 60, 0.15);
+  border: 2px solid #e74c3c;
+  color: #c0392b;
+  font-size: 0.95rem;
+  text-align: center;
 }
 
 .search-form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
   width: 100%;
-  max-width: 400px;
+  max-width: 480px;
+}
+
+.input-wrapper {
+  position: relative;
 }
 
 .search-input {
-  padding: 1rem 1.5rem;
+  width: 100%;
+  padding: 1.2rem 1.5rem;
   font-size: 1.1rem;
-  border: 3px solid #3D7DCA;
-  border-radius: 50px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
   outline: none;
   transition: all 0.3s ease;
   background: #ffffff;
-  color: #1a1a1a;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .search-input:focus {
-  border-color: #FFCB05;
-  box-shadow: 0 0 15px rgba(255, 203, 5, 0.5);
+  border-color: #f9d423;
+  box-shadow: 0 4px 16px rgba(249, 212, 35, 0.3), 0 0 0 4px rgba(249, 212, 35, 0.1);
+  transform: translateY(-2px);
+}
+
+[data-theme="dark"] .search-input {
+  background: #1a1a2e;
+  border-color: #333;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .search-input:focus {
+  border-color: #ffd93d;
+  box-shadow: 0 4px 16px rgba(255, 217, 61, 0.3), 0 0 0 4px rgba(255, 217, 61, 0.15);
 }
 
 .search-button {
-  padding: 1rem 2rem;
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #fff;
-  background: linear-gradient(180deg, #FFCB05 0%, #F5A623 100%);
-  border: 3px solid #3D7DCA;
-  border-radius: 50px;
+  padding: 1.1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: linear-gradient(135deg, #ff4e50 0%, #f9d423 100%);
+  border: none;
+  border-radius: 12px;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  box-shadow: 0 4px 12px rgba(255, 78, 80, 0.3);
 }
 
 .search-button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 5px 20px rgba(61, 125, 202, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(255, 78, 80, 0.4);
 }
 
 .search-button:active {
-  transform: scale(0.98);
-}
-
-.pokeball-icon {
-  font-size: 1.4rem;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 10px rgba(255, 78, 80, 0.3);
 }
 </style>

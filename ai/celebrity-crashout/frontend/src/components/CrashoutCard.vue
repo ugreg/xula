@@ -82,7 +82,11 @@ const emit = defineEmits(['searchAnother'])
   justify-content: center;
   min-height: 100vh;
   padding: 2rem;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 100%);
+}
+
+[data-theme="light"] .card-container {
+  background: linear-gradient(135deg, #f0f0f0 0%, #e8e8e8 100%);
 }
 
 .pokemon-card {
@@ -295,19 +299,27 @@ const emit = defineEmits(['searchAnother'])
 
 .search-another-btn {
   margin-top: 2rem;
-  padding: 1rem 2rem;
+  padding: 1.1rem 2rem;
   font-size: 1.1rem;
-  font-weight: bold;
-  color: #333;
-  background: linear-gradient(180deg, #FFCB05 0%, #F5A623 100%);
-  border: 3px solid #3D7DCA;
-  border-radius: 50px;
+  font-weight: 600;
+  color: #ffffff;
+  background: linear-gradient(135deg, #ff4e50 0%, #f9d423 100%);
+  border: none;
+  border-radius: 12px;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  box-shadow: 0 4px 12px rgba(255, 78, 80, 0.3);
 }
 
 .search-another-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 5px 20px rgba(255, 203, 5, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(255, 78, 80, 0.4);
+}
+
+.search-another-btn:active {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 10px rgba(255, 78, 80, 0.3);
 }
 </style>
