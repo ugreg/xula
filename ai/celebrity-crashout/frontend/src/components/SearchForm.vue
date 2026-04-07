@@ -74,7 +74,10 @@ const handleSubmit = () => {
   border: 3px solid #3D7DCA;
   border-radius: 50px;
   outline: none;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  transition: all 0.3s ease;
+  background: #ffffff;
+  color: #1a1a1a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .search-input:focus {
