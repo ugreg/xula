@@ -1,0 +1,38 @@
+name: Validate PR title
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - synchronize
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR title format
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          echo "Checking PR title: '$PR_TITLE'"
+          
+          PATTERN='^(feat|fix|docs|refactor|test|build|ci|chore|perf|style)(\(.+\))?!?: .+'
+          
+          if [[ ! "$PR_TITLE" =~ $PATTERN ]]; then
+            echo "::error::PR title does not match required format."
+            echo ""
+            echo "::error::Expected format: <type>(<scope>): <description>"
+            echo ""
+            echo "::error::Valid types: feat, fix, docs, refactor, test, build, ci, chore, perf, style"
+            echo ""
+            echo "::error::Examples:"
+            echo "::error::  feat(calendar): add event list view"
+            echo "::error::  fix(tutoring): correct java imports"
+            echo "::error::  docs: add project README"
+            echo "::error::  feat!: remove legacy endpoint (breaking change)"
+            echo ""
+            exit 1
+          fi
+          
+          echo "::notice::PR title format is valid."

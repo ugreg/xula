@@ -1,0 +1,2400 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/xu.png">
+    <meta name="description" content="XULA CPSC - Xavier University of Louisiana Computer Science and Programming Club">
+    <meta name="theme-color" content="#0a0a0a">
+    <link rel="preload" href="/xu.png" as="image">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://images.unsplash.com">
+    <title>XULA CPSC</title>
+    <style>
+      @property --accent-hue {
+        syntax: "<angle>";
+        initial-value: 25deg;
+        inherits: true;
+      }
+
+      @property --glow-opacity {
+        syntax: "<number>";
+        initial-value: 0;
+        inherits: false;
+      }
+
+      :root {
+        color-scheme: dark;
+        accent-color: #d4a574;
+        --bg: #0a0a0a;
+        --surface: #151515;
+        --surface-hover: #1a1a1a;
+        --surface-active: #222222;
+        --text: #ffffff;
+        --text-muted: #a0a0a0;
+        --accent: #d4a574;
+        --border: #2a2a2a;
+        --gradient-1: #d4a574;
+        --gradient-2: #c49463;
+        --gradient-3: #b48352;
+        --gradient-4: #a0b86a;
+        --gradient-5: #8cc06d;
+        --bg-gradient-1: #1a1a2e;
+        --bg-gradient-2: #1e2a4a;
+        --bg-gradient-3: #2a1e4a;
+        --bg-gradient-4: #1a2a4a;
+        --glass-bg: rgba(10, 10, 10, 0.8);
+        --glass-border: rgba(255, 255, 255, 0.06);
+        --card-bg: rgba(255, 255, 255, 0.03);
+        --card-border: rgba(255, 255, 255, 0.08);
+        --card-hover-bg: rgba(255, 255, 255, 0.1);
+        --card-hover-border: rgba(255, 255, 255, 0.15);
+        --card-shine: rgba(255, 255, 255, 0.2);
+        --overlay-bg: rgba(0, 0, 0, 0.3);
+        --hero-gradient-start: #fff;
+        --hero-gradient-end: #a0a0a0;
+        --avatar-circle: #d4a574;
+        --terminal-bg: rgba(10, 10, 10, 0.95);
+        --terminal-border: #333;
+        --terminal-header-bg: rgba(20, 20, 20, 0.9);
+        --btn-secondary-bg: rgba(255, 255, 255, 0.1);
+        --btn-secondary-color: #fff;
+        --btn-secondary-border: rgba(255, 255, 255, 0.2);
+        --btn-secondary-hover-bg: rgba(255, 255, 255, 0.15);
+        --btn-secondary-hover-border: rgba(255, 255, 255, 0.3);
+        --scroll-btn-bg: rgba(10, 10, 10, 0.85);
+        --scroll-btn-border: rgba(255, 255, 255, 0.1);
+        --scroll-btn-hover-bg: rgba(212, 165, 116, 0.2);
+        --scroll-btn-hover-border: rgba(212, 165, 116, 0.4);
+      }
+
+      :root.light {
+        color-scheme: light;
+        --bg: #f5f5f0;
+        --surface: #ffffff;
+        --surface-hover: #f0f0eb;
+        --surface-active: #e5e5e0;
+        --text: #1a1a1a;
+        --text-muted: #6b6b6b;
+        --accent: #b8894f;
+        --border: #e0e0d8;
+        --gradient-1: #d4a574;
+        --gradient-2: #c49463;
+        --gradient-3: #b48352;
+        --gradient-4: #8fa85a;
+        --gradient-5: #7ab04d;
+        --bg-gradient-1: #e8e8f0;
+        --bg-gradient-2: #e0e4f0;
+        --bg-gradient-3: #f0e8f0;
+        --bg-gradient-4: #e0eaf0;
+        --glass-bg: rgba(245, 245, 240, 0.85);
+        --glass-border: rgba(0, 0, 0, 0.08);
+        --card-bg: rgba(255, 255, 255, 0.6);
+        --card-border: rgba(0, 0, 0, 0.08);
+        --card-hover-bg: rgba(255, 255, 255, 0.9);
+        --card-hover-border: rgba(0, 0, 0, 0.15);
+        --card-shine: rgba(0, 0, 0, 0.08);
+        --overlay-bg: rgba(0, 0, 0, 0.05);
+        --hero-gradient-start: #1a1a1a;
+        --hero-gradient-end: #6b6b6b;
+        --avatar-circle: #1a1a1a;
+        --terminal-bg: rgba(245, 245, 240, 0.95);
+        --terminal-border: #d0d0c8;
+        --terminal-header-bg: rgba(235, 235, 230, 0.9);
+        --btn-secondary-bg: rgba(0, 0, 0, 0.05);
+        --btn-secondary-color: #1a1a1a;
+        --btn-secondary-border: rgba(0, 0, 0, 0.15);
+        --btn-secondary-hover-bg: rgba(0, 0, 0, 0.08);
+        --btn-secondary-hover-border: rgba(0, 0, 0, 0.25);
+        --scroll-btn-bg: rgba(245, 245, 240, 0.85);
+        --scroll-btn-border: rgba(0, 0, 0, 0.1);
+        --scroll-btn-hover-bg: rgba(184, 137, 79, 0.15);
+        --scroll-btn-hover-border: rgba(184, 137, 79, 0.4);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      [id] {
+        scroll-margin-top: 100px;
+      }
+
+      :is(h1, h2, h3) {
+        text-wrap: balance;
+      }
+
+      p {
+        text-wrap: pretty;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      a:hover {
+        color: var(--accent-hover);
+      }
+
+      .background-gradient {
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(ellipse 80% 50% at 50% 0%, var(--bg-gradient-1) 0%, transparent 50%),
+          radial-gradient(ellipse 60% 40% at 20% 80%, var(--bg-gradient-2) 0%, transparent 50%),
+          radial-gradient(ellipse 40% 30% at 80% 70%, var(--bg-gradient-3) 0%, transparent 50%),
+          radial-gradient(ellipse 30% 20% at 40% 30%, var(--bg-gradient-4) 0%, transparent 60%);
+        opacity: 0.5;
+        z-index: -1;
+        animation: bgShift 30s ease-in-out infinite;
+      }
+
+      @keyframes bgShift {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 0.6; }
+      }
+
+      .noise-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background:
+          url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+        opacity: 0.4;
+        z-index: -1;
+        pointer-events: none;
+      }
+
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 80px 20px;
+        position: relative;
+      }
+
+      .hero h1 {
+        font-size: clamp(48px, 12vw, 70px);
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        margin-bottom: 30px;
+        background: linear-gradient(135deg, var(--hero-gradient-start) 0%, var(--hero-gradient-end) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: textReveal 1.2s cubic-bezier(0.2, 0, 0.2, 1) forwards;
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      .hero.title-section {
+        margin-bottom: 10px;
+      }
+
+      @keyframes textReveal {
+        0% { opacity: 0; transform: translateY(30px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
+
+      .hero p {
+        font-size: clamp(18px, 4vw, 24px);
+        color: var(--text-muted);
+        max-width: 700px;
+        margin: 0 auto 40px;
+        animation: fadeInUp 0.8s ease 0.3s forwards;
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      @keyframes fadeInUp {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
+
+      .hero .cta-group {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+        animation: fadeInUp 0.8s ease 0.5s forwards;
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 14px 28px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: none;
+      }
+
+      .btn-primary {
+        background: var(--accent);
+        color: #fff;
+      }
+
+      .btn-primary:hover {
+        background: var(--accent-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba(92, 120, 226, 0.4);
+      }
+
+      .btn-secondary {
+        background: var(--btn-secondary-bg);
+        color: var(--btn-secondary-color);
+        border: 1px solid var(--btn-secondary-border);
+      }
+
+      .btn-secondary:hover {
+        background: var(--btn-secondary-hover-bg);
+        border-color: var(--btn-secondary-hover-border);
+        transform: translateY(-2px);
+      }
+
+      .btn svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .discord-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 28px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #fff;
+        background: linear-gradient(135deg, #5865F2, #4752C4);
+        transition: all 0.2s ease;
+        text-decoration: none;
+      }
+
+      .floating {
+        position: absolute;
+        width: 120px;
+        height: 120px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, var(--gradient-1), var(--gradient-4));
+        opacity: 0.15;
+        animation: float 8s ease-in-out infinite;
+      }
+
+      .floating:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+      .floating:nth-child(2) { top: 20%; right: 15%; width: 100px; height: 100px; animation-delay: 2s; }
+      .floating:nth-child(3) { bottom: 15%; left: 15%; width: 140px; height: 140px; animation-delay: 4s; }
+      .floating:nth-child(4) { bottom: 25%; right: 10%; width: 80px; height: 80px; animation-delay: 6s; }
+
+      @keyframes float {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        25% { transform: translateY(-20px) rotate(5deg); }
+        50% { transform: translateY(0) rotate(0deg); }
+        75% { transform: translateY(-15px) rotate(-5deg); }
+      }
+
+      .down-arrow {
+        width: 48px;
+        height: 48px;
+        margin: 40px auto 0;
+        position: relative;
+        animation: arrow-bounce 4s ease-in-out infinite;
+        align-self: center;
+        overflow: visible;
+      }
+
+      .down-arrow canvas {
+        width: 48px;
+        height: 48px;
+        display: block;
+      }
+
+      @keyframes arrow-bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-15px); }
+      }
+
+      .home-terminal {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 12px 20px;
+        backdrop-filter: blur(20px);
+        background: var(--glass-bg);
+        border-top: 1px solid var(--glass-border);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Mono', monospace;
+        font-size: 16px;
+        color: #d4a574;
+        z-index: 50;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .home-terminal.visible,
+      .terminal-card.visible {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .scroll-top-btn {
+        position: fixed;
+        right: 24px;
+        bottom: 24px;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: var(--scroll-btn-bg);
+        border: 1px solid var(--scroll-btn-border);
+        backdrop-filter: blur(10px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease, transform 0.2s ease, background 0.2s ease;
+        z-index: 100;
+      }
+
+      .scroll-top-btn.visible {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .scroll-top-btn:hover {
+        background: var(--scroll-btn-hover-bg);
+        border-color: var(--scroll-btn-hover-border);
+        transform: translateY(-2px);
+      }
+
+      .scroll-top-btn svg {
+        width: 20px;
+        height: 20px;
+        color: #d4a574;
+      }
+
+      .cursor {
+        width: 8px;
+        height: 16px;
+        background: #d4a574;
+        display: inline-block;
+        animation: cursor-blink 1s step-end infinite;
+      }
+
+      @keyframes cursor-blink {
+        0%, 50% { opacity: 1; }
+        51%, 100% { opacity: 0; }
+      }
+
+      .section {
+        padding: 120px 20px;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .section-header {
+        text-align: center;
+        margin-bottom: 80px;
+      }
+
+      .section-header h2 {
+        font-size: clamp(32px, 6vw, 56px);
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        margin-bottom: 20px;
+      }
+
+      .section-header p {
+        font-size: clamp(16px, 3vw, 20px);
+        color: var(--text-muted);
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .section-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 30px;
+        color: var(--accent);
+        font-weight: 500;
+        transition: gap 0.2s ease;
+      }
+
+      .section-link:hover {
+        gap: 12px;
+      }
+
+      .section-link svg {
+        width: 18px;
+        height: 18px;
+        transition: transform 0.2s ease;
+      }
+
+      .section-link:hover svg {
+        transform: translateX(4px);
+      }
+
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 24px;
+        margin-top: 40px;
+      }
+
+      .feature-card {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 20px;
+        padding: 40px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--card-shine), transparent);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .feature-card:hover {
+        background: var(--card-hover-bg);
+        border-color: var(--card-hover-border);
+        transform: translateY(-4px);
+        --glow-opacity: 1;
+      }
+
+      .feature-card:hover::before {
+        opacity: 1;
+      }
+
+      .feature-card:has(:focus-within) {
+        border-color: var(--accent);
+        outline: 2px solid var(--accent);
+        outline-offset: 4px;
+      }
+
+      .feature-card h3 {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: var(--text);
+      }
+
+      .feature-card p {
+        color: var(--text-muted);
+        font-size: 16px;
+        line-height: 1.7;
+      }
+
+      .trust-section {
+        background: var(--overlay-bg);
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .trust-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 32px;
+      }
+
+      .trust-card {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 16px;
+        padding: 32px;
+        transition: all 0.3s ease;
+      }
+
+      .trust-card:hover {
+        background: var(--card-hover-bg);
+        border-color: var(--card-hover-border);
+      }
+
+      .trust-card h4 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 12px;
+      }
+
+      .trust-card p {
+        color: var(--text-muted);
+        font-size: 15px;
+        line-height: 1.7;
+        margin-bottom: 16px;
+      }
+
+      .trust-card .quote {
+        font-size: 14px;
+        color: var(--text-muted);
+        font-style: italic;
+        border-left: 2px solid var(--accent);
+        padding-left: 12px;
+        margin-bottom: 16px;
+        opacity: 0.8;
+      }
+
+      .trust-card .author {
+        font-size: 13px;
+        color: var(--text-muted);
+        opacity: 0.7;
+      }
+
+      .trust-card .author .name {
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .trust-card .author .role {
+        opacity: 0.6;
+      }
+
+      .extensions-section {
+        background: var(--overlay-bg);
+      }
+
+      .extensions-header {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .extensions-header h2 {
+        font-size: clamp(32px, 6vw, 48px);
+        font-weight: 700;
+        margin-bottom: 16px;
+      }
+
+      .extensions-header p {
+        color: var(--text-muted);
+        max-width: 600px;
+        margin: 0 auto 24px;
+      }
+
+      .extensions-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        container-type: inline-size;
+      }
+
+      .extension-card {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 12px;
+        padding: 24px;
+        text-align: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .extension-card:hover {
+        background: var(--card-hover-bg);
+        border-color: var(--card-hover-border);
+        transform: translateY(-2px);
+      }
+
+      .extension-card:has(.icon) {
+        cursor: pointer;
+      }
+
+      .extension-card:focus-within {
+        border-color: var(--accent);
+        outline: 2px solid var(--accent);
+        outline-offset: 4px;
+      }
+
+      .extension-card .icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 10px;
+        margin: 0 auto 16px;
+        overflow: visible;
+      }
+
+      .extension-card .icon canvas {
+        width: 48px;
+        height: 48px;
+        display: block;
+      }
+
+      .extension-card h4 {
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+
+      .extension-card .desc {
+        font-size: 12px;
+        color: var(--text-muted);
+        opacity: 0.6;
+        margin-top: 12px;
+      }
+
+      .showcase-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+        margin-top: 40px;
+      }
+
+      .showcase-card {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 16px;
+        padding: 28px;
+        transition: all 0.3s ease;
+      }
+
+      .showcase-card:hover {
+        background: var(--card-hover-bg);
+        border-color: var(--card-hover-border);
+        transform: translateY(-2px);
+      }
+
+      .showcase-card h4 {
+        font-size: 17px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: var(--text);
+      }
+
+      .showcase-card p {
+        color: var(--text-muted);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .team-section {
+        text-align: center;
+      }
+
+      .team-section p {
+        max-width: 700px;
+        margin: 0 auto 60px;
+        color: var(--text-muted);
+        line-height: 1.8;
+      }
+
+      .team-grid {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        flex-wrap: wrap;
+      }
+
+      .team-member {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .team-member .avatar {
+        width: 100px;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--gradient-1), var(--gradient-4));
+        padding: 3px;
+        animation: avatarPulse 3s ease-in-out infinite;
+      }
+
+      @keyframes avatarPulse {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(92, 120, 226, 0.4); }
+        50% { box-shadow: 0 0 0 15px rgba(92, 120, 226, 0); }
+      }
+
+      .team-member .avatar-inner {
+        width: 100%;
+        height: 100%;
+        background: var(--bg);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        font-weight: 600;
+      }
+
+      .team-member h5 {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .team-member .company {
+        font-size: 13px;
+        color: var(--text-muted);
+        opacity: 0.7;
+      }
+
+      .team-member a {
+        font-size: 13px;
+        color: var(--accent);
+        opacity: 0.8;
+        transition: opacity 0.2s ease;
+      }
+
+      .team-member a:hover {
+        opacity: 1;
+      }
+
+      .footer {
+        border-top: 1px solid var(--border);
+        padding: 60px 20px;
+        text-align: center;
+      }
+
+      .footer-links {
+        display: flex;
+        justify-content: center;
+        gap: 32px;
+        flex-wrap: wrap;
+        margin-bottom: 40px;
+      }
+
+      .footer-links a {
+        font-size: 14px;
+        color: var(--text-muted);
+        opacity: 0.8;
+        transition: opacity 0.2s ease;
+      }
+
+      .footer-links a:hover {
+        opacity: 1;
+      }
+
+      .footer p {
+        font-size: 13px;
+        color: var(--text-muted);
+        opacity: 0.6;
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s cubic-bezier(0.2, 0, 0.2, 1);
+      }
+
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;500;700&display=swap');
+
+      :root {
+        --bg-dark: var(--bg);
+        --accent-color: #00f2ff;
+        --text-primary: var(--text);
+        --text-secondary: var(--text-muted);
+        --danger: #ff2a6d;
+        --calendar-gradient-start: #fff;
+      }
+
+      :root.light {
+        --accent-color: #00c4d4;
+        --calendar-gradient-start: #1a1a1a;
+      }
+
+      .calendar-section {
+        padding: 20px 20px;
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+
+      .calendar-container {
+        position: relative;
+        width: 100%;
+        max-width: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .glow-orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.6;
+        z-index: -1;
+      }
+
+      .orb-1 {
+        width: 300px;
+        height: 300px;
+        background: #2d00f7;
+        top: -50px;
+        left: -50px;
+      }
+
+      .orb-2 {
+        width: 250px;
+        height: 250px;
+        background: #f20089;
+        bottom: -50px;
+        right: -50px;
+      }
+
+      .calendar-card {
+        width: 1000px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(15px);
+        border: 1px solid var(--glass-border);
+        border-radius: 20px;
+        padding: 100px;
+        box-shadow: 0 25px 45px rgba(0,0,0,0.5);
+        transition: transform 0.3s;
+        font-family: 'Rajdhani', sans-serif;
+      }
+
+      .calendar-card.list-view .nav-btn {
+        display: none;
+      }
+
+      .calendar-card.list-view .header-right {
+        gap: 10px;
+      }
+
+      .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        border-bottom: 1px solid var(--glass-border);
+        padding-bottom: 15px;
+      }
+
+      .year {
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: linear-gradient(90deg, var(--calendar-gradient-start), var(--accent-color));
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .subtitle {
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+        color: var(--text-secondary);
+      }
+
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      #monthDisplay {
+        font-size: 1.2rem;
+        min-width: 80px;
+        text-align: center;
+        color: var(--text-primary);
+      }
+
+      .nav-btn {
+        cursor: pointer;
+        color: var(--text-secondary);
+        transition: 0.2s;
+        padding: 5px;
+        border-radius: 50%;
+      }
+
+      .nav-btn:hover {
+        color: var(--accent-color);
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .calendar-body {
+        margin-bottom: 20px;
+      }
+
+      .calendar-body .days {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        text-align: center;
+      }
+
+      .calendar-body .days div {
+        padding: 10px 0;
+        cursor: pointer;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.2s;
+        font-size: 0.95rem;
+        color: var(--text-primary);
+      }
+
+      .calendar-body .days div.day-label {
+        cursor: default;
+        font-weight: 700;
+        color: var(--text-secondary);
+        font-size: 0.8rem;
+        pointer-events: none;
+      }
+
+      .calendar-body .days div:not(.day-label):not(.empty):hover {
+        background: var(--card-hover-bg);
+        color: var(--accent-color);
+        box-shadow: 0 0 10px var(--accent-color);
+      }
+
+      .calendar-body .days div.empty {
+        cursor: default;
+      }
+
+      .calendar-body .days div.has-event {
+        position: relative;
+      }
+
+      .event-dot {
+        position: absolute;
+        bottom: 2px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 5px;
+        height: 5px;
+        background: #5865F2;
+        border-radius: 50%;
+        pointer-events: none;
+      }
+
+      .events-list {
+        max-height: 400px;
+        overflow-y: auto;
+        padding: 8px 0;
+      }
+
+      .events-list::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      .events-list::-webkit-scrollbar-thumb {
+        background: var(--accent-color);
+        border-radius: 2px;
+      }
+
+      .list-event-item {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background 0.2s;
+        border-bottom: 1px solid var(--glass-border);
+      }
+
+      .list-event-item:last-child {
+        border-bottom: none;
+      }
+
+      .list-event-item:hover {
+        background: var(--card-hover-bg);
+      }
+
+      .list-event-date {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 50px;
+        padding: 4px;
+        border-radius: 6px;
+        background: var(--card-bg);
+      }
+
+      .list-event-day {
+        font-size: 0.7rem;
+        color: var(--text-secondary);
+      }
+
+      .list-event-num {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--accent-color);
+      }
+
+      .list-event-info {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex: 1;
+      }
+
+      .list-event-icon {
+        font-size: 1rem;
+      }
+
+      .list-event-title {
+        font-size: 0.9rem;
+        color: var(--text-primary);
+        font-weight: 500;
+      }
+
+      .list-event-month {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        opacity: 0.6;
+        min-width: 70px;
+        text-align: right;
+      }
+
+      .calendar-footer {
+        margin-top: 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.8rem;
+        border-top: 1px solid var(--glass-border);
+        padding-top: 15px;
+      }
+
+      .code-block {
+        background: #0d0d0d;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        padding: 24px;
+        margin: 30px 0;
+        font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Mono', monospace;
+        font-size: 14px;
+        line-height: 1.7;
+        overflow-x: auto;
+
+        & .token {
+          color: #a0a0a0;
+        }
+
+        & .token.keyword {
+          color: #c084fc;
+        }
+
+        & .token.string {
+          color: #86efac;
+        }
+
+        & .token.function {
+          color: #60a5fa;
+        }
+
+        & .token.comment {
+          color: #6b7280;
+          font-style: italic;
+        }
+      }
+
+      @keyframes scrollAvatars {
+        0%, 10% { transform: translateX(0); }
+        30%, 40% { transform: translateX(-100%); }
+        70%, 80% { transform: translateX(-200%); }
+        100%, 110% { transform: translateX(-300%); }
+      }
+
+      @media (max-width: 768px) {
+        header { padding: 12px; }
+
+        .hero h1 { font-size: 36px; }
+
+        .trust-grid { grid-template-columns: 1fr; }
+
+        .footer-links {
+          gap: 16px;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .calendar-section {
+          min-height: auto;
+          padding: 40px 16px;
+        }
+
+        .calendar-card {
+          padding: 30px 20px;
+          width: 100%;
+        }
+
+        .extensions-grid { grid-template-columns: repeat(2, 1fr) !important; }
+
+        .terminal-card {
+          bottom: 50px;
+          left: 12px;
+          right: 12px;
+        }
+      }
+
+      @container (max-width: 900px) {
+        .extensions-grid { grid-template-columns: repeat(3, 1fr); }
+      }
+
+      @container (max-width: 600px) {
+        .extensions-grid { grid-template-columns: repeat(2, 1fr); }
+      }
+
+      @container (max-width: 380px) {
+        .extensions-grid { grid-template-columns: 1fr; }
+      }
+
+      .avatar-row {
+        display: flex;
+        gap: 10%;
+        overflow: hidden;
+        justify-content: center;
+        margin: 24px 0;
+      }
+
+      .avatar-row img,
+      .avatar-row svg {
+        flex-shrink: 0;
+        width: 146px;
+        height: 146px;
+        border-radius: 50%;
+      }
+
+      .avatar-row img {
+        object-fit: cover;
+      }
+
+      @media (max-width: 768px) {
+        .avatar-row { justify-content: flex-start; }
+
+        .avatar-row img {
+          animation: scrollAvatars 20s linear infinite;
+        }
+      }
+
+      ::selection {
+        background: rgba(92, 120, 226, 0.3);
+        color: #fff;
+      }
+
+      *:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+      }
+
+      html {
+        overscroll-behavior: contain;
+      }
+
+      #loading-screen {
+        position: fixed;
+        inset: 0;
+        background: var(--bg);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 99999;
+        gap: 24px;
+        transition: opacity 0.4s ease;
+      }
+
+      #loading-screen.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      #file {
+        width: min(300px, 70vw);
+        height: 6px;
+        -webkit-appearance: none;
+        appearance: none;
+        border: none;
+        border-radius: 3px;
+        overflow: hidden;
+        background: var(--surface);
+      }
+
+      #file::-webkit-progress-bar {
+        background: var(--surface);
+        border-radius: 3px;
+      }
+
+      #file::-webkit-progress-value {
+        background: linear-gradient(90deg, var(--gradient-1), var(--gradient-4));
+        border-radius: 3px;
+      }
+
+      #file::-moz-progress-bar {
+        background: linear-gradient(90deg, var(--gradient-1), var(--gradient-4));
+        border-radius: 3px;
+      }
+
+      #loading-text {
+        font-size: 14px;
+        color: var(--text-muted);
+        font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Mono', monospace;
+      }
+
+      body.loading main,
+      body.loading header,
+      body.loading footer,
+      body.loading .scroll-top-btn,
+      body.loading .home-terminal,
+      body.loading .terminal-card {
+        visibility: hidden;
+      }
+
+      .theme-toggle {
+        position: relative;
+        width: 48px;
+        height: 26px;
+        margin-left: 16px;
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+
+      .theme-toggle input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+        position: absolute;
+      }
+
+      .theme-toggle .slider {
+        position: absolute;
+        inset: 0;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 13px;
+        transition: all 0.3s ease;
+      }
+
+      .theme-toggle .slider::before {
+        content: '';
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 18px;
+        height: 18px;
+        background: var(--accent);
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      }
+
+      .theme-toggle input:checked + .slider {
+        background: var(--gradient-1);
+        border-color: var(--gradient-2);
+      }
+
+      .theme-toggle input:checked + .slider::before {
+        transform: translateX(22px);
+        background: #fff;
+      }
+
+      .theme-toggle:hover .slider {
+        border-color: var(--accent);
+      }
+
+      .theme-toggle svg {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 14px;
+        height: 14px;
+        color: var(--text-muted);
+        transition: all 0.3s ease;
+      }
+
+      .theme-toggle .moon-icon {
+        left: 6px;
+      }
+
+      .theme-toggle .sun-icon {
+        right: 6px;
+      }
+
+      .theme-toggle input:checked ~ .slider .sun-icon {
+        color: #fff;
+      }
+
+      .view-toggle {
+        position: relative;
+        width: 48px;
+        height: 26px;
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+
+      .view-toggle input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+        position: absolute;
+      }
+
+      .view-toggle .slider {
+        position: absolute;
+        inset: 0;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 13px;
+        transition: all 0.3s ease;
+      }
+
+      .view-toggle .slider::before {
+        content: '';
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 18px;
+        height: 18px;
+        background: var(--accent-color);
+        border-radius: 50%;
+        transition: all 0.3s ease;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      }
+
+      .view-toggle input:checked + .slider {
+        background: var(--accent-color);
+        border-color: var(--accent-color);
+      }
+
+      .view-toggle input:checked + .slider::before {
+        transform: translateX(22px);
+        background: #fff;
+      }
+
+      .view-toggle:hover .slider {
+        border-color: var(--accent-color);
+      }
+
+      .view-toggle svg {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 14px;
+        height: 14px;
+        color: var(--text-muted);
+        transition: all 0.3s ease;
+      }
+
+      .view-toggle .calendar-icon {
+        left: 5px;
+      }
+
+      .view-toggle .list-icon {
+        right: 5px;
+      }
+
+      .view-toggle input:checked ~ .slider .list-icon {
+        color: #fff;
+      }
+
+      .view-toggle input:not(:checked) ~ .slider .calendar-icon {
+        color: var(--accent-color);
+      }
+
+      .terminal-card {
+        position: fixed;
+        left: 24px;
+        right: 24px;
+        bottom: 15px;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 1000;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        transform: translateY(20px);
+
+        &.visible {
+          opacity: 1;
+          pointer-events: auto;
+          transform: translateY(0);
+        }
+
+        & .window {
+          background: var(--terminal-bg);
+          border: 1px solid var(--terminal-border);
+          border-radius: 8px;
+          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        & .header {
+          background: var(--terminal-header-bg);
+          padding: 5px 15px;
+          border-bottom: 1px solid var(--terminal-border);
+          display: flex;
+          align-items: center;
+          border-radius: 8px 8px 0 0;
+          gap: 8px;
+          justify-content: space-between;
+        }
+
+        & .close-btn {
+          cursor: pointer;
+          opacity: 0.7;
+          transition: opacity 0.2s;
+          padding: 2px;
+        }
+
+        & .close-btn:hover {
+          opacity: 1;
+        }
+
+        & .body {
+          padding: 15px;
+          font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Mono', monospace;
+          font-size: 14px;
+          line-height: 1.6;
+          height: calc(100% - 40px);
+          overflow-y: auto;
+          color: var(--accent);
+        }
+      }
+
+      .shared-terminal {
+        position: fixed;
+        left: 24px;
+        right: 24px;
+        bottom: 15px;
+        height: 200px;
+        z-index: 1001;
+      }
+
+      @media (max-width: 768px) {
+        .terminal-card,
+        .shared-terminal {
+          left: 12px;
+          right: 12px;
+          bottom: 10px;
+        }
+      }
+
+      .cursor {
+        width: 8px;
+        height: 16px;
+        background: #d4a574;
+        display: inline-block;
+        animation: cursor-blink 1s step-end infinite;
+        vertical-align: middle;
+      }
+
+      @keyframes cursor-blink {
+        0%, 50% { opacity: 1; }
+        51%, 100% { opacity: 0; }
+      }
+
+      @keyframes fadeInUp {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"
+        }
+      }
+    </script>
+  </head>
+
+  <body class="loading">
+    <div id="loading-screen">
+      <progress id="file" max="100" value="0">0%</progress>
+      <span id="loading-text">0%</span>
+    </div>
+
+    <div class="background-gradient"></div>
+    <div class="noise-overlay"></div>
+
+    <div class="floating"></div>
+    <div class="floating"></div>
+    <div class="floating"></div>
+    <div class="floating"></div>
+
+    <header style="position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 20px; backdrop-filter: blur(20px); background: var(--glass-bg); border-bottom: 1px solid var(--glass-border);">
+      <nav style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: center; align-items: center; position: relative;">
+        <img src="xu.png" alt="XULA" style="width: 64px; height: 64px; object-fit: contain;">
+
+        <label class="theme-toggle" style="position: absolute; right: 0;" aria-label="Toggle dark/light mode">
+          <input type="checkbox" id="themeToggle">
+
+          <span class="slider">
+            <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+
+            <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"/>
+              <line x1="12" y1="1" x2="12" y2="3"/>
+              <line x1="12" y1="21" x2="12" y2="23"/>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+              <line x1="1" y1="12" x2="3" y2="12"/>
+              <line x1="21" y1="12" x2="23" y2="12"/>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+          </span>
+        </label>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero title-section">
+        <h1>Xavier University of Louisiana CPSC</h1>
+
+        <a href="https://discord.gg/ygdd5aM6p" target="_blank" rel="noopener noreferrer" class="discord-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor" style="width: 20px; height: 20px;">
+            <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037 13.46 13.46 0 0 0-.586 1.212 18.26 18.26 0 0 0-5.537 0 13.544 13.544 0 0 0-.585-1.212.077.077 0 0 0-.079-.037 19.736 19.736 0 0 0-4.885 1.515.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.104 1.793 12.064 0a.074.074 0 0 1 .078.01c.118.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+          </svg>
+          Discord
+        </a>
+
+        <div class="down-arrow">
+          <canvas id="arrowCanvas"></canvas>
+        </div>
+
+        <div id="homeTerminal" class="terminal-card" style="margin-top: 100px;">
+          <div class="window">
+            <div class="header">
+              <div style="width: 10px; height: 10px; background: #ff5f56; border-radius: 50%;"></div>
+              <div style="width: 10px; height: 10px; background: #ffbd2e; border-radius: 50%;"></div>
+              <div style="width: 10px; height: 10px; background: #27c93f; border-radius: 50%;"></div>
+              <span style="margin-left: 10px; font-size: 12px; color: #a0a0a0; font-family: monospace;">~</span>
+            </div>
+
+            <div class="body" style="padding: 15px; font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Mono', monospace; font-size: 14px; line-height: 1.6; height: calc(100% - 40px); overflow-y: auto; text-align: left;">
+              <div style="color: #888; font-size: 12px; margin-bottom: 10px;">
+                <span style="color: #27c93f;">$</span> ls -la
+              </div>
+
+              <div class="output">
+                <span style="color: #86efac;">drwxr-xr-x</span> 2 chat uncs  4096 Oct 10 14:30 .
+              </div>
+
+              <div class="output">
+                <span style="color: #86efac;">drwxr-xr-x</span> 2 chat uncs  4096 Oct 10 14:30 ..
+              </div>
+
+              <div class="output">
+                <span style="color: #d4a574;">-rw-r--r--</span> 1 chat uncs  1024 Oct 10 14:30 subathon.txt
+              </div>
+
+              <div class="output">
+                <span style="color: #d4a574;">-rw-r--r--</span> 1 chat uncs  2048 Oct 10 14:30 AGENTS.md
+              </div>
+
+              <div style="margin-top: 15px; color: #888;">
+                <span style="color: #27c93f;">$</span> echo "Scroll down to see schedule"
+              </div>
+
+              <div class="output">
+                Scroll down to see schedule
+              </div>
+
+              <div style="margin-top: 15px; color: #888;">
+                <span style="color: #27c93f;">$</span> <span class="cursor"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div id="sharedTerminal" class="terminal-card shared-terminal">
+        <div class="window">
+          <div class="header">
+            <div>
+              <div style="width: 10px; height: 10px; background: #ff5f56; border-radius: 50%; display: inline-block;"></div>
+              <div style="width: 10px; height: 10px; background: #ffbd2e; border-radius: 50%; display: inline-block;"></div>
+              <div style="width: 10px; height: 10px; background: #27c93f; border-radius: 50%; display: inline-block;"></div>
+            </div>
+            <span style="font-size: 12px; color: #a0a0a0; font-family: monospace; margin-left: 10px;">xula-calendar</span>
+            <div class="close-btn" id="closeTerminal">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a0a0a0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </div>
+          </div>
+          <div class="body" id="terminalBody"></div>
+        </div>
+      </div>
+
+      <section id="calendar" class="section calendar-section">
+        <div class="calendar-container">
+          <div class="glow-orb orb-1"></div>
+          <div class="glow-orb orb-2"></div>
+
+          <div class="calendar-card">
+            <div class="calendar-header">
+              <div class="header-left">
+                <h1 class="year">2026</h1>
+                <p class="subtitle">XULA TECH CALENDAR</p>
+              </div>
+
+              <div class="header-right">
+                <div class="nav-btn" id="prevBtn">
+                  <svg viewBox="0 0 24 24" width="24" height="24">
+                    <path fill="currentColor" d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                  </svg>
+                </div>
+
+                <h2 id="monthDisplay"></h2>
+
+                <div class="nav-btn" id="nextBtn">
+                  <svg viewBox="0 0 24 24" width="24" height="24">
+                    <path fill="currentColor" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                  </svg>
+                </div>
+
+                <label class="view-toggle" aria-label="Toggle calendar/list view" style="margin-left: 16px;">
+                  <input type="checkbox" id="viewToggle">
+                  <span class="slider">
+                    <svg class="calendar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                      <line x1="16" y1="2" x2="16" y2="6"></line>
+                      <line x1="8" y1="2" x2="8" y2="6"></line>
+                      <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    <svg class="list-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="8" y1="6" x2="21" y2="6"></line>
+                      <line x1="8" y1="12" x2="21" y2="12"></line>
+                      <line x1="8" y1="18" x2="21" y2="18"></line>
+                      <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                      <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                      <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                    </svg>
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <div class="calendar-body">
+              <div class="days" id="calendarDays"></div>
+            </div>
+
+            <div class="calendar-footer"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="features" class="section people-container">
+        <div class="section-header reveal">
+          <div class="avatar-row">
+            <img loading="lazy" src="gavin.jpg" alt="Gavin">
+            <img loading="lazy" src="greg.jpg" alt="Greg">
+
+            <svg width="146" height="146" viewBox="0 0 146 146" style="flex-shrink: 0;" aria-label="user">
+              <circle cx="73" cy="73" r="70" fill="var(--avatar-circle)" />
+            </svg>
+
+            <svg width="146" height="146" viewBox="0 0 146 146" style="flex-shrink: 0;" aria-label="user">
+              <circle cx="73" cy="73" r="70" fill="var(--avatar-circle)" />
+            </svg>
+          </div>
+
+          <h2>Industry Veterans & NOLA natives</h2>
+          <p>We are a group of professionals who have worked at big tech companies for over 10+ years. We want to share what we have learned to the next generation!</p>
+        </div>
+
+        <div class="features">
+          <div class="feature-card reveal">
+            <h3>Get a Big Tech Job</h3>
+            <p>Industry professionals share their real-world hiring experiences, interview strategies, and career paths that got them into top tech companies. Learn what recruiters look for and how to stand out.</p>
+          </div>
+
+          <div class="feature-card reveal">
+            <h3>Code Like a Pro</h3>
+            <p>Learn professional coding standards, best practices, and real-world workflows from engineers who work at major tech companies. Master clean code, architecture, and collaboration.</p>
+          </div>
+
+          <div class="feature-card reveal">
+            <h3>Use AI Responsibly</h3>
+            <p>Learn how to leverage AI tools ethically and effectively in your coding workflow. Understand the implications, limitations, and best practices for integrating AI into professional development.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="extensions" class="extensions-section learn-container">
+        <div class="section">
+          <div class="extensions-header reveal">
+            <h2>Learn it All!</h2>
+            <p>Join us and master essential skills that will set you apart. From system design to personal finance, we cover it all.</p>
+          </div>
+
+          <div class="extensions-grid">
+            <div class="extension-card reveal">
+              <div class="icon">
+                <canvas data-icon="crane"></canvas>
+              </div>
+              <h4>System Design 101</h4>
+              <div class="desc">Learn the fundamentals of designing robust systems. Master building systems that grow with demand. Work efficiently with big data at scale.</div>
+            </div>
+
+            <div class="extension-card reveal">
+              <div class="icon">
+                <canvas data-icon="wrench"></canvas>
+              </div>
+              <h4>Pro Dev Tools</h4>
+              <div class="desc">Master industry-standard development tools.</div>
+            </div>
+
+            <div class="extension-card reveal">
+              <div class="icon">
+                <canvas data-icon="robot"></canvas>
+              </div>
+              <h4>Free AI Tools</h4>
+              <div class="desc">Leverage powerful AI tools at no cost. <a href="https://ollama.com">Ollama</a></div>
+            </div>
+
+            <div class="extension-card reveal">
+              <div class="icon">
+                <canvas data-icon="heart"></canvas>
+              </div>
+              <h4>Find Your Passion Project</h4>
+              <div class="desc">Discover what drives you and build it.</div>
+            </div>
+
+            <div class="extension-card reveal">
+              <div class="icon">
+                <canvas data-icon="grad"></canvas>
+              </div>
+              <h4>Tutoring Opportunities</h4>
+              <div class="desc">Strategies to excel in your courses and work towards an A.</div>
+            </div>
+
+            <div class="extension-card reveal">
+              <div class="icon">
+                <canvas data-icon="briefcase"></canvas>
+              </div>
+              <h4>Internships 101</h4>
+              <div class="desc">Find and apply to internships that fit.</div>
+            </div>
+
+            <div class="extension-card reveal">
+              <div class="icon">
+                <canvas data-icon="money"></canvas>
+              </div>
+              <h4>Manage Your Money</h4>
+              <div class="desc">Build financial literacy and smart habits.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p style="font-family: monospace;">Xavier University of Louisiana</p>
+      </footer>
+    </main>
+
+    <button class="scroll-top-btn" aria-label="Scroll to top">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 15l-6-6-6 6"/>
+      </svg>
+    </button>
+
+    <script type="module">
+      import * as THREE from 'three';
+
+      const html = (strings, ...vals) =>
+        strings.reduce((acc, s, i) => acc + s + (vals[i] ?? ''), '');
+
+      const progressBar = document.getElementById('file');
+      const loadingText = document.getElementById('loading-text');
+      const loadingScreen = document.getElementById('loading-screen');
+
+      let progress = 0;
+
+      const setProgress = (val) => {
+        progress = Math.min(100, Math.max(0, val));
+        progressBar.value = progress;
+        loadingText.textContent = Math.round(progress) + '%';
+      };
+
+      const totalResources = () => {
+        const imgs = document.images.length;
+        const links = document.querySelectorAll('link[rel="stylesheet"], link[rel="preload"]').length;
+        const scripts = document.querySelectorAll('script[src]').length;
+        return Math.max(imgs + links + scripts, 10);
+      };
+
+      let loadedResources = 0;
+      let totalRes = totalResources();
+
+      const onResourceLoad = () => {
+        loadedResources++;
+        const resourceProgress = Math.min(60, (loadedResources / totalRes) * 60);
+        setProgress(10 + resourceProgress);
+      };
+
+      document.addEventListener('DOMContentLoaded', () => {
+        setProgress(25);
+        const images = document.querySelectorAll('img, link[rel="preload"]');
+        images.forEach(img => {
+          if (img.complete) {
+            onResourceLoad();
+          } else {
+            img.addEventListener('load', onResourceLoad, { once: true });
+            img.addEventListener('error', onResourceLoad, { once: true });
+          }
+        });
+      });
+
+      window.addEventListener('load', () => {
+        setProgress(85);
+        setTimeout(() => {
+          setProgress(100);
+          setTimeout(() => {
+            loadingScreen.classList.add('hidden');
+            document.body.classList.remove('loading');
+            setTimeout(() => { loadingScreen.style.display = 'none'; }, 400);
+          }, 300);
+        }, 200);
+      });
+
+      setProgress(5);
+
+      const observerConfig = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+      const revealObserver = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+            revealObserver.unobserve(entry.target);
+          }
+        }
+      }, structuredClone(observerConfig));
+
+      const revealElements = document.querySelectorAll('.reveal');
+      revealElements.forEach(el => revealObserver.observe(el));
+
+      document.addEventListener('click', (e) => {
+        const anchorLink = e.target.closest('a[href^="#"]');
+        if (!anchorLink?.hash) return;
+        e.preventDefault();
+        const anchorTarget = document.querySelector(anchorLink.hash);
+        anchorTarget?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+
+      const floatingElements = Array.from(document.querySelectorAll('.floating'));
+      let mouseX = window.innerWidth / 2;
+
+      document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+      });
+
+      const featuresSection = document.querySelector('#features') ?? document.body;
+      new ResizeObserver(() => {
+        for (const [i, el] of floatingElements.entries()) {
+          const speed = (i + 1) * 20;
+          const xOffset = (mouseX - window.innerWidth / 2) / speed;
+          el.style.transform = html`translate(${xOffset}px, ${-10}px) rotate(${xOffset * 5}deg)`;
+        }
+      }).observe(featuresSection);
+
+      const homeTerminalElement = document.querySelector('#homeTerminal');
+      const scrollTopButton = document.querySelector('.scroll-top-btn');
+      const scrollController = new AbortController();
+
+      window.addEventListener('scroll', () => {
+        const showTerminal = window.scrollY <= window.innerHeight * 0.1;
+        const sharedVisible = sharedTerminal?.classList.contains('visible');
+        homeTerminalElement?.classList.toggle('visible', showTerminal && !sharedVisible);
+
+        const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const showScrollTop = window.scrollY > totalScroll * 0.5;
+        scrollTopButton?.classList.toggle('visible', showScrollTop);
+      }, { signal: scrollController.signal });
+
+      homeTerminalElement?.classList.add('visible');
+
+      scrollTopButton?.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      window.addEventListener('beforeunload', () => scrollController.abort());
+
+      const calendarState = {
+        months: ['September', 'October', 'November', 'December'],
+        current: 0,
+        year: 2026,
+        view: 'calendar'
+      };
+
+      const events = [
+        { monthIndex: 0, day: 22, title: 'Pro Dev and Staff meeting', type: 'meeting' },
+        { monthIndex: 0, day: 29, title: 'Intro to System Design Workshop', type: 'workshop' },
+        { monthIndex: 1, day: 6, title: 'AI Tools Hands-on Session', type: 'workshop' },
+        { monthIndex: 1, day: 13, title: 'Resume Review Night', type: 'career' },
+        { monthIndex: 1, day: 20, title: 'Networking Event with Google Alumni', type: 'networking' },
+        { monthIndex: 1, day: 27, title: 'Code Review Best Practices', type: 'workshop' },
+        { monthIndex: 2, day: 3, title: 'Personal Finance 101', type: 'career' },
+        { monthIndex: 2, day: 10, title: 'Hackathon Kickoff', type: 'event' },
+        { monthIndex: 2, day: 17, title: 'Internship Panel Discussion', type: 'career' },
+        { monthIndex: 2, day: 24, title: 'Project Showcase', type: 'event' },
+        { monthIndex: 3, day: 1, title: 'Year-End Celebration', type: 'event' },
+        { monthIndex: 3, day: 15, title: 'Winter Workshop Series Begins', type: 'workshop' }
+      ];
+
+      const getEventsForDate = (monthIndex, day) =>
+        events.filter(e => e.monthIndex === monthIndex && e.day === day);
+
+      const calendarMonthDisplay = document.querySelector('#monthDisplay');
+      const calendarDaysContainer = document.querySelector('#calendarDays');
+      const calendarCard = document.querySelector('.calendar-card');
+
+      const renderCalendar = () => {
+        const month = calendarState.months[calendarState.current];
+        calendarMonthDisplay && (calendarMonthDisplay.textContent = month);
+
+        const firstDay = new Date(calendarState.year, 8 + calendarState.current, 1).getDay();
+        const lastDay = new Date(calendarState.year, 8 + calendarState.current + 1, 0).getDate();
+
+        const dayLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const cells = dayLabels.map(d =>
+          html`<div class="day-label">${d}</div>`
+        );
+
+        for (let i = 0; i < firstDay; i++) cells.push('<div class="empty"></div>');
+        for (let day = 1; day <= lastDay; day++) {
+          const dayEvents = getEventsForDate(calendarState.current, day);
+          const hasEvents = dayEvents.length > 0;
+          const dotHtml = hasEvents ? `<div class="event-dot"></div>` : '';
+          cells.push(html`<div data-day="${day}" class="date-cell${hasEvents ? ' has-event' : ''}">${day}${dotHtml}</div>`);
+        }
+
+        calendarDaysContainer && (calendarDaysContainer.innerHTML = cells.join(''));
+      };
+
+      const renderListView = () => {
+        const upcomingEvents = events
+          .map(e => ({ ...e, date: new Date(calendarState.year, 8 + e.monthIndex, e.day) }))
+          .filter(e => e.date >= new Date(2026, 8, 1))
+          .sort((a, b) => a.date - b.date);
+
+        const typeIcons = {
+          meeting: '🤝',
+          workshop: '🛠️',
+          career: '💼',
+          networking: '🌐',
+          event: '🎉'
+        };
+
+        const listHtml = upcomingEvents.map(e => {
+          const monthName = calendarState.months[e.monthIndex];
+          const dayName = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][e.date.getDay()];
+          const icon = typeIcons[e.type] || '📌';
+          return html`
+            <div class="list-event-item" data-month="${e.monthIndex}" data-day="${e.day}">
+              <div class="list-event-date">
+                <span class="list-event-day">${dayName}</span>
+                <span class="list-event-num">${e.day}</span>
+              </div>
+              <div class="list-event-info">
+                <span class="list-event-icon">${icon}</span>
+                <span class="list-event-title">${e.title}</span>
+              </div>
+              <span class="list-event-month">${monthName}</span>
+            </div>
+          `;
+        }).join('');
+
+        calendarDaysContainer.innerHTML = html`<div class="events-list">${listHtml}</div>`;
+      };
+
+      const renderView = () => {
+        const isListView = calendarState.view === 'list';
+        calendarCard?.classList.toggle('list-view', isListView);
+
+        if (isListView) {
+          calendarMonthDisplay.textContent = 'Upcoming Events';
+          renderListView();
+        } else {
+          renderCalendar();
+        }
+      };
+
+      renderView();
+
+      document.addEventListener('click', (e) => {
+        if (calendarState.view !== 'calendar') return;
+
+        const prevMonthButton = e.target.closest('#prevBtn');
+        const nextMonthButton = e.target.closest('#nextBtn');
+
+        if (prevMonthButton && calendarState.current > 0) {
+          calendarState.current--;
+          renderCalendar();
+        }
+        if (nextMonthButton && calendarState.current < 3) {
+          calendarState.current++;
+          renderCalendar();
+        }
+      });
+
+      const sharedTerminal = document.getElementById('sharedTerminal');
+      const terminalBody = document.getElementById('terminalBody');
+      const closeTerminalBtn = document.getElementById('closeTerminal');
+
+      const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const monthNames = ['September', 'October', 'November', 'December'];
+
+      function openTerminal(day, monthIndex) {
+        const monthNum = 8 + monthIndex;
+        const dateObj = new Date(calendarState.year, monthNum, day);
+        const dayName = dayNames[dateObj.getDay()];
+        const monthName = monthNames[monthIndex];
+        const dayEvents = getEventsForDate(monthIndex, day);
+        const hasEvents = dayEvents.length > 0;
+
+        let eventHtml = '';
+        if (hasEvents) {
+          eventHtml = '<div style="margin-top: 10px; margin-bottom: 8px;"><span style="color: #60a5fa;">📌 Events:</span></div>';
+          dayEvents.forEach(evt => {
+            eventHtml += `<div class="output" style="margin-bottom: 4px; padding-left: 16px;">
+              <span style="color: #5865F2;">▸</span> ${evt.title}
+            </div>`;
+          });
+        }
+
+        const content = `
+          <div style="color: #888; font-size: 12px; margin-bottom: 10px;">
+            <span style="color: #27c93f;">$</span> calendar info ${day} ${monthName} ${calendarState.year}
+          </div>
+          <div class="output" style="margin-bottom: 8px;">
+            <span style="color: #86efac;">Hello!</span> You selected:
+          </div>
+          <div class="output" style="margin-bottom: 4px;">
+            <span style="color: #d4a574;">Day:</span> ${dayName}
+          </div>
+          <div class="output" style="margin-bottom: 4px;">
+            <span style="color: #d4a574;">Date:</span> ${monthName} ${day}, ${calendarState.year}
+          </div>
+          ${eventHtml}
+          <div style="margin-top: 15px; color: #888;">
+            <span style="color: #27c93f;">$</span> <span class="cursor"></span>
+          </div>
+        `;
+
+        terminalBody.innerHTML = content;
+        homeTerminalElement?.classList.remove('visible');
+        sharedTerminal?.classList.add('visible');
+      }
+
+      function closeTerminal() {
+        sharedTerminal?.classList.remove('visible');
+      }
+
+      closeTerminalBtn?.addEventListener('click', closeTerminal);
+
+      const viewToggle = document.getElementById('viewToggle');
+
+      viewToggle?.addEventListener('change', () => {
+        calendarState.view = viewToggle.checked ? 'list' : 'calendar';
+        renderView();
+      });
+
+      calendarDaysContainer?.addEventListener('click', (e) => {
+        const dateCell = e.target.closest('.date-cell');
+        if (dateCell) {
+          const day = parseInt(dateCell.getAttribute('data-day'), 10);
+          openTerminal(day, calendarState.current);
+          return;
+        }
+
+        const listItem = e.target.closest('.list-event-item');
+        if (listItem) {
+          const monthIdx = parseInt(listItem.getAttribute('data-month'), 10);
+          const day = parseInt(listItem.getAttribute('data-day'), 10);
+          openTerminal(day, monthIdx);
+        }
+      });
+
+      const motionPreferenceQuery = window.matchMedia?.('(prefers-reduced-motion: reduce)');
+      const handleMotionPreference = (mq) => {
+        if (mq.matches) {
+          document.documentElement.style.setProperty('--anim-speed', '0s');
+          floatingElements.forEach(el => el.style.animation = 'none');
+        } else {
+          document.documentElement.style.removeProperty('--anim-speed');
+          floatingElements.forEach(el => el.style.animation = '');
+        }
+      };
+
+      handleMotionPreference(motionPreferenceQuery);
+      motionPreferenceQuery?.addEventListener?.('change', handleMotionPreference);
+
+      const wideScreenQuery = window.matchMedia?.('(min-width: 768px)');
+      wideScreenQuery?.addEventListener?.('change', (mq) => {
+        document.documentElement.classList.toggle('wide-screen', mq.matches);
+      });
+
+      const copyToClipboard = async (text) => {
+        try {
+          await navigator.clipboard?.writeText?.(text);
+        } catch {}
+      };
+
+      document.addEventListener('dblclick', (e) => {
+        const clickedCard = e.target.closest('.feature-card, .extension-card');
+        if (!clickedCard) return;
+        const cardTitleElement = clickedCard.querySelector('h3, h4');
+        const cardTitle = cardTitleElement?.textContent?.trim();
+        if (cardTitle) copyToClipboard(cardTitle);
+      });
+
+      window.__app = { state: calendarState, copy: copyToClipboard };
+
+      const themeToggle = document.getElementById('themeToggle');
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? true;
+      const isLight = savedTheme === 'light' || (!savedTheme && !prefersDark);
+
+      if (isLight) {
+        document.documentElement.classList.add('light');
+        themeToggle.checked = true;
+      }
+
+      themeToggle.addEventListener('change', () => {
+        const light = themeToggle.checked;
+        document.documentElement.classList.toggle('light', light);
+        localStorage.setItem('theme', light ? 'light' : 'dark');
+      });
+
+      /* ===== THREE.JS: ARROW + ICONS ===== */
+
+      const voxelMeshes = [];
+
+      function createVoxel(x, y, z, s, color) {
+        const g = new THREE.BoxGeometry(s, s, s);
+        const m = new THREE.MeshBasicMaterial({ color });
+        const mesh = new THREE.Mesh(g, m);
+        mesh.position.set(x, y, z);
+        return mesh;
+      }
+
+      function initArrow() {
+        try {
+          console.log('[three] initArrow starting');
+          const canvas = document.getElementById('arrowCanvas');
+          if (!canvas) {
+            console.error('[three] initArrow: arrowCanvas not found');
+            return;
+          }
+          console.log('[three] initArrow: canvas found');
+
+          const scene = new THREE.Scene();
+          const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
+          camera.position.z = 3;
+
+          const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+          renderer.setSize(64, 64);
+          renderer.setPixelRatio(window.devicePixelRatio);
+
+          const arrowShape = new THREE.Shape();
+          arrowShape.moveTo(0, 1);
+          arrowShape.lineTo(-0.5, 0.1);
+          arrowShape.lineTo(-0.15, 0.1);
+          arrowShape.lineTo(-0.15, -1);
+          arrowShape.lineTo(0.15, -1);
+          arrowShape.lineTo(0.15, 0.1);
+          arrowShape.lineTo(0.5, 0.1);
+          arrowShape.lineTo(0, 1);
+
+          const extrudeSettings = {
+            depth: 0.2,
+            bevelEnabled: true,
+            bevelThickness: 0.05,
+            bevelSize: 0.05,
+            bevelSegments: 1
+          };
+
+          const geometry = new THREE.ExtrudeGeometry(arrowShape, extrudeSettings);
+          geometry.center();
+
+          const material = new THREE.MeshStandardMaterial({
+            color: 0x5865F2,
+            roughness: 0.3,
+            metalness: 0.4,
+            flatShading: true
+          });
+
+          const arrowMesh = new THREE.Mesh(geometry, material);
+          scene.add(arrowMesh);
+
+          scene.add(new THREE.AmbientLight(0xffffff, 1));
+          const d1 = new THREE.DirectionalLight(0xffffff, 2);
+          d1.position.set(2, 2, 4);
+          scene.add(d1);
+          const d2 = new THREE.DirectionalLight(0x4752C4, 1.5);
+          d2.position.set(-2, 1, -2);
+          scene.add(d2);
+
+          voxelMeshes.push({ mesh: arrowMesh, scene, camera, renderer, type: 'arrow' });
+          console.log('[three] initArrow: done, total scenes:', voxelMeshes.length);
+        } catch (e) {
+          console.error('[three] initArrow error:', e);
+        }
+      }
+
+      function createIconScene(iconType, color) {
+        try {
+          const canvas = document.querySelector(`canvas[data-icon="${iconType}"]`);
+          if (!canvas) {
+            console.warn('[three] createIconScene:', iconType, 'canvas not found');
+            return;
+          }
+
+          const scene = new THREE.Scene();
+          const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
+          camera.position.z = 3;
+
+          const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+          renderer.setSize(64, 64);
+          renderer.setPixelRatio(window.devicePixelRatio);
+
+          const group = new THREE.Group();
+
+          if (iconType === 'crane') {
+            group.add(createVoxel(0, -0.4, 0, 0.7, 0xf5a623));
+            group.add(createVoxel(0, 0.3, 0, 0.5, 0xf5a623));
+            group.add(createVoxel(0, 1.0, 0, 0.5, 0xf5a623));
+            group.add(createVoxel(-0.7, 0.7, 0, 0.9, 0xf5a623));
+            group.add(createVoxel(-1.1, 0.2, 0, 0.2, 0xd35400));
+          }
+
+          if (iconType === 'wrench') {
+            group.add(createVoxel(0, 0, 0, 0.8, 0x7f8c8d));
+            group.add(createVoxel(0.4, 0, 0, 0.5, 0x7f8c8d));
+            group.add(createVoxel(0.7, 0.3, 0, 0.5, 0x7f8c8d));
+            group.add(createVoxel(0.7, -0.3, 0, 0.5, 0x7f8c8d));
+            group.add(createVoxel(-0.4, 0, 0, 0.5, 0x95a5a6));
+          }
+
+          if (iconType === 'robot') {
+            group.add(createVoxel(0, 0.4, 0, 0.8, 0x3498db));
+            group.add(createVoxel(0, -0.3, 0, 0.9, 0x2980b9));
+            group.add(createVoxel(-0.3, 0.6, 0, 0.3, 0x3498db));
+            group.add(createVoxel(0.3, 0.6, 0, 0.3, 0xe74c3c));
+            group.add(createVoxel(0, 0, 0.5, 0.2, 0x2ecc71));
+          }
+
+          if (iconType === 'heart') {
+            group.add(createVoxel(-0.35, 0.2, 0, 0.6, 0xe74c3c));
+            group.add(createVoxel(0.35, 0.2, 0, 0.6, 0xe74c3c));
+            group.add(createVoxel(0, -0.1, 0, 0.9, 0xe74c3c));
+            group.add(createVoxel(0, -0.5, 0, 0.6, 0xe74c3c));
+            group.add(createVoxel(0, -0.8, 0, 0.3, 0xe74c3c));
+          }
+
+          if (iconType === 'grad') {
+            group.add(createVoxel(0, 0, 0, 0.8, 0x2c3e50));
+            group.add(createVoxel(0, 0.4, 0, 1.1, 0x2c3e50));
+            group.add(createVoxel(-0.8, 0.6, 0, 0.3, 0xf1c40f));
+            group.add(createVoxel(0, -0.4, 0, 0.5, 0x2c3e50));
+            group.add(createVoxel(0.4, 0.4, 0, 0.3, 0xf1c40f));
+          }
+
+          if (iconType === 'briefcase') {
+            group.add(createVoxel(0, -0.1, 0, 1, 0x34495e));
+            group.add(createVoxel(0, 0.4, 0, 0.6, 0x7f8c8d));
+            group.add(createVoxel(0, -0.3, 0.4, 0.2, 0x2c3e50));
+            group.add(createVoxel(0, 0, 0.5, 0.3, 0xf1c40f));
+            group.add(createVoxel(-0.4, 0.2, 0, 0.2, 0x7f8c8d));
+          }
+
+          if (iconType === 'money') {
+            group.add(createVoxel(0, 0, 0, 1, 0x27ae60));
+            group.add(createVoxel(0, -0.4, 0, 1, 0x2ecc71));
+            group.add(createVoxel(0.3, 0, 0.5, 0.3, 0xf1c40f));
+            group.add(createVoxel(-0.3, 0, 0.5, 0.3, 0xf1c40f));
+            group.add(createVoxel(0, 0, -0.3, 0.9, 0x2ecc71));
+          }
+
+          scene.add(group);
+          scene.add(new THREE.AmbientLight(0xffffff, 0.9));
+          const dlight = new THREE.DirectionalLight(0xffffff, 1.2);
+          dlight.position.set(2, 2, 3);
+          scene.add(dlight);
+
+          voxelMeshes.push({ mesh: group, scene, camera, renderer, type: 'icon' });
+          console.log('[three] createIconScene:', iconType, 'done');
+        } catch (e) {
+          console.error('[three] createIconScene error for', iconType, ':', e);
+        }
+      }
+
+      function initIcons() {
+        console.log('[three] initIcons starting');
+        createIconScene('crane', 0xf5a623);
+        createIconScene('wrench', 0x7f8c8d);
+        createIconScene('robot', 0x3498db);
+        createIconScene('heart', 0xe74c3c);
+        createIconScene('grad', 0x2c3e50);
+        createIconScene('briefcase', 0x34495e);
+        createIconScene('money', 0x27ae60);
+        console.log('[three] initIcons done, total scenes:', voxelMeshes.length);
+      }
+
+      function animateAll() {
+        requestAnimationFrame(animateAll);
+        const t = Date.now() * 0.001;
+
+        for (const item of voxelMeshes) {
+          if (item.type === 'arrow') {
+            item.mesh.rotation.y += 0.02;
+          }
+          if (item.type === 'icon') {
+            item.mesh.rotation.y += 0.02;
+            item.mesh.rotation.x = Math.sin(t) * 0.15;
+          }
+          item.renderer.render(item.scene, item.camera);
+        }
+      }
+
+      window.addEventListener('load', () => {
+        console.log('[three] window load event');
+        setTimeout(() => {
+          console.log('[three] initializing...');
+          console.log('[three] THREE version:', THREE.REVISION);
+          initArrow();
+          initIcons();
+          animateAll();
+        }, 500);
+      });
+    </script>
+  </body>
+</html>
