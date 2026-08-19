@@ -1,3 +1,18 @@
+# XULA
+
+Ungrad resources to land a job.
+
+> [!NOTE]
+> [XULA CPSC website](https://greg.uno/xula/) is hosted in here too.
+
+> [!TIP]
+> (coming soon...) use the agent skills to learn more about this repo.
+
+## First tutoring series content
+
+> [!WARNING]
+> All this stuff is old and will be deprecated eventually...
+
 #### Stats
 
 ![ugreg's Stats](https://github-readme-stats.vercel.app/api?username=ugreg&theme=vue-dark&show_icons=true&hide_border=true&count_private=true)
