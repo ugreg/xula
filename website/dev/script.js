@@ -121,7 +121,7 @@ const calendarState = {
   months: ['September', 'October', 'November', 'December'],
   current: 0,
   year: 2026,
-  view: 'calendar'
+  view: 'list'
 };
 
 const events = [
@@ -155,7 +155,7 @@ const renderCalendar = () => {
   for (let day = 1; day <= lastDay; day++) {
     const dayEvents = getEventsForDate(calendarState.current, day);
     const hasEvents = dayEvents.length > 0;
-    const dotHtml = hasEvents ? `<div class="event-dot"></div>` : '';
+    const dotHtml = hasEvents ? `<svg width="8" height="8" viewBox="0 0 8 8" style="position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); pointer-events: none;"><circle cx="4" cy="4" r="2.5" fill="#5865F2"/></svg>` : '';
     cells.push(html`<div data-day="${day}" class="date-cell${hasEvents ? ' has-event' : ''}">${day}${dotHtml}</div>`);
   }
 
@@ -185,7 +185,7 @@ const renderListView = () => {
     `;
   }).join('');
 
-  calendarDaysContainer.innerHTML = html`<div class="events-list">${listHtml}</div>`;
+  calendarDaysContainer.innerHTML = html`<div class="events-list" style="width: 100%;">${listHtml}</div>`;
 };
 
 const renderView = () => {
@@ -274,6 +274,7 @@ function closeTerminal() {
 closeTerminalBtn?.addEventListener('click', closeTerminal);
 
 const viewToggle = document.getElementById('viewToggle');
+viewToggle.checked = calendarState.view === 'list';
 
 viewToggle?.addEventListener('change', () => {
   calendarState.view = viewToggle.checked ? 'list' : 'calendar';
