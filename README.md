@@ -1,6 +1,6 @@
 # XULA
 
-Ungrad resources to land a job.
+Student resources to land a job and learn how to survivie in the Age of AI.
 
 > [!NOTE]
 > [XULA CPSC website](https://greg.uno/xula/) is hosted in here too.
