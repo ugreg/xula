@@ -1472,11 +1472,6 @@ body.loading .terminal-card {
 }
 
 .shared-terminal {
-  position: fixed;
-  left: 24px;
-  right: 24px;
-  bottom: 15px;
-  height: 200px;
   z-index: 1001;
 }
 

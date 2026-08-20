@@ -126,15 +126,8 @@ const calendarState = {
 
 const events = [
   { monthIndex: 0, day: 22, title: 'Pro Dev and Staff meeting', type: 'meeting' },
-  { monthIndex: 0, day: 29, title: 'Intro to System Design Workshop', type: 'workshop' },
   { monthIndex: 1, day: 6, title: 'AI Tools Hands-on Session', type: 'workshop' },
-  { monthIndex: 1, day: 13, title: 'Resume Review Night', type: 'career' },
-  { monthIndex: 1, day: 20, title: 'Networking Event with Google Alumni', type: 'networking' },
-  { monthIndex: 1, day: 27, title: 'Code Review Best Practices', type: 'workshop' },
-  { monthIndex: 2, day: 3, title: 'Personal Finance 101', type: 'career' },
   { monthIndex: 2, day: 10, title: 'Hackathon Kickoff', type: 'event' },
-  { monthIndex: 2, day: 17, title: 'Internship Panel Discussion', type: 'career' },
-  { monthIndex: 2, day: 24, title: 'Project Showcase', type: 'event' },
   { monthIndex: 3, day: 1, title: 'Year-End Celebration', type: 'event' },
   { monthIndex: 3, day: 15, title: 'Winter Workshop Series Begins', type: 'workshop' }
 ];
@@ -175,18 +168,9 @@ const renderListView = () => {
     .filter(e => e.date >= new Date(2026, 8, 1))
     .sort((a, b) => a.date - b.date);
 
-  const typeIcons = {
-    meeting: '🤝',
-    workshop: '🛠️',
-    career: '💼',
-    networking: '🌐',
-    event: '🎉'
-  };
-
   const listHtml = upcomingEvents.map(e => {
     const monthName = calendarState.months[e.monthIndex];
     const dayName = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][e.date.getDay()];
-    const icon = typeIcons[e.type] || '📌';
     return html`
       <div class="list-event-item" data-month="${e.monthIndex}" data-day="${e.day}">
         <div class="list-event-date">
@@ -194,7 +178,6 @@ const renderListView = () => {
           <span class="list-event-num">${e.day}</span>
         </div>
         <div class="list-event-info">
-          <span class="list-event-icon">${icon}</span>
           <span class="list-event-title">${e.title}</span>
         </div>
         <span class="list-event-month">${monthName}</span>
