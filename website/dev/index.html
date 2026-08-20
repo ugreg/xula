@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="xu.png">
+    <meta name="description" content="XULA CPSC - Xavier University of Louisiana Computer Science, Coding, Programming & AI">
+    <meta name="theme-color" content="#0a0a0a">
+    <link rel="preload" href="xu.png" as="image">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://images.unsplash.com">
+    <title>XULA CPSC</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"
+        }
+      }
+    </script>
+  </head>
+
+  <body class="loading">
+    <div id="loading-screen">
+      <progress id="file" max="100" value="0">0%</progress>
+      <span id="loading-text">0%</span>
+    </div>
+
+    <div class="background-gradient"></div>
+    <div class="noise-overlay"></div>
+
+    <div class="floating"></div>
+    <div class="floating"></div>
+    <div class="floating"></div>
+    <div class="floating"></div>
+
+    <header style="position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 20px; backdrop-filter: blur(20px); background: var(--glass-bg); border-bottom: 1px solid var(--glass-border);">
+      <nav style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: center; align-items: center; position: relative;">
+        <img src="xu.png" alt="XULA" style="width: 64px; height: 64px; object-fit: contain;">
+
+        <label class="theme-toggle" style="position: absolute; right: 0;" aria-label="Toggle dark/light mode">
+          <input type="checkbox" id="themeToggle">
+
+          <span class="slider">
+            <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+
+            <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"/>
+              <line x1="12" y1="1" x2="12" y2="3"/>
+              <line x1="12" y1="21" x2="12" y2="23"/>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+              <line x1="1" y1="12" x2="3" y2="12"/>
+              <line x1="21" y1="12" x2="23" y2="12"/>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+          </span>
+        </label>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero title-section">
+        <h1>Xavier University of Louisiana CPSC</h1>
+
+        <a href="https://discord.gg/ygdd5aM6p" target="_blank" rel="noopener noreferrer" class="discord-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor" style="width: 20px; height: 20px;">
+            <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037 13.46 13.46 0 0 0-.586 1.212 18.26 18.26 0 0 0-5.537 0 13.544 13.544 0 0 0-.585-1.212.077.077 0 0 0-.079-.037 19.736 19.736 0 0 0-4.885 1.515.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.104 1.793 12.064 0a.074.074 0 0 1 .078.01c.118.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+          </svg>
+          Discord
+        </a>
+
+        <div class="down-arrow">
+          <canvas id="arrowCanvas"></canvas>
+        </div>
+
+        <div id="homeTerminal" class="terminal-card" style="margin-top: 100px;">
+          <div class="window">
+            <div class="header">
+              <div>
+                <svg width="10" height="10" viewBox="0 0 10 10" style="display: inline-block;"><circle cx="5" cy="5" r="5" fill="#ff5f56"/></svg>
+                <svg width="10" height="10" viewBox="0 0 10 10" style="display: inline-block;"><circle cx="5" cy="5" r="5" fill="#ffbd2e"/></svg>
+                <svg width="10" height="10" viewBox="0 0 10 10" style="display: inline-block;"><circle cx="5" cy="5" r="5" fill="#27c93f"/></svg>
+              </div>
+              <span style="font-size: 12px; color: #a0a0a0; font-family: monospace; margin-left: 10px;">~</span>
+              <div style="width: 14px;"></div>
+            </div>
+
+            <div class="body" style="padding: 15px; font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Mono', monospace; font-size: 14px; line-height: 1.6; height: calc(100% - 40px); overflow-y: auto; text-align: left;">
+              <div style="color: #888; font-size: 12px; margin-bottom: 10px;">
+                <span style="color: #27c93f;">$</span> ls -la
+              </div>
+
+              <div class="output">
+                <span style="color: #86efac;">drwxr-xr-x</span> 2 chat uncs  4096 Oct 10 14:30 .
+              </div>
+
+              <div class="output">
+                <span style="color: #86efac;">drwxr-xr-x</span> 2 chat uncs  4096 Oct 10 14:30 ..
+              </div>
+
+              <div class="output">
+                <span style="color: #d4a574;">-rw-r--r--</span> 1 chat uncs  1024 Oct 10 14:30 subathon.txt
+              </div>
+
+              <div class="output">
+                <span style="color: #d4a574;">-rw-r--r--</span> 1 chat uncs  2048 Oct 10 14:30 AGENTS.md
+              </div>
+
+              <div style="margin-top: 15px; color: #888;">
+                <span style="color: #27c93f;">$</span> echo "Scroll down to see schedule"
+              </div>
+
+              <div class="output">
+                Scroll down to see schedule
+              </div>
+
+              <div style="margin-top: 15px; color: #888;">
+                <span style="color: #27c93f;">$</span> <span class="cursor"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div id="sharedTerminal" class="terminal-card shared-terminal">
+        <div class="window">
+          <div class="header">
+            <div>
+              <svg width="10" height="10" viewBox="0 0 10 10" style="display: inline-block;"><circle cx="5" cy="5" r="5" fill="#ff5f56"/></svg>
+              <svg width="10" height="10" viewBox="0 0 10 10" style="display: inline-block;"><circle cx="5" cy="5" r="5" fill="#ffbd2e"/></svg>
+              <svg width="10" height="10" viewBox="0 0 10 10" style="display: inline-block;"><circle cx="5" cy="5" r="5" fill="#27c93f"/></svg>
+            </div>
+            <span style="font-size: 12px; color: #a0a0a0; font-family: monospace; margin-left: 10px;">xula-calendar</span>
+            <div class="close-btn" id="closeTerminal">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a0a0a0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </div>
+          </div>
+          <div class="body" id="terminalBody"></div>
+        </div>
+      </div>
+
+      <section id="calendar" class="section calendar-section">
+        <div class="calendar-container">
+          <div class="glow-orb orb-1"></div>
+          <div class="glow-orb orb-2"></div>
+
+          <div class="calendar-card">
+            <div class="calendar-header">
+              <div class="header-left">
+                <h1 class="year">2026</h1>
+                <p class="subtitle">XULA TECH CALENDAR</p>
+              </div>
+
+              <div class="header-right">
+                <div class="nav-btn" id="prevBtn">
+                  <svg viewBox="0 0 24 24" width="24" height="24">
+                    <path fill="currentColor" d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                  </svg>
+                </div>
+
+                <h2 id="monthDisplay"></h2>
+
+                <div class="nav-btn" id="nextBtn">
+                  <svg viewBox="0 0 24 24" width="24" height="24">
+                    <path fill="currentColor" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                  </svg>
+                </div>
+
+                <label class="view-toggle" aria-label="Toggle calendar/list view" style="margin-left: 16px;">
+                  <input type="checkbox" id="viewToggle">
+                  <span class="slider">
+                    <svg class="calendar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                      <line x1="16" y1="2" x2="16" y2="6"></line>
+                      <line x1="8" y1="2" x2="8" y2="6"></line>
+                      <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    <svg class="list-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="8" y1="6" x2="21" y2="6"></line>
+                      <line x1="8" y1="12" x2="21" y2="12"></line>
+                      <line x1="8" y1="18" x2="21" y2="18"></line>
+                      <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                      <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                      <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                    </svg>
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <div class="calendar-body">
+              <div class="days" id="calendarDays"></div>
+            </div>
+
+            <div class="calendar-footer"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="features" class="section people-container">
+        <div class="section-header reveal">
+          <div class="avatar-row">
+            <img loading="lazy" src="gavin.jpg" alt="Gavin">
+            <img loading="lazy" src="greg.jpg" alt="Greg">
+
+            <svg width="146" height="146" viewBox="0 0 146 146" style="flex-shrink: 0;" aria-label="user">
+              <circle cx="73" cy="73" r="70" fill="var(--avatar-circle)" />
+            </svg>
+
+            <svg width="146" height="146" viewBox="0 0 146 146" style="flex-shrink: 0;" aria-label="user">
+              <circle cx="73" cy="73" r="70" fill="var(--avatar-circle)" />
+            </svg>
+          </div>
+
+          <h2>Industry Veterans & NOLA natives</h2>
+          <p>We are a group of professionals who have worked at big tech companies for over 10+ years. We want to share what we have learned to the next generation!</p>
+        </div>
+
+        <div class="features">
+          <div class="feature-card reveal">
+            <h3>Get a Big Tech Job</h3>
+            <p>Industry professionals share their real-world hiring experiences, interview strategies, and career paths that got them into top tech companies. Learn what recruiters look for and how to stand out.</p>
+          </div>
+
+          <div class="feature-card reveal">
+            <h3>Code Like a Pro</h3>
+            <p>Learn professional coding standards, best practices, and real-world workflows from engineers who work at major tech companies. Master clean code, architecture, and collaboration.</p>
+          </div>
+
+          <div class="feature-card reveal">
+            <h3>Use AI Responsibly</h3>
+            <p>Learn how to leverage AI tools ethically and effectively in your coding workflow. Understand the implications, limitations, and best practices for integrating AI into professional development.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="extensions" class="extensions-section learn-container">
+        <div class="section">
+          <div class="extensions-header reveal">
+            <h2>Learn it All!</h2>
+            <p>Join us and master essential skills that will set you apart. From system design to personal finance, we cover it all.</p>
+          </div>
+
+          <div class="extensions-grid">
+            <div class="extension-card reveal">
+              <div class="icon">
+                <canvas data-icon="crane"></canvas>
+              </div>
+              <h4>System Design 101</h4>
+              <div class="desc">Learn the fundamentals of designing robust systems. Master building systems that grow with demand. Work efficiently with big data at scale.</div>
+            </div>
+
+            <div class="extension-card reveal">
+              <div class="icon">
+                <canvas data-icon="wrench"></canvas>
+              </div>
+              <h4>Pro Dev Tools</h4>
+              <div class="desc">Master industry-standard development tools.</div>
+            </div>
+
+            <div class="extension-card reveal">
+              <div class="icon">
+                <canvas data-icon="robot"></canvas>
+              </div>
+              <h4>Free AI Tools</h4>
+              <div class="desc">Leverage powerful AI tools at no cost. <a href="https://ollama.com">Ollama</a></div>
+            </div>
+
+            <div class="extension-card reveal">
+              <div class="icon">
+                <canvas data-icon="heart"></canvas>
+              </div>
+              <h4>Find Your Passion Project</h4>
+              <div class="desc">Discover what drives you and build it.</div>
+            </div>
+
+            <div class="extension-card reveal">
+              <div class="icon">
+                <canvas data-icon="grad"></canvas>
+              </div>
+              <h4>Tutoring Opportunities</h4>
+              <div class="desc">Strategies to excel in your courses and work towards an A.</div>
+            </div>
+
+            <div class="extension-card reveal">
+              <div class="icon">
+                <canvas data-icon="briefcase"></canvas>
+              </div>
+              <h4>Internships 101</h4>
+              <div class="desc">Find and apply to internships that fit.</div>
+            </div>
+
+            <div class="extension-card reveal">
+              <div class="icon">
+                <canvas data-icon="money"></canvas>
+              </div>
+              <h4>Manage Your Money</h4>
+              <div class="desc">Build financial literacy and smart habits.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p style="font-family: monospace;">Xavier University of Louisiana</p>
+      </footer>
+    </main>
+
+    <button class="scroll-top-btn" aria-label="Scroll to top">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 15l-6-6-6 6"/>
+      </svg>
+    </button>
+
+    <script type="module" src="script.js"></script>
+  </body>
+</html>
