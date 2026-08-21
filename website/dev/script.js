@@ -315,11 +315,6 @@ const handleMotionPreference = (mq) => {
 handleMotionPreference(motionPreferenceQuery);
 motionPreferenceQuery?.addEventListener?.('change', handleMotionPreference);
 
-const wideScreenQuery = window.matchMedia?.('(min-width: 768px)');
-wideScreenQuery?.addEventListener?.('change', (mq) => {
-  document.documentElement.classList.toggle('wide-screen', mq.matches);
-});
-
 const copyToClipboard = async (text) => {
   try {
     await navigator.clipboard?.writeText?.(text);
