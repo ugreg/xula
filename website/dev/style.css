@@ -1108,10 +1108,8 @@ a:hover {
 }
 
 @keyframes scrollAvatars {
-  0%, 10% { transform: translateX(0); }
-  30%, 40% { transform: translateX(-100%); }
-  70%, 80% { transform: translateX(-200%); }
-  100%, 110% { transform: translateX(-300%); }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-150%); }
 }
 
 @media (max-width: 768px) {
@@ -1159,31 +1157,30 @@ a:hover {
 }
 
 .avatar-row {
-  display: flex;
-  gap: 10%;
   overflow: hidden;
-  justify-content: center;
   margin: 24px 0;
 }
 
-.avatar-row img,
-.avatar-row svg {
+.avatar-track {
+  display: flex;
+  gap: 10%;
+  animation: scrollAvatars 40s linear infinite;
+}
+
+.avatar-track img,
+.avatar-track svg {
   flex-shrink: 0;
   width: 146px;
   height: 146px;
   border-radius: 50%;
 }
 
-.avatar-row img {
+.avatar-track img {
   object-fit: cover;
 }
 
-@media (max-width: 768px) {
-  .avatar-row { justify-content: flex-start; }
-
-  .avatar-row img {
-    animation: scrollAvatars 20s linear infinite;
-  }
+.avatar-row:hover .avatar-track {
+  animation-play-state: paused;
 }
 
 ::selection {
