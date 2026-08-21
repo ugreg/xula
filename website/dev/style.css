@@ -15,17 +15,13 @@
   accent-color: #d4a574;
   --bg: #0a0a0a;
   --surface: #151515;
-  --surface-hover: #1a1a1a;
-  --surface-active: #222222;
   --text: #ffffff;
   --text-muted: #a0a0a0;
   --accent: #d4a574;
   --border: #2a2a2a;
   --gradient-1: #d4a574;
   --gradient-2: #c49463;
-  --gradient-3: #b48352;
   --gradient-4: #a0b86a;
-  --gradient-5: #8cc06d;
   --bg-gradient-1: #1a1a2e;
   --bg-gradient-2: #1e2a4a;
   --bg-gradient-3: #2a1e4a;
@@ -40,7 +36,6 @@
   --overlay-bg: rgba(0, 0, 0, 0.3);
   --hero-gradient-start: #fff;
   --hero-gradient-end: #a0a0a0;
-  --avatar-circle: #d4a574;
   --terminal-bg: rgba(10, 10, 10, 0.95);
   --terminal-border: #333;
   --terminal-header-bg: rgba(20, 20, 20, 0.9);
@@ -59,17 +54,13 @@
   color-scheme: light;
   --bg: #f5f5f0;
   --surface: #ffffff;
-  --surface-hover: #f0f0eb;
-  --surface-active: #e5e5e0;
   --text: #1a1a1a;
   --text-muted: #6b6b6b;
   --accent: #b8894f;
   --border: #e0e0d8;
   --gradient-1: #d4a574;
   --gradient-2: #c49463;
-  --gradient-3: #b48352;
   --gradient-4: #8fa85a;
-  --gradient-5: #7ab04d;
   --bg-gradient-1: #e8e8f0;
   --bg-gradient-2: #e0e4f0;
   --bg-gradient-3: #f0e8f0;
@@ -84,7 +75,6 @@
   --overlay-bg: rgba(0, 0, 0, 0.05);
   --hero-gradient-start: #1a1a1a;
   --hero-gradient-end: #6b6b6b;
-  --avatar-circle: #1a1a1a;
   --terminal-bg: rgba(245, 245, 240, 0.95);
   --terminal-border: #d0d0c8;
   --terminal-header-bg: rgba(235, 235, 230, 0.9);
@@ -810,11 +800,9 @@ a:hover {
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;500;700&display=swap');
 
 :root {
-  --bg-dark: var(--bg);
   --accent-color: #00f2ff;
   --text-primary: var(--text);
   --text-secondary: var(--text-muted);
-  --danger: #ff2a6d;
   --calendar-gradient-start: #fff;
 }
 
@@ -957,6 +945,7 @@ a:hover {
   transition: all 0.2s;
   font-size: 0.95rem;
   color: var(--text-primary);
+  position: relative;
 }
 
 .calendar-body .days div.day-label {
@@ -972,7 +961,20 @@ a:hover {
 }
 
 .calendar-body .days div.has-event {
-  position: relative;
+  color: #fff;
+}
+
+.calendar-body .days div.has-event::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  background: var(--accent-color);
+  border-radius: 50%;
+  transform: translate(-50%, -90%);
+  z-index: -1;
 }
 
 

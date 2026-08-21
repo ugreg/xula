@@ -160,8 +160,7 @@ const renderCalendar = () => {
   for (let day = 1; day <= lastDay; day++) {
     const dayEvents = getEventsForDate(calendarState.current, day);
     const hasEvents = dayEvents.length > 0;
-    const dotHtml = hasEvents ? `<svg height="100%" viewBox="0 0 8 8" style="position: absolute; transform: translate(-25%, 30%); pointer-events: none;"><circle cx="1" cy="1" r="1" fill="#5865F2"/></svg>` : '';
-    cells.push(html`<div data-day="${day}" class="date-cell${hasEvents ? ' has-event' : ''}">${day}${dotHtml}</div>`);
+    cells.push(html`<div data-day="${day}" class="date-cell${hasEvents ? ' has-event' : ''}">${day}</div>`);
   }
 
   calendarDaysContainer && (calendarDaysContainer.innerHTML = cells.join(''));
