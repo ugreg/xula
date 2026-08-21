@@ -125,11 +125,16 @@ const calendarState = {
 };
 
 const events = [
-  { monthIndex: 0, day: 22, title: 'Pro Dev and Staff meeting', type: 'meeting' },
-  { monthIndex: 1, day: 6, title: 'AI Tools Hands-on Session', type: 'workshop' },
-  { monthIndex: 2, day: 10, title: 'Hackathon Kickoff', type: 'event' },
-  { monthIndex: 3, day: 1, title: 'Year-End Celebration', type: 'event' },
-  { monthIndex: 3, day: 15, title: 'Winter Workshop Series Begins', type: 'workshop' }
+  { monthIndex: 0, day: 22, title: 'Pro Dev and Staff meeting' },
+  { monthIndex: 1, day: 6, title: 'First talk' },
+  { monthIndex: 1, day: 13, title: 'Tutoring' },
+  { monthIndex: 1, day: 20, title: 'Tutoring' },
+  { monthIndex: 1, day: 27, title: 'Tutoring' },
+  { monthIndex: 2, day: 10, title: 'Backend systems talk' },
+  { monthIndex: 2, day: 17, title: 'Tutoring' },
+  { monthIndex: 2, day: 19, title: 'Tutoring' },
+  { monthIndex: 3, day: 3, title: 'Last talk' },
+  { monthIndex: 3, day: 17, title: 'Year-End Celebration' }
 ];
 
 const getEventsForDate = (monthIndex, day) =>
@@ -155,7 +160,7 @@ const renderCalendar = () => {
   for (let day = 1; day <= lastDay; day++) {
     const dayEvents = getEventsForDate(calendarState.current, day);
     const hasEvents = dayEvents.length > 0;
-    const dotHtml = hasEvents ? `<svg width="8" height="8" viewBox="0 0 8 8" style="position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); pointer-events: none;"><circle cx="4" cy="4" r="2.5" fill="#5865F2"/></svg>` : '';
+    const dotHtml = hasEvents ? `<svg height="100%" viewBox="0 0 8 8" style="position: absolute; transform: translate(-25%, 30%); pointer-events: none;"><circle cx="1" cy="1" r="1" fill="#5865F2"/></svg>` : '';
     cells.push(html`<div data-day="${day}" class="date-cell${hasEvents ? ' has-event' : ''}">${day}${dotHtml}</div>`);
   }
 
