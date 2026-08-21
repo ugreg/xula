@@ -35,7 +35,7 @@
     <div class="floating"></div>
     <div class="floating"></div>
 
-    <header style="position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 20px; backdrop-filter: blur(20px); background: var(--glass-bg); border-bottom: 1px solid var(--glass-border);">
+    <header style="position: fixed; top: 0; left: 0; right: 0; z-index: 200; padding: 20px; backdrop-filter: blur(20px); background: var(--glass-bg); border-bottom: 1px solid var(--glass-border);">
       <nav style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: center; align-items: center; position: relative;">
         <img src="xu.png" alt="XULA" style="width: 64px; height: 64px; object-fit: contain;">
 
@@ -62,6 +62,33 @@
         </label>
       </nav>
     </header>
+
+    <div class="page-indicator">
+      <span class="dot active" data-page="0"></span>
+      <span class="dot" data-page="1"></span>
+    </div>
+
+    <button class="stats-arrow-btn" aria-label="View stats">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 18l6-6-6-6"/>
+      </svg>
+    </button>
+
+    <button class="stats-arrow-btn back hidden" aria-label="Back to home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 18l-6-6 6-6"/>
+      </svg>
+    </button>
+
+    <div class="stats-page" id="statsPage">
+      <div class="stats-content">
+        <h2>GitHub Stats</h2>
+        <div class="stats-grid">
+          <img loading="lazy" src="https://github-stats-extended.vercel.app/api?username=ugreg&theme=radical" alt="Greg's GitHub Stats" class="stats-card">
+          <img loading="lazy" src="https://github-stats-extended.vercel.app/api?username=gavination&theme=radical" alt="Gavin's GitHub Stats" class="stats-card">
+        </div>
+      </div>
+    </div>
 
     <main>
       <section class="hero title-section">

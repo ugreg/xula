@@ -347,6 +347,88 @@ themeToggle.addEventListener('change', () => {
   localStorage.setItem('theme', light ? 'light' : 'dark');
 });
 
+/* ===== STATS PAGE ===== */
+
+const statsPage = document.getElementById('statsPage');
+const statsArrowBtn = document.querySelector('.stats-arrow-btn:not(.back)');
+const backArrowBtn = document.querySelector('.stats-arrow-btn.back');
+const dots = document.querySelectorAll('.page-indicator .dot');
+let statsOpen = false;
+
+function openStats() {
+  statsOpen = true;
+  statsPage.classList.add('open');
+  statsArrowBtn.classList.add('hidden');
+  backArrowBtn.classList.remove('hidden');
+  dots[0]?.classList.remove('active');
+  dots[1]?.classList.add('active');
+}
+
+function closeStats() {
+  statsOpen = false;
+  statsPage.classList.remove('open');
+  statsArrowBtn.classList.remove('hidden');
+  backArrowBtn.classList.add('hidden');
+  dots[0]?.classList.add('active');
+  dots[1]?.classList.remove('active');
+}
+
+statsArrowBtn?.addEventListener('click', openStats);
+backArrowBtn?.addEventListener('click', closeStats);
+
+dots.forEach(dot => {
+  dot.addEventListener('click', () => {
+    const page = parseInt(dot.getAttribute('data-page'), 10);
+    if (page === 1) openStats();
+    else closeStats();
+  });
+});
+
+const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+if (isTouchDevice && statsPage) {
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchEndX = 0;
+  const swipeThreshold = 50;
+
+  statsPage.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+  }, { passive: true });
+
+  statsPage.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    const diffX = touchEndX - touchStartX;
+    const diffY = Math.abs(e.changedTouches[0].screenY - touchStartY);
+    if (Math.abs(diffX) > swipeThreshold && Math.abs(diffX) > diffY) {
+      if (diffX < 0) closeStats();
+    }
+  }, { passive: true });
+
+  document.body.addEventListener('touchstart', (e) => {
+    if (!statsOpen) {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    }
+  }, { passive: true });
+
+  document.body.addEventListener('touchend', (e) => {
+    if (!statsOpen) {
+      touchEndX = e.changedTouches[0].screenX;
+      const diffX = touchEndX - touchStartX;
+      const diffY = Math.abs(e.changedTouches[0].screenY - touchStartY);
+      if (Math.abs(diffX) > swipeThreshold && Math.abs(diffX) > diffY) {
+        if (diffX > 0) openStats();
+      }
+    }
+  }, { passive: true });
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && statsOpen) closeStats();
+});
+
 /* ===== THREE.JS: ARROW + ICONS ===== */
 
 const voxelMeshes = [];
