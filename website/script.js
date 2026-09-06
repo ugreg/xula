@@ -125,11 +125,16 @@ const calendarState = {
 };
 
 const events = [
-  { monthIndex: 0, day: 22, title: 'Pro Dev and Staff meeting', type: 'meeting' },
-  { monthIndex: 1, day: 6, title: 'AI Tools Hands-on Session', type: 'workshop' },
-  { monthIndex: 2, day: 10, title: 'Hackathon Kickoff', type: 'event' },
-  { monthIndex: 3, day: 1, title: 'Year-End Celebration', type: 'event' },
-  { monthIndex: 3, day: 15, title: 'Winter Workshop Series Begins', type: 'workshop' }
+  { monthIndex: 0, day: 22, title: 'Pro Dev and Staff meeting' },
+  { monthIndex: 1, day: 6, title: 'First talk' },
+  { monthIndex: 1, day: 13, title: 'Tutoring' },
+  { monthIndex: 1, day: 20, title: 'Tutoring' },
+  { monthIndex: 1, day: 27, title: 'Tutoring' },
+  { monthIndex: 2, day: 10, title: 'Backend systems talk' },
+  { monthIndex: 2, day: 17, title: 'Tutoring' },
+  { monthIndex: 2, day: 19, title: 'Tutoring' },
+  { monthIndex: 3, day: 3, title: 'Last talk' },
+  { monthIndex: 3, day: 17, title: 'Year-End Celebration' }
 ];
 
 const getEventsForDate = (monthIndex, day) =>
@@ -155,8 +160,7 @@ const renderCalendar = () => {
   for (let day = 1; day <= lastDay; day++) {
     const dayEvents = getEventsForDate(calendarState.current, day);
     const hasEvents = dayEvents.length > 0;
-    const dotHtml = hasEvents ? `<svg width="8" height="8" viewBox="0 0 8 8" style="position: absolute; bottom: 2px; left: 50%; transform: translateX(-50%); pointer-events: none;"><circle cx="4" cy="4" r="2.5" fill="#5865F2"/></svg>` : '';
-    cells.push(html`<div data-day="${day}" class="date-cell${hasEvents ? ' has-event' : ''}">${day}${dotHtml}</div>`);
+    cells.push(html`<div data-day="${day}" class="date-cell${hasEvents ? ' has-event' : ''}">${day}</div>`);
   }
 
   calendarDaysContainer && (calendarDaysContainer.innerHTML = cells.join(''));
@@ -311,11 +315,6 @@ const handleMotionPreference = (mq) => {
 handleMotionPreference(motionPreferenceQuery);
 motionPreferenceQuery?.addEventListener?.('change', handleMotionPreference);
 
-const wideScreenQuery = window.matchMedia?.('(min-width: 768px)');
-wideScreenQuery?.addEventListener?.('change', (mq) => {
-  document.documentElement.classList.toggle('wide-screen', mq.matches);
-});
-
 const copyToClipboard = async (text) => {
   try {
     await navigator.clipboard?.writeText?.(text);
@@ -346,6 +345,88 @@ themeToggle.addEventListener('change', () => {
   const light = themeToggle.checked;
   document.documentElement.classList.toggle('light', light);
   localStorage.setItem('theme', light ? 'light' : 'dark');
+});
+
+/* ===== STATS PAGE ===== */
+
+const statsPage = document.getElementById('statsPage');
+const statsArrowBtn = document.querySelector('.stats-arrow-btn:not(.back)');
+const backArrowBtn = document.querySelector('.stats-arrow-btn.back');
+const dots = document.querySelectorAll('.page-indicator .dot');
+let statsOpen = false;
+
+function openStats() {
+  statsOpen = true;
+  statsPage.classList.add('open');
+  statsArrowBtn.classList.add('hidden');
+  backArrowBtn.classList.remove('hidden');
+  dots[0]?.classList.remove('active');
+  dots[1]?.classList.add('active');
+}
+
+function closeStats() {
+  statsOpen = false;
+  statsPage.classList.remove('open');
+  statsArrowBtn.classList.remove('hidden');
+  backArrowBtn.classList.add('hidden');
+  dots[0]?.classList.add('active');
+  dots[1]?.classList.remove('active');
+}
+
+statsArrowBtn?.addEventListener('click', openStats);
+backArrowBtn?.addEventListener('click', closeStats);
+
+dots.forEach(dot => {
+  dot.addEventListener('click', () => {
+    const page = parseInt(dot.getAttribute('data-page'), 10);
+    if (page === 1) openStats();
+    else closeStats();
+  });
+});
+
+const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+if (isTouchDevice && statsPage) {
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchEndX = 0;
+  const swipeThreshold = 50;
+
+  statsPage.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+  }, { passive: true });
+
+  statsPage.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    const diffX = touchEndX - touchStartX;
+    const diffY = Math.abs(e.changedTouches[0].screenY - touchStartY);
+    if (Math.abs(diffX) > swipeThreshold && Math.abs(diffX) > diffY) {
+      if (diffX < 0) closeStats();
+    }
+  }, { passive: true });
+
+  document.body.addEventListener('touchstart', (e) => {
+    if (!statsOpen) {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    }
+  }, { passive: true });
+
+  document.body.addEventListener('touchend', (e) => {
+    if (!statsOpen) {
+      touchEndX = e.changedTouches[0].screenX;
+      const diffX = touchEndX - touchStartX;
+      const diffY = Math.abs(e.changedTouches[0].screenY - touchStartY);
+      if (Math.abs(diffX) > swipeThreshold && Math.abs(diffX) > diffY) {
+        if (diffX > 0) openStats();
+      }
+    }
+  }, { passive: true });
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && statsOpen) closeStats();
 });
 
 /* ===== THREE.JS: ARROW + ICONS ===== */
