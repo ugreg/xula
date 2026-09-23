@@ -183,8 +183,7 @@ const calendarState = {
 };
 
 const events = [
-  { monthIndex: 0, day: 22, title: 'Pro Dev and Staff meeting' },
-  { monthIndex: 1, day: 6, title: 'First talk' },
+  { monthIndex: 0, day: 29, title: 'Pro Dev and Staff meeting' },
   { monthIndex: 1, day: 13, title: 'Tutoring' },
   { monthIndex: 1, day: 20, title: 'Tutoring' },
   { monthIndex: 1, day: 27, title: 'Tutoring' },
@@ -499,6 +498,36 @@ function createVoxel(x, y, z, s, color) {
   return mesh;
 }
 
+function createWireframeVoxel(x, y, z, s, color) {
+  const group = new THREE.Group();
+  group.position.set(x, y, z);
+
+  const boxGeo = new THREE.BoxGeometry(s, s, s);
+  const edges = new THREE.EdgesGeometry(boxGeo);
+  const lineMat = new THREE.LineBasicMaterial({ color, linewidth: 1 });
+  const wireframe = new THREE.LineSegments(edges, lineMat);
+  group.add(wireframe);
+
+  const half = s / 2;
+  const vertexPositions = [
+    [-half, -half, -half], [half, -half, -half],
+    [-half, half, -half], [half, half, -half],
+    [-half, -half, half], [half, -half, half],
+    [-half, half, half], [half, half, half]
+  ];
+
+  const vertexGeo = new THREE.SphereGeometry(s * 0.1, 6, 4);
+  const vertexMat = new THREE.MeshBasicMaterial({ color });
+
+  for (const [vx, vy, vz] of vertexPositions) {
+    const v = new THREE.Mesh(vertexGeo, vertexMat);
+    v.position.set(vx, vy, vz);
+    group.add(v);
+  }
+
+  return group;
+}
+
 function initArrow() {
   try {
     console.log('[three] initArrow starting');
@@ -582,59 +611,59 @@ function createIconScene(iconType, color) {
     const group = new THREE.Group();
 
     if (iconType === 'crane') {
-      group.add(createVoxel(0, -0.4, 0, 0.7, 0xf5a623));
-      group.add(createVoxel(0, 0.3, 0, 0.5, 0xf5a623));
-      group.add(createVoxel(0, 1.0, 0, 0.5, 0xf5a623));
-      group.add(createVoxel(-0.7, 0.7, 0, 0.9, 0xf5a623));
-      group.add(createVoxel(-1.1, 0.2, 0, 0.2, 0xd35400));
+      group.add(createWireframeVoxel(0, -0.4, 0, 0.7, 0xf5a623));
+      group.add(createWireframeVoxel(0, 0.3, 0, 0.5, 0xf5a623));
+      group.add(createWireframeVoxel(0, 1.0, 0, 0.5, 0xf5a623));
+      group.add(createWireframeVoxel(-0.7, 0.7, 0, 0.9, 0xf5a623));
+      group.add(createWireframeVoxel(-1.1, 0.2, 0, 0.2, 0xd35400));
     }
 
     if (iconType === 'wrench') {
-      group.add(createVoxel(0, 0, 0, 0.8, 0x7f8c8d));
-      group.add(createVoxel(0.4, 0, 0, 0.5, 0x7f8c8d));
-      group.add(createVoxel(0.7, 0.3, 0, 0.5, 0x7f8c8d));
-      group.add(createVoxel(0.7, -0.3, 0, 0.5, 0x7f8c8d));
-      group.add(createVoxel(-0.4, 0, 0, 0.5, 0x95a5a6));
+      group.add(createWireframeVoxel(0, 0, 0, 0.8, 0x7f8c8d));
+      group.add(createWireframeVoxel(0.4, 0, 0, 0.5, 0x7f8c8d));
+      group.add(createWireframeVoxel(0.7, 0.3, 0, 0.5, 0x7f8c8d));
+      group.add(createWireframeVoxel(0.7, -0.3, 0, 0.5, 0x7f8c8d));
+      group.add(createWireframeVoxel(-0.4, 0, 0, 0.5, 0x95a5a6));
     }
 
     if (iconType === 'robot') {
-      group.add(createVoxel(0, 0.4, 0, 0.8, 0x3498db));
-      group.add(createVoxel(0, -0.3, 0, 0.9, 0x2980b9));
-      group.add(createVoxel(-0.3, 0.6, 0, 0.3, 0x3498db));
-      group.add(createVoxel(0.3, 0.6, 0, 0.3, 0xe74c3c));
-      group.add(createVoxel(0, 0, 0.5, 0.2, 0x2ecc71));
+      group.add(createWireframeVoxel(0, 0.4, 0, 0.8, 0x3498db));
+      group.add(createWireframeVoxel(0, -0.3, 0, 0.9, 0x2980b9));
+      group.add(createWireframeVoxel(-0.3, 0.6, 0, 0.3, 0x3498db));
+      group.add(createWireframeVoxel(0.3, 0.6, 0, 0.3, 0xe74c3c));
+      group.add(createWireframeVoxel(0, 0, 0.5, 0.2, 0x2ecc71));
     }
 
     if (iconType === 'heart') {
-      group.add(createVoxel(-0.35, 0.2, 0, 0.6, 0xe74c3c));
-      group.add(createVoxel(0.35, 0.2, 0, 0.6, 0xe74c3c));
-      group.add(createVoxel(0, -0.1, 0, 0.9, 0xe74c3c));
-      group.add(createVoxel(0, -0.5, 0, 0.6, 0xe74c3c));
-      group.add(createVoxel(0, -0.8, 0, 0.3, 0xe74c3c));
+      group.add(createWireframeVoxel(-0.35, 0.2, 0, 0.6, 0xe74c3c));
+      group.add(createWireframeVoxel(0.35, 0.2, 0, 0.6, 0xe74c3c));
+      group.add(createWireframeVoxel(0, -0.1, 0, 0.9, 0xe74c3c));
+      group.add(createWireframeVoxel(0, -0.5, 0, 0.6, 0xe74c3c));
+      group.add(createWireframeVoxel(0, -0.8, 0, 0.3, 0xe74c3c));
     }
 
     if (iconType === 'grad') {
-      group.add(createVoxel(0, 0, 0, 0.8, 0x2c3e50));
-      group.add(createVoxel(0, 0.4, 0, 1.1, 0x2c3e50));
-      group.add(createVoxel(-0.8, 0.6, 0, 0.3, 0xf1c40f));
-      group.add(createVoxel(0, -0.4, 0, 0.5, 0x2c3e50));
-      group.add(createVoxel(0.4, 0.4, 0, 0.3, 0xf1c40f));
+      group.add(createWireframeVoxel(0, 0, 0, 0.8, 0x2c3e50));
+      group.add(createWireframeVoxel(0, 0.4, 0, 1.1, 0x2c3e50));
+      group.add(createWireframeVoxel(-0.8, 0.6, 0, 0.3, 0xf1c40f));
+      group.add(createWireframeVoxel(0, -0.4, 0, 0.5, 0x2c3e50));
+      group.add(createWireframeVoxel(0.4, 0.4, 0, 0.3, 0xf1c40f));
     }
 
     if (iconType === 'briefcase') {
-      group.add(createVoxel(0, -0.1, 0, 1, 0x34495e));
-      group.add(createVoxel(0, 0.4, 0, 0.6, 0x7f8c8d));
-      group.add(createVoxel(0, -0.3, 0.4, 0.2, 0x2c3e50));
-      group.add(createVoxel(0, 0, 0.5, 0.3, 0xf1c40f));
-      group.add(createVoxel(-0.4, 0.2, 0, 0.2, 0x7f8c8d));
+      group.add(createWireframeVoxel(0, -0.1, 0, 1, 0x34495e));
+      group.add(createWireframeVoxel(0, 0.4, 0, 0.6, 0x7f8c8d));
+      group.add(createWireframeVoxel(0, -0.3, 0.4, 0.2, 0x2c3e50));
+      group.add(createWireframeVoxel(0, 0, 0.5, 0.3, 0xf1c40f));
+      group.add(createWireframeVoxel(-0.4, 0.2, 0, 0.2, 0x7f8c8d));
     }
 
     if (iconType === 'money') {
-      group.add(createVoxel(0, 0, 0, 1, 0x27ae60));
-      group.add(createVoxel(0, -0.4, 0, 1, 0x2ecc71));
-      group.add(createVoxel(0.3, 0, 0.5, 0.3, 0xf1c40f));
-      group.add(createVoxel(-0.3, 0, 0.5, 0.3, 0xf1c40f));
-      group.add(createVoxel(0, 0, -0.3, 0.9, 0x2ecc71));
+      group.add(createWireframeVoxel(0, 0, 0, 1, 0x27ae60));
+      group.add(createWireframeVoxel(0, -0.4, 0, 1, 0x2ecc71));
+      group.add(createWireframeVoxel(0.3, 0, 0.5, 0.3, 0xf1c40f));
+      group.add(createWireframeVoxel(-0.3, 0, 0.5, 0.3, 0xf1c40f));
+      group.add(createWireframeVoxel(0, 0, -0.3, 0.9, 0x2ecc71));
     }
 
     scene.add(group);
