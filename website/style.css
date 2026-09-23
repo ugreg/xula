@@ -1194,10 +1194,6 @@ a:hover {
   display: block;
 }
 
-.avatar-row:hover .avatar-track {
-  animation-play-state: paused;
-}
-
 @keyframes scrollAvatars {
   from {
     transform: translateX(0);
