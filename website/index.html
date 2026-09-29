@@ -66,6 +66,7 @@
     <div class="page-indicator">
       <span class="dot active" data-page="0"></span>
       <span class="dot" data-page="1"></span>
+      <span class="dot" data-page="2"></span>
     </div>
 
     <button class="stats-arrow-btn" aria-label="View stats">
@@ -91,7 +92,7 @@
     </div>
 
     <main>
-      <section class="hero title-section">
+      <section id="hero" class="hero title-section">
         <h1>Xavier University of Louisiana CPSC</h1>
 
         <a href="https://discord.gg/ygdd5aM6p" target="_blank" rel="noopener noreferrer" class="discord-btn">
@@ -232,8 +233,9 @@
         </div>
       </section>
 
-      <section id="features" class="section people-container">
-        <div class="section-header reveal">
+    <div class="stats-page" id="featuresPage">
+      <div class="stats-content">
+        <div class="section-header">
           <div class="avatar-row">
             <div class="avatar-track">
               <img loading="lazy" src="gavin.jpg" alt="Gavin">
@@ -252,94 +254,90 @@
         </div>
 
         <div class="features">
-          <div class="feature-card reveal">
+          <div class="feature-card">
             <h3>Get a Big Tech Job</h3>
             <p>Industry professionals share their real-world hiring experiences, interview strategies, and career paths that got them into top tech companies. Learn what recruiters look for and how to stand out.</p>
           </div>
 
-          <div class="feature-card reveal">
+          <div class="feature-card">
             <h3>Code Like a Pro</h3>
             <p>Learn professional coding standards, best practices, and real-world workflows from engineers who work at major tech companies. Master clean code, architecture, and collaboration.</p>
           </div>
 
-          <div class="feature-card reveal">
+          <div class="feature-card">
             <h3>Use AI Responsibly</h3>
             <p>Learn how to leverage AI tools ethically and effectively in your coding workflow. Understand the implications, limitations, and best practices for integrating AI into professional development.</p>
           </div>
         </div>
-      </section>
+      </div>
+    </div>
 
-      <section id="extensions" class="extensions-section learn-container">
-        <div class="section">
-          <div class="extensions-header reveal">
-            <h2>Learn it All!</h2>
-            <p>Join us and master essential skills that will set you apart. From system design to personal finance, we cover it all.</p>
+    <div class="stats-page" id="extensionsPage">
+      <div class="stats-content">
+        <div class="extensions-header">
+          <h2>Learn it All!</h2>
+          <p>Join us and master essential skills that will set you apart. From system design to personal finance, we cover it all.</p>
+        </div>
+
+        <div class="extensions-grid">
+          <div class="extension-card">
+            <div class="icon">
+              <canvas data-icon="crane"></canvas>
+            </div>
+            <h4>System Design 101</h4>
+            <div class="desc">Learn the fundamentals of designing robust systems. Master building systems that grow with demand. Work efficiently with big data at scale.</div>
           </div>
 
-          <div class="extensions-grid">
-            <div class="extension-card reveal">
-              <div class="icon">
-                <canvas data-icon="crane"></canvas>
-              </div>
-              <h4>System Design 101</h4>
-              <div class="desc">Learn the fundamentals of designing robust systems. Master building systems that grow with demand. Work efficiently with big data at scale.</div>
+          <div class="extension-card">
+            <div class="icon">
+              <canvas data-icon="wrench"></canvas>
             </div>
+            <h4>Pro Dev Tools</h4>
+            <div class="desc">Master industry-standard development tools.</div>
+          </div>
 
-            <div class="extension-card reveal">
-              <div class="icon">
-                <canvas data-icon="wrench"></canvas>
-              </div>
-              <h4>Pro Dev Tools</h4>
-              <div class="desc">Master industry-standard development tools.</div>
+          <div class="extension-card">
+            <div class="icon">
+              <canvas data-icon="robot"></canvas>
             </div>
+            <h4>Free AI Tools</h4>
+            <div class="desc">Leverage powerful AI tools at no cost. <a href="https://ollama.com">Ollama</a></div>
+          </div>
 
-            <div class="extension-card reveal">
-              <div class="icon">
-                <canvas data-icon="robot"></canvas>
-              </div>
-              <h4>Free AI Tools</h4>
-              <div class="desc">Leverage powerful AI tools at no cost. <a href="https://ollama.com">Ollama</a></div>
+          <div class="extension-card">
+            <div class="icon">
+              <canvas data-icon="heart"></canvas>
             </div>
+            <h4>Find Your Passion Project</h4>
+            <div class="desc">Discover what drives you and build it.</div>
+          </div>
 
-            <div class="extension-card reveal">
-              <div class="icon">
-                <canvas data-icon="heart"></canvas>
-              </div>
-              <h4>Find Your Passion Project</h4>
-              <div class="desc">Discover what drives you and build it.</div>
+          <div class="extension-card">
+            <div class="icon">
+              <canvas data-icon="grad"></canvas>
             </div>
+            <h4>Tutoring Opportunities</h4>
+            <div class="desc">Strategies to excel in your courses and work towards an A.</div>
+          </div>
 
-            <div class="extension-card reveal">
-              <div class="icon">
-                <canvas data-icon="grad"></canvas>
-              </div>
-              <h4>Tutoring Opportunities</h4>
-              <div class="desc">Strategies to excel in your courses and work towards an A.</div>
+          <div class="extension-card">
+            <div class="icon">
+              <canvas data-icon="briefcase"></canvas>
             </div>
+            <h4>Internships 101</h4>
+            <div class="desc">Find and apply to internships that fit.</div>
+          </div>
 
-            <div class="extension-card reveal">
-              <div class="icon">
-                <canvas data-icon="briefcase"></canvas>
-              </div>
-              <h4>Internships 101</h4>
-              <div class="desc">Find and apply to internships that fit.</div>
+          <div class="extension-card">
+            <div class="icon">
+              <canvas data-icon="money"></canvas>
             </div>
-
-            <div class="extension-card reveal">
-              <div class="icon">
-                <canvas data-icon="money"></canvas>
-              </div>
-              <h4>Manage Your Money</h4>
-              <div class="desc">Build financial literacy and smart habits.</div>
-            </div>
+            <h4>Manage Your Money</h4>
+            <div class="desc">Build financial literacy and smart habits.</div>
           </div>
         </div>
-      </section>
-
-      <footer class="footer">
-        <p style="font-family: monospace;">Xavier University of Louisiana</p>
-      </footer>
-    </main>
+      </div>
+    </div>
 
     <button class="scroll-top-btn" aria-label="Scroll to top">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

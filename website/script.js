@@ -435,9 +435,9 @@ backArrowBtn?.addEventListener('click', closeStats);
 
 dots.forEach(dot => {
   dot.addEventListener('click', () => {
-    const page = parseInt(dot.getAttribute('data-page'), 10);
-    if (page === 1) openStats();
-    else closeStats();
+    const sectionId = dot.getAttribute('data-section');
+    const target = document.getElementById(sectionId);
+    target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 });
 
@@ -459,7 +459,7 @@ if (isTouchDevice && statsPage) {
     const diffX = touchEndX - touchStartX;
     const diffY = Math.abs(e.changedTouches[0].screenY - touchStartY);
     if (Math.abs(diffX) > swipeThreshold && Math.abs(diffX) > diffY) {
-      if (diffX < 0) closeStats();
+      if (diffX > 0) closeStats();
     }
   }, { passive: true });
 
@@ -476,7 +476,7 @@ if (isTouchDevice && statsPage) {
       const diffX = touchEndX - touchStartX;
       const diffY = Math.abs(e.changedTouches[0].screenY - touchStartY);
       if (Math.abs(diffX) > swipeThreshold && Math.abs(diffX) > diffY) {
-        if (diffX > 0) openStats();
+        if (diffX < 0) openStats();
       }
     }
   }, { passive: true });
@@ -484,6 +484,79 @@ if (isTouchDevice && statsPage) {
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && statsOpen) closeStats();
+});
+
+/* ===== PAGE NAVIGATION ===== */
+
+const featuresPage = document.getElementById('featuresPage');
+const extensionsPage = document.getElementById('extensionsPage');
+let currentPage = 0;
+const totalPages = 3;
+
+function goToPage(page) {
+  if (page < 0 || page >= totalPages) return;
+  currentPage = page;
+  dots.forEach((dot, i) => dot.classList.toggle('active', i === page));
+
+  const wasStatsOpen = statsOpen;
+  const wasFeaturesOpen = featuresPage.classList.contains('open');
+  const wasExtensionsOpen = extensionsPage.classList.contains('open');
+
+  closeStats();
+  featuresPage.classList.remove('open');
+  extensionsPage.classList.remove('open');
+
+  if (page === 1) featuresPage.classList.add('open');
+  if (page === 2) extensionsPage.classList.add('open');
+}
+
+function nextPage() {
+  if (currentPage < totalPages - 1) goToPage(currentPage + 1);
+}
+
+function prevPage() {
+  if (currentPage > 0) goToPage(currentPage - 1);
+}
+
+dots.forEach(dot => {
+  dot.addEventListener('click', () => {
+    const page = parseInt(dot.getAttribute('data-page'), 10);
+    goToPage(page);
+  });
+});
+
+if (isTouchDevice) {
+  let sectionTouchStartX = 0;
+  let sectionTouchStartY = 0;
+  let sectionSwiped = false;
+
+  document.addEventListener('touchstart', (e) => {
+    sectionTouchStartX = e.changedTouches[0].screenX;
+    sectionTouchStartY = e.changedTouches[0].screenY;
+    sectionSwiped = false;
+  }, { passive: true });
+
+  document.addEventListener('touchend', (e) => {
+    if (sectionSwiped) return;
+
+    const endX = e.changedTouches[0].screenX;
+    const endY = e.changedTouches[0].screenY;
+    const diffX = endX - sectionTouchStartX;
+    const diffY = Math.abs(endY - sectionTouchStartY);
+
+    if (Math.abs(diffX) > 50 && Math.abs(diffX) > diffY) {
+      sectionSwiped = true;
+      if (diffX < 0) nextPage();
+      else if (diffX > 0) prevPage();
+    }
+  }, { passive: true });
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    if (statsOpen) closeStats();
+    else if (currentPage > 0) goToPage(0);
+  }
 });
 
 /* ===== THREE.JS: ARROW + ICONS ===== */
