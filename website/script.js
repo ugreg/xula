@@ -404,53 +404,20 @@ themeToggle.addEventListener('change', () => {
   localStorage.setItem('theme', light ? 'light' : 'dark');
 });
 
-/* ===== STATS PAGE ===== */
+/* ===== STATS PAGE (mobile carousel) ===== */
 
-const statsPage = document.getElementById('statsPage');
 const statsArrowBtn = document.querySelector('.stats-arrow-btn:not(.back)');
 const backArrowBtn = document.querySelector('.stats-arrow-btn.back');
 const dots = document.querySelectorAll('.page-indicator .dot');
-let statsOpen = false;
 
-function openStats() {
-  statsOpen = true;
-  statsPage.classList.add('open');
-  statsArrowBtn.classList.add('hidden');
-  backArrowBtn.classList.remove('hidden');
-  dots[0]?.classList.remove('active');
-  dots[1]?.classList.add('active');
-}
-
-function closeStats() {
-  statsOpen = false;
-  statsPage.classList.remove('open');
-  statsArrowBtn.classList.remove('hidden');
-  backArrowBtn.classList.add('hidden');
-  dots[0]?.classList.add('active');
-  dots[1]?.classList.remove('active');
-}
-
-statsArrowBtn?.addEventListener('click', () => goToPage(3));
-backArrowBtn?.addEventListener('click', () => goToPage(0));
-
-dots.forEach(dot => {
-  dot.addEventListener('click', () => {
-    const sectionId = dot.getAttribute('data-section');
-    const target = document.getElementById(sectionId);
-    target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-});
-
-const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
 
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    if (statsOpen) closeStats();
-    else if (currentPage > 0) goToPage(0);
-  }
+  if (!isMobile()) return;
+  if (e.key === 'Escape' && currentPage > 0) goToPage(0);
 });
 
-/* ===== PAGE NAVIGATION ===== */
+/* ===== PAGE NAVIGATION (mobile only) ===== */
 
 const carousel = document.getElementById('carousel');
 let currentPage = 0;
@@ -463,11 +430,13 @@ let animationID;
 let isCarouselTransitioning = false;
 
 function updateCarousel() {
+  if (!isMobile()) return;
   carousel.style.transition = isCarouselTransitioning ? 'transform 0.4s cubic-bezier(0.2, 0, 0.2, 1)' : 'none';
   carousel.style.transform = `translateX(-${currentTranslate}px)`;
 }
 
 function goToPage(page) {
+  if (!isMobile()) return;
   if (page < 0 || page >= totalPages) return;
   currentPage = page;
   dots.forEach((dot, i) => dot.classList.toggle('active', i === page));
@@ -483,21 +452,25 @@ function goToPage(page) {
 }
 
 function nextPage() {
+  if (!isMobile()) return;
   if (currentPage < totalPages - 1) goToPage(currentPage + 1);
 }
 
 function prevPage() {
+  if (!isMobile()) return;
   if (currentPage > 0) goToPage(currentPage - 1);
 }
 
 dots.forEach(dot => {
   dot.addEventListener('click', () => {
+    if (!isMobile()) return;
     const page = parseInt(dot.getAttribute('data-page'), 10);
     goToPage(page);
   });
 });
 
 carousel.addEventListener('touchstart', (e) => {
+  if (!isMobile()) return;
   const tag = e.target.tagName;
   const isInteractive = ['INPUT', 'BUTTON', 'A', 'CANVAS', 'LABEL'].includes(tag);
   const isPageIndicator = e.target.closest('.page-indicator');
@@ -514,7 +487,7 @@ carousel.addEventListener('touchstart', (e) => {
 }, { passive: true });
 
 carousel.addEventListener('touchmove', (e) => {
-  if (!isDragging) return;
+  if (!isMobile() || !isDragging) return;
   const currentX = e.touches[0].clientX;
   const diff = currentX - startX;
   currentTranslate = prevTranslate - diff;
@@ -526,7 +499,7 @@ carousel.addEventListener('touchmove', (e) => {
 }, { passive: true });
 
 carousel.addEventListener('touchend', (e) => {
-  if (!isDragging) return;
+  if (!isMobile() || !isDragging) return;
   isDragging = false;
 
   const endX = e.changedTouches[0].clientX;
@@ -547,9 +520,21 @@ carousel.addEventListener('touchend', (e) => {
 }, { passive: true });
 
 window.addEventListener('resize', () => {
+  if (!isMobile()) {
+    carousel.style.transition = 'none';
+    carousel.style.transform = '';
+    return;
+  }
   currentTranslate = currentPage * window.innerWidth;
   prevTranslate = currentTranslate;
   updateCarousel();
+});
+
+statsArrowBtn?.addEventListener('click', () => {
+  if (isMobile()) goToPage(3);
+});
+backArrowBtn?.addEventListener('click', () => {
+  if (isMobile()) goToPage(0);
 });
 
 /* ===== THREE.JS: ARROW + ICONS ===== */
