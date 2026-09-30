@@ -430,8 +430,8 @@ function closeStats() {
   dots[1]?.classList.remove('active');
 }
 
-statsArrowBtn?.addEventListener('click', openStats);
-backArrowBtn?.addEventListener('click', closeStats);
+statsArrowBtn?.addEventListener('click', () => goToPage(3));
+backArrowBtn?.addEventListener('click', () => goToPage(0));
 
 dots.forEach(dot => {
   dot.addEventListener('click', () => {
@@ -443,71 +443,43 @@ dots.forEach(dot => {
 
 const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
-if (isTouchDevice && statsPage) {
-  let touchStartX = 0;
-  let touchStartY = 0;
-  let touchEndX = 0;
-  const swipeThreshold = 50;
-
-  statsPage.addEventListener('touchstart', (e) => {
-    touchStartX = e.changedTouches[0].screenX;
-    touchStartY = e.changedTouches[0].screenY;
-  }, { passive: true });
-
-  statsPage.addEventListener('touchend', (e) => {
-    touchEndX = e.changedTouches[0].screenX;
-    const diffX = touchEndX - touchStartX;
-    const diffY = Math.abs(e.changedTouches[0].screenY - touchStartY);
-    if (Math.abs(diffX) > swipeThreshold && Math.abs(diffX) > diffY) {
-      if (diffX > 0) closeStats();
-    }
-  }, { passive: true });
-
-  document.body.addEventListener('touchstart', (e) => {
-    if (!statsOpen) {
-      touchStartX = e.changedTouches[0].screenX;
-      touchStartY = e.changedTouches[0].screenY;
-    }
-  }, { passive: true });
-
-  document.body.addEventListener('touchend', (e) => {
-    if (!statsOpen) {
-      touchEndX = e.changedTouches[0].screenX;
-      const diffX = touchEndX - touchStartX;
-      const diffY = Math.abs(e.changedTouches[0].screenY - touchStartY);
-      if (Math.abs(diffX) > swipeThreshold && Math.abs(diffX) > diffY) {
-        if (diffX < 0) openStats();
-      }
-    }
-  }, { passive: true });
-}
-
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && statsOpen) closeStats();
+  if (e.key === 'Escape') {
+    if (statsOpen) closeStats();
+    else if (currentPage > 0) goToPage(0);
+  }
 });
 
 /* ===== PAGE NAVIGATION ===== */
 
-const featuresPage = document.getElementById('featuresPage');
-const extensionsPage = document.getElementById('extensionsPage');
+const carousel = document.getElementById('carousel');
 let currentPage = 0;
-const totalPages = 3;
+const totalPages = 4;
+let isDragging = false;
+let startX = 0;
+let currentTranslate = 0;
+let prevTranslate = 0;
+let animationID;
+let isCarouselTransitioning = false;
+
+function updateCarousel() {
+  carousel.style.transition = isCarouselTransitioning ? 'transform 0.4s cubic-bezier(0.2, 0, 0.2, 1)' : 'none';
+  carousel.style.transform = `translateX(-${currentTranslate}px)`;
+}
 
 function goToPage(page) {
   if (page < 0 || page >= totalPages) return;
   currentPage = page;
   dots.forEach((dot, i) => dot.classList.toggle('active', i === page));
 
-  const wasStatsOpen = statsOpen;
-  const wasFeaturesOpen = featuresPage.classList.contains('open');
-  const wasExtensionsOpen = extensionsPage.classList.contains('open');
+  isCarouselTransitioning = true;
+  currentTranslate = page * window.innerWidth;
+  updateCarousel();
 
-  closeStats();
-  featuresPage.classList.remove('open');
-  extensionsPage.classList.remove('open');
-
-  if (page === 1) featuresPage.classList.add('open');
-  if (page === 2) extensionsPage.classList.add('open');
+  setTimeout(() => {
+    isCarouselTransitioning = false;
+    prevTranslate = currentTranslate;
+  }, 400);
 }
 
 function nextPage() {
@@ -525,38 +497,59 @@ dots.forEach(dot => {
   });
 });
 
-if (isTouchDevice) {
-  let sectionTouchStartX = 0;
-  let sectionTouchStartY = 0;
-  let sectionSwiped = false;
+carousel.addEventListener('touchstart', (e) => {
+  const tag = e.target.tagName;
+  const isInteractive = ['INPUT', 'BUTTON', 'A', 'CANVAS', 'LABEL'].includes(tag);
+  const isPageIndicator = e.target.closest('.page-indicator');
+  const isCalendarNav = e.target.closest('.nav-btn, .view-toggle');
+  const isCalendarDay = e.target.closest('.date-cell, .list-event-item');
+  const isTerminal = e.target.closest('.terminal-card');
 
-  document.addEventListener('touchstart', (e) => {
-    sectionTouchStartX = e.changedTouches[0].screenX;
-    sectionTouchStartY = e.changedTouches[0].screenY;
-    sectionSwiped = false;
-  }, { passive: true });
+  if (isInteractive || isPageIndicator || isCalendarNav || isCalendarDay || isTerminal || isCarouselTransitioning) return;
 
-  document.addEventListener('touchend', (e) => {
-    if (sectionSwiped) return;
+  isDragging = true;
+  startX = e.touches[0].clientX;
+  prevTranslate = currentTranslate;
+  carousel.style.transition = 'none';
+}, { passive: true });
 
-    const endX = e.changedTouches[0].screenX;
-    const endY = e.changedTouches[0].screenY;
-    const diffX = endX - sectionTouchStartX;
-    const diffY = Math.abs(endY - sectionTouchStartY);
+carousel.addEventListener('touchmove', (e) => {
+  if (!isDragging) return;
+  const currentX = e.touches[0].clientX;
+  const diff = currentX - startX;
+  currentTranslate = prevTranslate - diff;
 
-    if (Math.abs(diffX) > 50 && Math.abs(diffX) > diffY) {
-      sectionSwiped = true;
-      if (diffX < 0) nextPage();
-      else if (diffX > 0) prevPage();
-    }
-  }, { passive: true });
-}
+  const minTranslate = (totalPages - 1) * window.innerWidth;
+  currentTranslate = Math.max(0, Math.min(currentTranslate, minTranslate));
 
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    if (statsOpen) closeStats();
-    else if (currentPage > 0) goToPage(0);
+  updateCarousel();
+}, { passive: true });
+
+carousel.addEventListener('touchend', (e) => {
+  if (!isDragging) return;
+  isDragging = false;
+
+  const endX = e.changedTouches[0].clientX;
+  const diff = endX - startX;
+  const threshold = 50;
+
+  if (Math.abs(diff) > threshold) {
+    if (diff < 0) nextPage();
+    else prevPage();
+  } else {
+    isCarouselTransitioning = true;
+    currentTranslate = prevTranslate;
+    updateCarousel();
+    setTimeout(() => {
+      isCarouselTransitioning = false;
+    }, 400);
   }
+}, { passive: true });
+
+window.addEventListener('resize', () => {
+  currentTranslate = currentPage * window.innerWidth;
+  prevTranslate = currentTranslate;
+  updateCarousel();
 });
 
 /* ===== THREE.JS: ARROW + ICONS ===== */

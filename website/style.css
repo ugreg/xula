@@ -1173,6 +1173,10 @@ a:hover {
 
 @media (max-width: 768px) {
   .extensions-grid { grid-template-columns: 1fr !important; }
+
+  .stats-arrow-btn {
+    display: none !important;
+  }
 }
 
 .avatar-row {
@@ -1612,6 +1616,36 @@ body.loading .terminal-card {
 
 .stats-arrow-btn.back.hidden {
   transform: translateY(-50%) translateX(-100%);
+}
+
+.carousel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  overflow: hidden;
+  z-index: 100;
+}
+
+.carousel-page {
+  width: 100%;
+  min-width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--bg);
+  flex-shrink: 0;
+  position: relative;
+}
+
+#page-features { background: #1a0a2e; }
+#page-extensions { background: var(--bg); }
+#page-stats { background: var(--bg); }
+
+.stats-content h2 {
+  color: var(--text);
 }
 
 .stats-page {
