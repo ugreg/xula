@@ -3,6 +3,8 @@ import * as THREE from 'three';
 const html = (strings, ...vals) =>
   strings.reduce((acc, s, i) => acc + s + (vals[i] ?? ''), '');
 
+/* ===== LOADING SCREEN ===== */
+
 const progressBar = document.getElementById('file');
 const loadingText = document.getElementById('loading-text');
 const loadingScreen = document.getElementById('loading-screen');
@@ -116,6 +118,8 @@ window.addEventListener('load', () => {
 
 setProgress(5);
 
+/* ===== REVEAL ANIMATION ===== */
+
 const observerConfig = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
 const revealObserver = new IntersectionObserver((entries) => {
   for (const entry of entries) {
@@ -137,6 +141,8 @@ document.addEventListener('click', (e) => {
   anchorTarget?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
 
+/* ===== FLOATING ELEMENTS ===== */
+
 const floatingElements = Array.from(document.querySelectorAll('.floating'));
 let mouseX = window.innerWidth / 2;
 
@@ -152,6 +158,8 @@ new ResizeObserver(() => {
     el.style.transform = html`translate(${xOffset}px, ${-10}px) rotate(${xOffset * 5}deg)`;
   }
 }).observe(featuresSection);
+
+/* ===== SCROLL & TERMINAL ===== */
 
 const homeTerminalElement = document.querySelector('#homeTerminal');
 const scrollTopButton = document.querySelector('.scroll-top-btn');
@@ -174,6 +182,8 @@ scrollTopButton?.addEventListener('click', () => {
 });
 
 window.addEventListener('beforeunload', () => scrollController.abort());
+
+/* ===== CALENDAR ===== */
 
 const calendarState = {
   months: ['September', 'October', 'November', 'December'],
@@ -358,6 +368,8 @@ calendarDaysContainer?.addEventListener('click', (e) => {
   }
 });
 
+/* ===== MOTION PREFERENCE ===== */
+
 const motionPreferenceQuery = window.matchMedia?.('(prefers-reduced-motion: reduce)');
 const handleMotionPreference = (mq) => {
   if (mq.matches) {
@@ -388,6 +400,8 @@ document.addEventListener('dblclick', (e) => {
 
 window.__app = { state: calendarState, copy: copyToClipboard };
 
+/* ===== THEME TOGGLE ===== */
+
 const themeToggle = document.getElementById('themeToggle');
 const savedTheme = localStorage.getItem('theme');
 const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? true;
@@ -404,30 +418,22 @@ themeToggle.addEventListener('change', () => {
   localStorage.setItem('theme', light ? 'light' : 'dark');
 });
 
-/* ===== STATS PAGE (mobile carousel) ===== */
+/* ===== PAGE NAVIGATION ===== */
 
+const carousel = document.getElementById('carousel');
 const statsArrowBtn = document.querySelector('.stats-arrow-btn:not(.back)');
 const backArrowBtn = document.querySelector('.stats-arrow-btn.back');
 const dots = document.querySelectorAll('.page-indicator .dot');
 
-const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
-
-document.addEventListener('keydown', (e) => {
-  if (!isMobile()) return;
-  if (e.key === 'Escape' && currentPage > 0) goToPage(0);
-});
-
-/* ===== PAGE NAVIGATION (mobile only) ===== */
-
-const carousel = document.getElementById('carousel');
 let currentPage = 0;
 const totalPages = 4;
 let isDragging = false;
 let startX = 0;
 let currentTranslate = 0;
 let prevTranslate = 0;
-let animationID;
 let isCarouselTransitioning = false;
+
+const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
 
 function updateCarousel() {
   if (!isMobile()) return;
@@ -445,6 +451,9 @@ function goToPage(page) {
   currentTranslate = page * window.innerWidth;
   updateCarousel();
 
+  statsArrowBtn.classList.toggle('hidden', page === 3);
+  backArrowBtn.classList.toggle('hidden', page !== 3);
+
   setTimeout(() => {
     isCarouselTransitioning = false;
     prevTranslate = currentTranslate;
@@ -452,12 +461,10 @@ function goToPage(page) {
 }
 
 function nextPage() {
-  if (!isMobile()) return;
   if (currentPage < totalPages - 1) goToPage(currentPage + 1);
 }
 
 function prevPage() {
-  if (!isMobile()) return;
   if (currentPage > 0) goToPage(currentPage - 1);
 }
 
@@ -533,21 +540,19 @@ window.addEventListener('resize', () => {
 statsArrowBtn?.addEventListener('click', () => {
   if (isMobile()) goToPage(3);
 });
+
 backArrowBtn?.addEventListener('click', () => {
   if (isMobile()) goToPage(0);
+});
+
+document.addEventListener('keydown', (e) => {
+  if (!isMobile()) return;
+  if (e.key === 'Escape' && currentPage > 0) goToPage(0);
 });
 
 /* ===== THREE.JS: ARROW + ICONS ===== */
 
 const voxelMeshes = [];
-
-function createVoxel(x, y, z, s, color) {
-  const g = new THREE.BoxGeometry(s, s, s);
-  const m = new THREE.MeshBasicMaterial({ color });
-  const mesh = new THREE.Mesh(g, m);
-  mesh.position.set(x, y, z);
-  return mesh;
-}
 
 function createWireframeVoxel(x, y, z, s, color) {
   const group = new THREE.Group();
@@ -581,13 +586,8 @@ function createWireframeVoxel(x, y, z, s, color) {
 
 function initArrow() {
   try {
-    console.log('[three] initArrow starting');
     const canvas = document.getElementById('arrowCanvas');
-    if (!canvas) {
-      console.error('[three] initArrow: arrowCanvas not found');
-      return;
-    }
-    console.log('[three] initArrow: canvas found');
+    if (!canvas) return;
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
@@ -637,7 +637,6 @@ function initArrow() {
     scene.add(d2);
 
     voxelMeshes.push({ mesh: arrowMesh, scene, camera, renderer, type: 'arrow' });
-    console.log('[three] initArrow: done, total scenes:', voxelMeshes.length);
   } catch (e) {
     console.error('[three] initArrow error:', e);
   }
@@ -646,10 +645,7 @@ function initArrow() {
 function createIconScene(iconType, color) {
   try {
     const canvas = document.querySelector(`canvas[data-icon="${iconType}"]`);
-    if (!canvas) {
-      console.warn('[three] createIconScene:', iconType, 'canvas not found');
-      return;
-    }
+    if (!canvas) return;
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
@@ -724,14 +720,12 @@ function createIconScene(iconType, color) {
     scene.add(dlight);
 
     voxelMeshes.push({ mesh: group, scene, camera, renderer, type: 'icon' });
-    console.log('[three] createIconScene:', iconType, 'done');
   } catch (e) {
     console.error('[three] createIconScene error for', iconType, ':', e);
   }
 }
 
 function initIcons() {
-  console.log('[three] initIcons starting');
   createIconScene('crane', 0xf5a623);
   createIconScene('wrench', 0x7f8c8d);
   createIconScene('robot', 0x3498db);
@@ -739,7 +733,6 @@ function initIcons() {
   createIconScene('grad', 0x2c3e50);
   createIconScene('briefcase', 0x34495e);
   createIconScene('money', 0x27ae60);
-  console.log('[three] initIcons done, total scenes:', voxelMeshes.length);
 }
 
 function animateAll() {
@@ -763,10 +756,7 @@ function animateAll() {
 }
 
 window.addEventListener('load', () => {
-  console.log('[three] window load event');
   setTimeout(() => {
-    console.log('[three] initializing...');
-    console.log('[three] THREE version:', THREE.REVISION);
     initArrow();
     initIcons();
     animateAll();

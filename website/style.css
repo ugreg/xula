@@ -780,6 +780,9 @@ a:hover {
   border-top: 1px solid var(--border);
   padding: 60px 20px;
   text-align: center;
+  position: relative;
+  z-index: 150;
+  background: var(--bg);
 }
 
 .footer-links {
@@ -1139,6 +1142,10 @@ a:hover {
   header { padding: 12px; }
 
   .hero h1 { font-size: 36px; }
+
+  .hero.title-section {
+    padding-top: 40px;
+  }
 
   .trust-grid { grid-template-columns: 1fr; }
 
@@ -1620,7 +1627,6 @@ body.loading .terminal-card {
 
 .carousel {
   position: relative;
-  min-height: 100vh;
   overflow: visible;
   z-index: 100;
 }
@@ -1636,7 +1642,7 @@ body.loading .terminal-card {
   position: relative;
 }
 
-#page-features { background: #1a0a2e; }
+#page-features { background: var(--bg); }
 #page-extensions { background: var(--bg); }
 #page-stats { background: var(--bg); }
 
@@ -1702,7 +1708,8 @@ body.loading .terminal-card {
 
   .page-indicator {
     display: flex;
-    top: 85px;
+    top: auto;
+    bottom: 24px;
     z-index: 600;
   }
 
@@ -1713,15 +1720,17 @@ body.loading .terminal-card {
     right: 0;
     bottom: 0;
     display: flex;
+    flex-direction: row;
     overflow: hidden;
   }
 
   .carousel-page {
-    width: 100%;
-    min-width: 100%;
-    height: 100%;
+    width: 100vw;
+    min-width: 100vw;
+    height: 100vh;
     overflow-y: auto;
     overflow-x: hidden;
+    box-sizing: border-box;
   }
 
   .stats-grid {
