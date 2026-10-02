@@ -1,20 +1,3 @@
-const homeTerminalElement = document.querySelector('#homeTerminal');
-
-homeTerminalElement?.classList.add('visible');
-
-/* ===== HIDE TERMINAL ON SCROLL ===== */
-
-const hideTerminalOnScroll = () => {
-  if (!homeTerminalElement) return;
-  if (window.scrollY > 300) {
-    homeTerminalElement.classList.remove('visible');
-  } else {
-    homeTerminalElement.classList.add('visible');
-  }
-};
-
-window.addEventListener('scroll', hideTerminalOnScroll, { passive: true });
-
 /* ===== THEME ===== */
 
 const savedTheme = localStorage.getItem('theme');

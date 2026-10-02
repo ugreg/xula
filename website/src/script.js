@@ -1,5 +1,6 @@
 const scrollTopButton = document.querySelector('.scroll-top-btn');
 const themeToggle = document.getElementById('themeToggle');
+const homeTerminal = document.getElementById('homeTerminal');
 const carousel = document.getElementById('carousel');
 const statsArrowBtn = document.querySelector('.stats-arrow-btn:not(.back)');
 const backArrowBtn = document.querySelector('.stats-arrow-btn.back');
@@ -36,6 +37,11 @@ themeToggle.addEventListener('change', () => {
 window.addEventListener('load', () => {
   document.body.classList.remove('loading');
   setTimeout(syncThemeToFrames, 100);
+  homeTerminal?.classList.add('visible');
+
+  if (isMobile() && carousel) {
+    carousel.style.overflowX = 'auto';
+  }
 });
 
 /* ===== SCROLL ===== */
@@ -44,6 +50,10 @@ window.addEventListener('scroll', () => {
   const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
   const showScrollTop = window.scrollY > totalScroll * 0.5;
   scrollTopButton?.classList.toggle('visible', showScrollTop);
+
+  if (homeTerminal) {
+    homeTerminal.classList.toggle('visible', window.scrollY <= 50);
+  }
 });
 
 scrollTopButton?.addEventListener('click', () => {
@@ -54,36 +64,32 @@ scrollTopButton?.addEventListener('click', () => {
 
 let currentPage = 0;
 const totalPages = 5;
-let isDragging = false;
-let startX = 0;
-let currentTranslate = 0;
-let prevTranslate = 0;
-let isCarouselTransitioning = false;
-
-function updateCarousel() {
-  if (!isMobile()) return;
-  carousel.style.transition = isCarouselTransitioning ? 'transform 0.4s cubic-bezier(0.2, 0, 0.2, 1)' : 'none';
-  carousel.style.transform = `translateX(-${currentTranslate}px)`;
-}
 
 function goToPage(page) {
   if (!isMobile()) return;
   if (page < 0 || page >= totalPages) return;
+  if (!carousel) return;
   currentPage = page;
   dots.forEach((dot, i) => dot.classList.toggle('active', i === page));
 
-  isCarouselTransitioning = true;
-  currentTranslate = page * window.innerWidth;
-  updateCarousel();
+  carousel.scrollLeft = page * window.innerWidth;
 
   statsArrowBtn.classList.toggle('hidden', page === 4);
   backArrowBtn.classList.toggle('hidden', page !== 4);
-
-  setTimeout(() => {
-    isCarouselTransitioning = false;
-    prevTranslate = currentTranslate;
-  }, 400);
 }
+
+carousel?.addEventListener('scroll', () => {
+  if (!isMobile()) return;
+  const scrollLeft = carousel.scrollLeft;
+  const vw = window.innerWidth;
+  const newPage = Math.round(scrollLeft / vw);
+  if (newPage !== currentPage && newPage >= 0 && newPage < totalPages) {
+    currentPage = newPage;
+    dots.forEach((dot, i) => dot.classList.toggle('active', i === currentPage));
+    statsArrowBtn.classList.toggle('hidden', currentPage === 4);
+    backArrowBtn.classList.toggle('hidden', currentPage !== 4);
+  }
+}, { passive: true });
 
 dots.forEach(dot => {
   dot.addEventListener('click', () => {
@@ -93,63 +99,13 @@ dots.forEach(dot => {
   });
 });
 
-carousel.addEventListener('touchstart', (e) => {
-  if (!isMobile()) return;
-  const tag = e.target.tagName;
-  const isInteractive = ['INPUT', 'BUTTON', 'A', 'CANVAS', 'LABEL', 'IFRAME'].includes(tag);
-  const isPageIndicator = e.target.closest('.page-indicator');
-  const isArrowBtn = e.target.closest('.stats-arrow-btn');
-
-  if (isInteractive || isPageIndicator || isArrowBtn || isCarouselTransitioning) return;
-
-  isDragging = true;
-  startX = e.touches[0].clientX;
-  prevTranslate = currentTranslate;
-  carousel.style.transition = 'none';
-}, { passive: true });
-
-carousel.addEventListener('touchmove', (e) => {
-  if (!isMobile() || !isDragging) return;
-  const currentX = e.touches[0].clientX;
-  const diff = currentX - startX;
-  currentTranslate = prevTranslate - diff;
-
-  const minTranslate = (totalPages - 1) * window.innerWidth;
-  currentTranslate = Math.max(0, Math.min(currentTranslate, minTranslate));
-
-  updateCarousel();
-}, { passive: true });
-
-carousel.addEventListener('touchend', (e) => {
-  if (!isMobile() || !isDragging) return;
-  isDragging = false;
-
-  const endX = e.changedTouches[0].clientX;
-  const diff = endX - startX;
-  const threshold = 50;
-
-  if (Math.abs(diff) > threshold) {
-    if (diff < 0) goToPage(currentPage + 1);
-    else goToPage(currentPage - 1);
-  } else {
-    isCarouselTransitioning = true;
-    currentTranslate = prevTranslate;
-    updateCarousel();
-    setTimeout(() => {
-      isCarouselTransitioning = false;
-    }, 400);
-  }
-}, { passive: true });
-
 window.addEventListener('resize', () => {
   if (!isMobile()) {
     carousel.style.transition = 'none';
     carousel.style.transform = '';
+    carousel.style.overflowX = '';
     return;
   }
-  currentTranslate = currentPage * window.innerWidth;
-  prevTranslate = currentTranslate;
-  updateCarousel();
 });
 
 statsArrowBtn?.addEventListener('click', () => {

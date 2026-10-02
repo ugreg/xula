@@ -66,6 +66,54 @@
       </svg>
     </button>
 
+    <div id="homeTerminal" class="terminal-card">
+      <div class="window">
+        <div class="header">
+          <div>
+            <svg width="10" height="10" viewBox="0 0 10 10" style="display: inline-block;"><circle cx="5" cy="5" r="5" fill="#ff5f56"/></svg>
+            <svg width="10" height="10" viewBox="0 0 10 10" style="display: inline-block;"><circle cx="5" cy="5" r="5" fill="#ffbd2e"/></svg>
+            <svg width="10" height="10" viewBox="0 0 10 10" style="display: inline-block;"><circle cx="5" cy="5" r="5" fill="#27c93f"/></svg>
+          </div>
+          <span style="font-size: 12px; color: #a0a0a0; font-family: monospace; margin-left: 10px;">~</span>
+          <div style="width: 14px;"></div>
+        </div>
+
+        <div class="body" style="padding: 15px; font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Mono', monospace; font-size: 14px; line-height: 1.6; height: calc(100% - 40px); overflow-y: auto; text-align: left;">
+          <div style="color: #888; font-size: 12px; margin-bottom: 10px;">
+            <span style="color: #27c93f;">$</span> ls -la
+          </div>
+
+          <div class="output">
+            <span style="color: #86efac;">drwxr-xr-x</span> 2 chat uncs  4096 Oct 10 14:30 .
+          </div>
+
+          <div class="output">
+            <span style="color: #86efac;">drwxr-xr-x</span> 2 chat uncs  4096 Oct 10 14:30 ..
+          </div>
+
+          <div class="output">
+            <span style="color: #d4a574;">-rw-r--r--</span> 1 chat uncs  1024 Oct 10 14:30 subathon.txt
+          </div>
+
+          <div class="output">
+            <span style="color: #d4a574;">-rw-r--r--</span> 1 chat uncs  2048 Oct 10 14:30 AGENTS.md
+          </div>
+
+          <div style="margin-top: 15px; color: #888;">
+            <span style="color: #27c93f;">$</span> echo "Scroll down to see schedule"
+          </div>
+
+          <div class="output">
+            Scroll down to see schedule
+          </div>
+
+          <div style="margin-top: 15px; color: #888;">
+            <span style="color: #27c93f;">$</span> <span class="cursor"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div id="carousel" class="carousel">
       <div class="carousel-page" id="page-hero">
         <iframe id="iframe-home" src="pages/home.html" frameborder="0" loading="eager"></iframe>
@@ -98,6 +146,6 @@
       </svg>
     </button>
 
-    <script type="module" src="script.js"></script>
+    <script type="module" src="src/script.js"></script>
   </body>
 </html>
