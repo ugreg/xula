@@ -1199,7 +1199,7 @@ a:hover {
   display: flex;
   align-items: center;
   gap: 144px;
-  animation: scrollAvatars 40s linear infinite;
+  animation: scrollAvatars 100s linear infinite;
 }
 
 .avatar-track img,
@@ -1824,7 +1824,7 @@ body.loading .terminal-card {
 
   .avatar-track {
     animation-duration: 60s;
-    gap: 48px;
+    gap: 24px;
   }
 
   .avatar-track img {
@@ -1835,6 +1835,20 @@ body.loading .terminal-card {
   .avatar-shape {
     width: 90px;
     height: 90px;
+    margin-top: 0;
+  }
+
+  .section-header h2 {
+    font-size: 24px;
+  }
+
+  .section-header p {
+    font-size: 14px;
+    padding: 0 16px;
+  }
+
+  .stats-content {
+    padding: 0 16px 40px;
   }
 
   .footer {
