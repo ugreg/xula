@@ -1187,10 +1187,12 @@ a:hover {
 }
 
 .avatar-row {
-  overflow: hidden;
-  margin: 16px calc(50% - 50vw);
-  padding: 8px 0;
-  width: 100vw;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .avatar-track {
@@ -1203,6 +1205,7 @@ a:hover {
 .avatar-track img,
 .avatar-shape {
   flex-shrink: 0;
+  align-self: center;
 }
 
 .avatar-track img {
@@ -1214,12 +1217,15 @@ a:hover {
 }
 
 .avatar-shape {
-  width: 64px;
-  height: 64px;
+  width: 180px;
+  height: 180px;
+  margin-top: -20px;
 }
 
 [data-avatar-shape] {
   display: block;
+  width: 100%;
+  height: 100%;
 }
 
 @keyframes scrollAvatars {
@@ -1805,5 +1811,20 @@ body.loading .terminal-card {
 
   .stats-content h2 {
     margin-bottom: 24px;
+  }
+
+  .avatar-track {
+    animation-duration: 60s;
+    gap: 48px;
+  }
+
+  .avatar-track img {
+    width: 90px;
+    height: 90px;
+  }
+
+  .avatar-shape {
+    width: 90px;
+    height: 90px;
   }
 }
