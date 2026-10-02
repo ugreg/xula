@@ -117,15 +117,15 @@ document.addEventListener('keydown', (e) => {
 
 let swipeStartX = 0;
 
-carousel?.addEventListener('touchstart', (e) => {
-  if (!isMobile()) return;
-  swipeStartX = e.touches[0].clientX;
-}, { passive: true });
+carousel?.querySelectorAll('.carousel-page iframe').forEach(iframe => {
+  iframe.addEventListener('touchstart', (e) => {
+    swipeStartX = e.touches[0].clientX;
+  }, { passive: true });
 
-carousel?.addEventListener('touchend', (e) => {
-  if (!isMobile()) return;
-  const swipeEndX = e.changedTouches[0].clientX;
-  const diff = swipeStartX - swipeEndX;
-  if (diff > 50 && currentPage < totalPages - 1) goToPage(currentPage + 1);
-  if (diff < -50 && currentPage > 0) goToPage(currentPage - 1);
-}, { passive: true });
+  iframe.addEventListener('touchend', (e) => {
+    const swipeEndX = e.changedTouches[0].clientX;
+    const diff = swipeStartX - swipeEndX;
+    if (diff > 50 && currentPage < totalPages - 1) goToPage(currentPage + 1);
+    if (diff < -50 && currentPage > 0) goToPage(currentPage - 1);
+  }, { passive: true });
+});
