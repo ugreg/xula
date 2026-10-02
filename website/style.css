@@ -97,7 +97,6 @@
 
 html {
   scroll-behavior: smooth;
-  overflow: hidden;
 }
 
 [id] {
@@ -117,7 +116,7 @@ body {
   background: var(--bg);
   color: var(--text);
   line-height: 1.6;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 a {
@@ -1642,16 +1641,33 @@ body.loading .terminal-card {
 
 /* desktop scroll-snap */
 @media (min-width: 769px) {
+  body {
+    min-height: 100vh;
+    overflow: hidden;
+  }
+
   .carousel {
-    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     overflow-y: auto;
-    scroll-snap-type: y mandatory;
+    scroll-snap-type: y proximity;
   }
 
   .carousel-page {
+    display: block;
+    width: 100%;
     height: 100vh;
     overflow: hidden;
     scroll-snap-align: start;
+  }
+
+  .carousel-page iframe {
+    width: 100%;
+    height: 100%;
+    display: block;
   }
 }
 
@@ -1736,19 +1752,19 @@ body.loading .terminal-card {
 
   .carousel {
     position: fixed;
-    top: 0;
+    top: 90px;
     left: 0;
     right: 0;
     bottom: 0;
     display: flex;
     flex-direction: row;
-    overflow-x: auto !important;
+    overflow-x: scroll;
     overflow-y: hidden;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-x;
     z-index: 50;
+  }
+
+  .carousel::-webkit-scrollbar {
+    display: none;
   }
 
   .carousel::-webkit-scrollbar {

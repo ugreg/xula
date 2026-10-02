@@ -72,24 +72,13 @@ function goToPage(page) {
   currentPage = page;
   dots.forEach((dot, i) => dot.classList.toggle('active', i === page));
 
-  carousel.scrollLeft = page * window.innerWidth;
+  carousel.scrollTo({ left: page * window.innerWidth, behavior: 'smooth' });
 
-  statsArrowBtn.classList.toggle('hidden', page === 4);
-  backArrowBtn.classList.toggle('hidden', page !== 4);
+  statsArrowBtn.classList.toggle('hidden', page === totalPages - 1);
+  backArrowBtn.classList.toggle('hidden', page === 0);
 }
 
-carousel?.addEventListener('scroll', () => {
-  if (!isMobile()) return;
-  const scrollLeft = carousel.scrollLeft;
-  const vw = window.innerWidth;
-  const newPage = Math.round(scrollLeft / vw);
-  if (newPage !== currentPage && newPage >= 0 && newPage < totalPages) {
-    currentPage = newPage;
-    dots.forEach((dot, i) => dot.classList.toggle('active', i === currentPage));
-    statsArrowBtn.classList.toggle('hidden', currentPage === 4);
-    backArrowBtn.classList.toggle('hidden', currentPage !== 4);
-  }
-}, { passive: true });
+
 
 dots.forEach(dot => {
   dot.addEventListener('click', () => {
@@ -98,6 +87,8 @@ dots.forEach(dot => {
     goToPage(page);
   });
 });
+
+
 
 window.addEventListener('resize', () => {
   if (!isMobile()) {
@@ -109,14 +100,32 @@ window.addEventListener('resize', () => {
 });
 
 statsArrowBtn?.addEventListener('click', () => {
-  if (isMobile()) goToPage(4);
+  if (isMobile() && currentPage < totalPages - 1) goToPage(currentPage + 1);
 });
 
 backArrowBtn?.addEventListener('click', () => {
-  if (isMobile()) goToPage(0);
+  if (isMobile() && currentPage > 0) goToPage(currentPage - 1);
 });
 
 document.addEventListener('keydown', (e) => {
   if (!isMobile()) return;
-  if (e.key === 'Escape' && currentPage > 0) goToPage(0);
+  if (e.key === 'ArrowRight' && currentPage < totalPages - 1) goToPage(currentPage + 1);
+  if (e.key === 'ArrowLeft' && currentPage > 0) goToPage(currentPage - 1);
 });
+
+/* ===== MOBILE SWIPE ===== */
+
+let swipeStartX = 0;
+
+carousel?.addEventListener('touchstart', (e) => {
+  if (!isMobile()) return;
+  swipeStartX = e.touches[0].clientX;
+}, { passive: true });
+
+carousel?.addEventListener('touchend', (e) => {
+  if (!isMobile()) return;
+  const swipeEndX = e.changedTouches[0].clientX;
+  const diff = swipeStartX - swipeEndX;
+  if (diff > 50 && currentPage < totalPages - 1) goToPage(currentPage + 1);
+  if (diff < -50 && currentPage > 0) goToPage(currentPage - 1);
+}, { passive: true });
