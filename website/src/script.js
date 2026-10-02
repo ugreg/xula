@@ -52,13 +52,20 @@ window.addEventListener('scroll', () => {
   scrollTopButton?.classList.toggle('visible', showScrollTop);
 
   if (homeTerminal) {
-    homeTerminal.classList.toggle('visible', window.scrollY <= 50);
+    const scrollPos = carousel ? carousel.scrollTop : window.scrollY;
+    homeTerminal.classList.toggle('visible', scrollPos <= 50);
   }
 });
 
 scrollTopButton?.addEventListener('click', () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
+
+carousel?.addEventListener('scroll', () => {
+  if (homeTerminal) {
+    homeTerminal.classList.toggle('visible', carousel.scrollTop <= 50);
+  }
+}, { passive: true });
 
 /* ===== CAROUSEL (mobile only) ===== */
 

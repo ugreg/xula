@@ -1464,19 +1464,19 @@ body.loading .terminal-card {
 
 .terminal-card {
   position: fixed;
-  left: 24px;
-  right: 24px;
+  left: 50%;
   bottom: 15px;
+  width: 60%;
+  transform: translateX(-50%) translateY(20px);
   opacity: 0;
   pointer-events: none;
   z-index: 1000;
   transition: opacity 0.3s ease, transform 0.3s ease;
-  transform: translateY(20px);
 
   &.visible {
     opacity: 1;
     pointer-events: auto;
-    transform: translateY(0);
+    transform: translateX(-50%) translateY(0);
   }
 
   & .window {
@@ -1657,9 +1657,18 @@ body.loading .terminal-card {
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: 40px;
     overflow-y: auto;
     scroll-snap-type: y proximity;
+  }
+
+  .footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px 20px;
+    z-index: 200;
   }
 
   .carousel-page {
@@ -1700,7 +1709,7 @@ body.loading .terminal-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 100px 24px 40px;
+  padding: 0 24px 40px;
 }
 
 .stats-content h2 {
@@ -1826,5 +1835,9 @@ body.loading .terminal-card {
   .avatar-shape {
     width: 90px;
     height: 90px;
+  }
+
+  .footer {
+    display: none;
   }
 }
