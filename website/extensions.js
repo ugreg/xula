@@ -32,7 +32,7 @@ function createWireframeVoxel(x, y, z, s, color) {
   return group;
 }
 
-function createIconScene(iconType, color) {
+function createIconScene(iconType) {
   try {
     const canvas = document.querySelector(`canvas[data-icon="${iconType}"]`);
     if (!canvas) return;
@@ -130,13 +130,13 @@ function animateAll() {
 
 window.addEventListener('load', () => {
   setTimeout(() => {
-    createIconScene('crane', 0xf5a623);
-    createIconScene('wrench', 0x7f8c8d);
-    createIconScene('robot', 0x3498db);
-    createIconScene('heart', 0xe74c3c);
-    createIconScene('grad', 0x2c3e50);
-    createIconScene('briefcase', 0x34495e);
-    createIconScene('money', 0x27ae60);
+    createIconScene('crane');
+    createIconScene('wrench');
+    createIconScene('robot');
+    createIconScene('heart');
+    createIconScene('grad');
+    createIconScene('briefcase');
+    createIconScene('money');
     animateAll();
   }, 500);
 });
@@ -152,8 +152,7 @@ document.addEventListener('dblclick', (e) => {
 });
 
 const savedTheme = localStorage.getItem('theme');
-const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? true;
-const isLight = savedTheme === 'light' || (!savedTheme && !prefersDark);
+const isLight = savedTheme === 'light';
 
 if (isLight) {
   document.documentElement.classList.add('light');
@@ -164,21 +163,3 @@ window.addEventListener('message', (e) => {
     document.documentElement.classList.toggle('light', e.data.light);
   }
 });
-
-function reportHeight() {
-  const height = Math.max(
-    document.body.scrollHeight,
-    document.body.offsetHeight,
-    document.documentElement.clientHeight,
-    document.documentElement.scrollHeight,
-    document.documentElement.offsetHeight
-  );
-  parent.postMessage({ type: 'iframe-height', height }, '*');
-}
-
-window.addEventListener('load', () => {
-  setTimeout(reportHeight, 100);
-  setTimeout(reportHeight, 500);
-});
-window.addEventListener('resize', reportHeight);
-setInterval(reportHeight, 1000);
