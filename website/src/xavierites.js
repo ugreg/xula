@@ -77,16 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-document.addEventListener('dblclick', (e) => {
-  const clickedCard = e.target.closest('.feature-card');
-  if (!clickedCard) return;
-  const cardTitleElement = clickedCard.querySelector('h3');
-  const cardTitle = cardTitleElement?.textContent?.trim();
-  if (cardTitle) {
-    navigator.clipboard?.writeText?.(cardTitle);
-  }
-});
-
 const savedTheme = localStorage.getItem('theme');
 const isLight = savedTheme === 'light';
 

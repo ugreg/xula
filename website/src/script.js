@@ -9,8 +9,6 @@ const iframes = document.querySelectorAll('.carousel-page iframe');
 
 const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
 
-/* ===== THEME ===== */
-
 const savedTheme = localStorage.getItem('theme');
 const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? true;
 const isLight = savedTheme === 'light' || (!savedTheme && !prefersDark);
@@ -44,8 +42,6 @@ window.addEventListener('load', () => {
   }
 });
 
-/* ===== SCROLL ===== */
-
 window.addEventListener('scroll', () => {
   const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
   const showScrollTop = window.scrollY > totalScroll * 0.5;
@@ -67,8 +63,6 @@ carousel?.addEventListener('scroll', () => {
   }
 }, { passive: true });
 
-/* ===== CAROUSEL (mobile only) ===== */
-
 let currentPage = 0;
 const totalPages = 5;
 
@@ -76,13 +70,7 @@ function goToPage(page) {
   if (!isMobile()) return;
   if (page < 0 || page >= totalPages) return;
   if (!carousel) return;
-  currentPage = page;
-  dots.forEach((dot, i) => dot.classList.toggle('active', i === page));
-
   carousel.scrollTo({ left: page * window.innerWidth, behavior: 'smooth' });
-
-  statsArrowBtn.classList.toggle('hidden', page === totalPages - 1);
-  backArrowBtn.classList.toggle('hidden', page === 0);
 }
 
 
@@ -120,19 +108,22 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowLeft' && currentPage > 0) goToPage(currentPage - 1);
 });
 
-/* ===== MOBILE SWIPE ===== */
+if (carousel) {
+  const pages = carousel.querySelectorAll('.carousel-page');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const pageEl = entry.target;
+        const idx = Array.from(pages).indexOf(pageEl);
+        if (idx >= 0) {
+          currentPage = idx;
+          dots.forEach((dot, i) => dot.classList.toggle('active', i === idx));
+          statsArrowBtn.classList.toggle('hidden', idx === totalPages - 1);
+          backArrowBtn.classList.toggle('hidden', idx === 0);
+        }
+      }
+    });
+  }, { root: carousel, threshold: 0.5 });
 
-let swipeStartX = 0;
-
-carousel?.querySelectorAll('.carousel-page iframe').forEach(iframe => {
-  iframe.addEventListener('touchstart', (e) => {
-    swipeStartX = e.touches[0].clientX;
-  }, { passive: true });
-
-  iframe.addEventListener('touchend', (e) => {
-    const swipeEndX = e.changedTouches[0].clientX;
-    const diff = swipeStartX - swipeEndX;
-    if (diff > 50 && currentPage < totalPages - 1) goToPage(currentPage + 1);
-    if (diff < -50 && currentPage > 0) goToPage(currentPage - 1);
-  }, { passive: true });
-});
+  pages.forEach(page => observer.observe(page));
+}
