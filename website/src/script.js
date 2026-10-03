@@ -35,10 +35,12 @@ themeToggle.addEventListener('change', () => {
 window.addEventListener('load', () => {
   document.body.classList.remove('loading');
   setTimeout(syncThemeToFrames, 100);
-  homeTerminal?.classList.add('visible');
 
-  if (isMobile() && carousel) {
-    carousel.style.overflowX = 'auto';
+  if (isMobile()) {
+    if (homeTerminal) homeTerminal.classList.remove('visible');
+    if (carousel) carousel.style.overflowX = 'auto';
+  } else {
+    homeTerminal?.classList.add('visible');
   }
 });
 
@@ -47,8 +49,8 @@ window.addEventListener('scroll', () => {
   const showScrollTop = window.scrollY > totalScroll * 0.5;
   scrollTopButton?.classList.toggle('visible', showScrollTop);
 
-  if (homeTerminal) {
-    const scrollPos = carousel ? carousel.scrollTop : window.scrollY;
+  if (homeTerminal && !isMobile()) {
+    const scrollPos = window.scrollY;
     homeTerminal.classList.toggle('visible', scrollPos <= 50);
   }
 });
@@ -57,11 +59,7 @@ scrollTopButton?.addEventListener('click', () => {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
-carousel?.addEventListener('scroll', () => {
-  if (homeTerminal) {
-    homeTerminal.classList.toggle('visible', carousel.scrollTop <= 50);
-  }
-}, { passive: true });
+
 
 let currentPage = 0;
 const totalPages = 5;
@@ -109,21 +107,17 @@ document.addEventListener('keydown', (e) => {
 });
 
 if (carousel) {
-  const pages = carousel.querySelectorAll('.carousel-page');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const pageEl = entry.target;
-        const idx = Array.from(pages).indexOf(pageEl);
-        if (idx >= 0) {
-          currentPage = idx;
-          dots.forEach((dot, i) => dot.classList.toggle('active', i === idx));
-          statsArrowBtn.classList.toggle('hidden', idx === totalPages - 1);
-          backArrowBtn.classList.toggle('hidden', idx === 0);
-        }
-      }
-    });
-  }, { root: carousel, threshold: 0.5 });
+  function updatePageFromScroll() {
+    const pageWidth = window.innerWidth;
+    const idx = Math.round(carousel.scrollLeft / pageWidth);
+    if (idx >= 0 && idx < totalPages) {
+      currentPage = idx;
+      dots.forEach((dot, i) => dot.classList.toggle('active', i === idx));
+      statsArrowBtn.classList.toggle('hidden', idx === totalPages - 1);
+      backArrowBtn.classList.toggle('hidden', idx === 0);
+    }
+  }
 
-  pages.forEach(page => observer.observe(page));
+  carousel.addEventListener('scroll', updatePageFromScroll, { passive: true });
+  updatePageFromScroll();
 }
