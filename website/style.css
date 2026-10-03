@@ -564,6 +564,24 @@ a:hover {
   margin: 0 auto;
 }
 
+.xavierites-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+}
+
+.xavierites-card h2 {
+  margin-bottom: 12px;
+}
+
+.xavierites-card p {
+  color: var(--text-muted);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
 .extension-card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
