@@ -120,4 +120,26 @@ if (carousel) {
 
   carousel.addEventListener('scroll', updatePageFromScroll, { passive: true });
   updatePageFromScroll();
+
+  // swipe detection on overlays (workaround for iframe touch capture)
+  let swipeStartX = 0;
+  let swipeStartY = 0;
+
+  document.querySelectorAll('.swipe-overlay').forEach(overlay => {
+    overlay.addEventListener('touchstart', (e) => {
+      swipeStartX = e.touches[0].clientX;
+      swipeStartY = e.touches[0].clientY;
+    }, { passive: true });
+
+    overlay.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - swipeStartX;
+      const dy = e.changedTouches[0].clientY - swipeStartY;
+
+      // only respond to horizontal swipes (more horizontal than vertical)
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+        if (dx < 0 && currentPage < totalPages - 1) goToPage(currentPage + 1);
+        if (dx > 0 && currentPage > 0) goToPage(currentPage - 1);
+      }
+    }, { passive: true });
+  });
 }
