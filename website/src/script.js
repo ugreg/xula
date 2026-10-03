@@ -129,6 +129,17 @@ if (carousel) {
     overlay.addEventListener('touchstart', (e) => {
       swipeStartX = e.touches[0].clientX;
       swipeStartY = e.touches[0].clientY;
+      overlay.style.pointerEvents = 'auto';
+    }, { passive: true });
+
+    overlay.addEventListener('touchmove', (e) => {
+      const dx = e.touches[0].clientX - swipeStartX;
+      const dy = e.touches[0].clientY - swipeStartY;
+
+      // if vertical scroll, disable overlay so iframe can scroll
+      if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 10) {
+        overlay.style.pointerEvents = 'none';
+      }
     }, { passive: true });
 
     overlay.addEventListener('touchend', (e) => {
@@ -141,5 +152,13 @@ if (carousel) {
         if (dx > 0 && currentPage > 0) goToPage(currentPage - 1);
       }
     }, { passive: true });
+  });
+
+  // re-enable overlays after any touch ends (in case they were disabled for vertical scroll)
+  document.addEventListener('touchend', () => {
+    document.querySelectorAll('.swipe-overlay').forEach(overlay => {
+      overlay.style.pointerEvents = 'auto';
+    });
+  }, { passive: true });
   });
 }
