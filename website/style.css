@@ -128,37 +128,6 @@ a:hover {
   color: var(--accent-hover);
 }
 
-.background-gradient {
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 80% 50% at 50% 0%, var(--bg-gradient-1) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 40% at 20% 80%, var(--bg-gradient-2) 0%, transparent 50%),
-    radial-gradient(ellipse 40% 30% at 80% 70%, var(--bg-gradient-3) 0%, transparent 50%),
-    radial-gradient(ellipse 30% 20% at 40% 30%, var(--bg-gradient-4) 0%, transparent 60%);
-  opacity: 0.5;
-  z-index: -1;
-  animation: bgShift 30s ease-in-out infinite;
-}
-
-@keyframes bgShift {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 0.6; }
-}
-
-.noise-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background:
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-  opacity: 0.4;
-  z-index: -1;
-  pointer-events: none;
-}
-
 .hero {
   min-height: 100vh;
   display: flex;
@@ -851,30 +820,6 @@ a:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.glow-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.6;
-  z-index: -1;
-}
-
-.orb-1 {
-  width: 300px;
-  height: 300px;
-  background: #2d00f7;
-  top: -50px;
-  left: -50px;
-}
-
-.orb-2 {
-  width: 250px;
-  height: 250px;
-  background: #f20089;
-  bottom: -50px;
-  right: -50px;
 }
 
 .calendar-card {
@@ -1693,9 +1638,7 @@ body.loading .terminal-card {
   display: block;
 }
 
-#page-features { background: var(--bg); }
-#page-extensions { background: var(--bg); }
-#page-stats { background: var(--bg); }
+
 
 .stats-content h2 {
   color: var(--text);
