@@ -136,8 +136,8 @@ if (carousel) {
       const dx = e.touches[0].clientX - swipeStartX;
       const dy = e.touches[0].clientY - swipeStartY;
 
-      // if vertical scroll, disable overlay so iframe can scroll
-      if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 10) {
+      // only disable overlay for clear vertical scrolls (not slight wobble)
+      if (Math.abs(dy) > 30 && Math.abs(dy) > Math.abs(dx)) {
         overlay.style.pointerEvents = 'none';
       }
     }, { passive: true });
