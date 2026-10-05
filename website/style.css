@@ -570,6 +570,10 @@ a:hover {
   border-radius: 20px;
   padding: 40px;
   text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .xavierites-card h2 {
@@ -1281,6 +1285,7 @@ body.loading .terminal-card {
   margin-left: 16px;
   cursor: pointer;
   flex-shrink: 0;
+  z-index: 100;
 }
 
 .theme-toggle input {
@@ -1435,6 +1440,13 @@ body.loading .terminal-card {
   pointer-events: none;
   z-index: 1000;
   transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.terminal-card.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
 
   &.visible {
     opacity: 1;
@@ -1487,9 +1499,6 @@ body.loading .terminal-card {
 }
 
 @media (max-width: 768px) {
-  .terminal-card {
-    display: none;
-  }
 
   .shared-terminal {
     left: 12px;
@@ -1751,6 +1760,12 @@ body.loading .terminal-card {
     z-index: 200;
   }
 
+  .theme-toggle {
+    display: block;
+    width: 48px;
+    height: 26px;
+  }
+
   .stats-arrow-btn,
   .page-indicator {
     z-index: 300;
@@ -1768,14 +1783,7 @@ body.loading .terminal-card {
     position: relative;
   }
 
-  .swipe-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1;
-  }
+
 
   .carousel-page iframe {
     width: 100%;
@@ -1817,6 +1825,12 @@ body.loading .terminal-card {
 
   .xavierites-card {
     margin-top: 40px;
+    padding: 24px 16px;
+  }
+
+  .xavierites-card p {
+    font-size: 14px;
+    padding: 0 8px;
   }
 
   .section-header h2 {

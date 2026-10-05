@@ -75,8 +75,12 @@ function initArrow() {
   }
 }
 
+let animationFrameId = null;
+let isAnimating = true;
+
 function animateAll() {
-  requestAnimationFrame(animateAll);
+  if (!isAnimating) return;
+  animationFrameId = requestAnimationFrame(animateAll);
   const t = Date.now() * 0.001;
 
   for (const item of voxelMeshes) {
@@ -95,9 +99,39 @@ function animateAll() {
   }
 }
 
+function stopAnimation() {
+  isAnimating = false;
+  if (animationFrameId !== null) {
+    cancelAnimationFrame(animationFrameId);
+    animationFrameId = null;
+  }
+}
+
 window.addEventListener('load', () => {
   setTimeout(() => {
     initArrow();
     animateAll();
+
+    const canvas = document.getElementById('arrowCanvas');
+    if (canvas) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            if (!isAnimating) {
+              isAnimating = true;
+              animateAll();
+            }
+          } else {
+            stopAnimation();
+          }
+        });
+      }, { threshold: 0.1 });
+      observer.observe(canvas);
+
+      window.addEventListener('beforeunload', () => {
+        stopAnimation();
+        observer.disconnect();
+      });
+    }
   }, 500);
 });
