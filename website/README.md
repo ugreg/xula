@@ -7,7 +7,7 @@ Install Node.js (includes npx): https://nodejs.org
 ## Local Dev
 
 ```bash
-npx serve . --cors --single
+npx serve . --cors
 ```
 
 Then open `http://localhost:3000` (or the URL shown).

@@ -12,6 +12,13 @@
     <link rel="preconnect" href="https://images.unsplash.com">
     <title>XULA CPSC</title>
     <link rel="stylesheet" href="style.css">
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"
+        }
+      }
+    </script>
   </head>
 
   <body>
@@ -115,25 +122,11 @@
     </div>
 
     <div id="carousel" class="carousel">
-      <div class="carousel-page" id="page-hero">
-        <iframe id="iframe-home" src="pages/home.html" frameborder="0" loading="eager"></iframe>
-      </div>
-
-      <div class="carousel-page" id="page-calendar">
-        <iframe id="iframe-calendar" src="pages/calendar.html" frameborder="0" loading="lazy"></iframe>
-      </div>
-
-      <div class="carousel-page" id="page-xavierites">
-        <iframe id="iframe-xavierites" src="pages/xavierites.html" frameborder="0" loading="lazy"></iframe>
-      </div>
-
-      <div class="carousel-page" id="page-skills">
-        <iframe id="iframe-skills" src="pages/skills.html" frameborder="0" loading="lazy"></iframe>
-      </div>
-
-      <div class="carousel-page" id="page-stats">
-        <iframe id="iframe-stats" src="pages/stats.html" frameborder="0" loading="lazy"></iframe>
-      </div>
+      <div class="carousel-page" id="page-hero" data-page="home"></div>
+      <div class="carousel-page" id="page-calendar" data-page="calendar"></div>
+      <div class="carousel-page" id="page-xavierites" data-page="xavierites"></div>
+      <div class="carousel-page" id="page-skills" data-page="skills"></div>
+      <div class="carousel-page" id="page-stats" data-page="stats"></div>
     </div>
 
     <footer class="footer">
