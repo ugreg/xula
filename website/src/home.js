@@ -1,20 +1,4 @@
-/* ===== THEME ===== */
-
-const savedTheme = localStorage.getItem('theme');
-const isLight = savedTheme === 'light';
-
-if (isLight) {
-  document.documentElement.classList.add('light');
-}
-
-window.addEventListener('message', (e) => {
-  if (e.data?.type === 'theme') {
-    document.documentElement.classList.toggle('light', e.data.light);
-  }
-});
-
-/* ===== THREE.JS ARROW ===== */
-
+import './theme.js';
 import * as THREE from 'three';
 
 const voxelMeshes = [];
@@ -107,6 +91,19 @@ function stopAnimation() {
   }
 }
 
+function cleanupMeshes() {
+  voxelMeshes.forEach(item => {
+    item.mesh.geometry.dispose();
+    if (Array.isArray(item.mesh.material)) {
+      item.mesh.material.forEach(m => m.dispose());
+    } else {
+      item.mesh.material.dispose();
+    }
+    item.renderer.dispose();
+  });
+  voxelMeshes.length = 0;
+}
+
 window.addEventListener('load', () => {
   setTimeout(() => {
     initArrow();
@@ -130,6 +127,7 @@ window.addEventListener('load', () => {
 
       window.addEventListener('beforeunload', () => {
         stopAnimation();
+        cleanupMeshes();
         observer.disconnect();
       });
     }

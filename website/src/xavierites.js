@@ -1,3 +1,4 @@
+import './theme.js';
 import * as THREE from 'three';
 
 const voxelMeshes = [];
@@ -73,6 +74,15 @@ function stopAnimation() {
   }
 }
 
+function cleanupMeshes() {
+  voxelMeshes.forEach(item => {
+    item.mesh.geometry.dispose();
+    item.mesh.material.dispose();
+    item.renderer.dispose();
+  });
+  voxelMeshes.length = 0;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const track = document.querySelector('.avatar-track');
   if (track) {
@@ -105,21 +115,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
       window.addEventListener('beforeunload', () => {
         stopAnimation();
+        cleanupMeshes();
         observer.disconnect();
       });
     }
   }
 });
 
-const savedTheme = localStorage.getItem('theme');
-const isLight = savedTheme === 'light';
 
-if (isLight) {
-  document.documentElement.classList.add('light');
-}
-
-window.addEventListener('message', (e) => {
-  if (e.data?.type === 'theme') {
-    document.documentElement.classList.toggle('light', e.data.light);
-  }
-});

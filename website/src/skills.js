@@ -1,3 +1,4 @@
+import './theme.js';
 import * as THREE from 'three';
 
 const voxelMeshes = [];
@@ -140,6 +141,23 @@ function stopAnimation() {
   }
 }
 
+function cleanupMeshes() {
+  voxelMeshes.forEach(item => {
+    item.mesh.traverse(child => {
+      if (child.geometry) child.geometry.dispose();
+      if (child.material) {
+        if (Array.isArray(child.material)) {
+          child.material.forEach(m => m.dispose());
+        } else {
+          child.material.dispose();
+        }
+      }
+    });
+    item.renderer.dispose();
+  });
+  voxelMeshes.length = 0;
+}
+
 window.addEventListener('load', () => {
   setTimeout(() => {
     createIconScene('crane');
@@ -169,6 +187,7 @@ window.addEventListener('load', () => {
 
       window.addEventListener('beforeunload', () => {
         stopAnimation();
+        cleanupMeshes();
         observer.disconnect();
       });
     }
@@ -185,15 +204,4 @@ document.addEventListener('dblclick', (e) => {
   }
 });
 
-const savedTheme = localStorage.getItem('theme');
-const isLight = savedTheme === 'light';
 
-if (isLight) {
-  document.documentElement.classList.add('light');
-}
-
-window.addEventListener('message', (e) => {
-  if (e.data?.type === 'theme') {
-    document.documentElement.classList.toggle('light', e.data.light);
-  }
-});

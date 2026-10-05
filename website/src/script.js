@@ -7,7 +7,10 @@ const backArrowBtn = document.querySelector('.stats-arrow-btn.back');
 const dots = document.querySelectorAll('.page-indicator .dot');
 const iframes = document.querySelectorAll('.carousel-page iframe');
 
-const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
+let isMobile = window.matchMedia('(max-width: 768px)').matches;
+window.addEventListener('resize', () => {
+  isMobile = window.matchMedia('(max-width: 768px)').matches;
+});
 
 const savedTheme = localStorage.getItem('theme');
 const isLight = savedTheme === 'light' || !savedTheme;
