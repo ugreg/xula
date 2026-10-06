@@ -128,37 +128,6 @@ a:hover {
   color: var(--accent-hover);
 }
 
-.background-gradient {
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 80% 50% at 50% 0%, var(--bg-gradient-1) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 40% at 20% 80%, var(--bg-gradient-2) 0%, transparent 50%),
-    radial-gradient(ellipse 40% 30% at 80% 70%, var(--bg-gradient-3) 0%, transparent 50%),
-    radial-gradient(ellipse 30% 20% at 40% 30%, var(--bg-gradient-4) 0%, transparent 60%);
-  opacity: 0.5;
-  z-index: -1;
-  animation: bgShift 30s ease-in-out infinite;
-}
-
-@keyframes bgShift {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 0.6; }
-}
-
-.noise-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background:
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-  opacity: 0.4;
-  z-index: -1;
-  pointer-events: none;
-}
-
 .hero {
   min-height: 100vh;
   display: flex;
@@ -271,6 +240,23 @@ a:hover {
   background: linear-gradient(135deg, #5865F2, #4752C4);
   transition: all 0.2s ease;
   text-decoration: none;
+}
+
+.discord-btn-tiny {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: #fff;
+  background: #5865F2;
+  text-decoration: none;
+  vertical-align: middle;
+  margin-left: 4px;
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 .floating {
@@ -589,25 +575,67 @@ a:hover {
 
 .extensions-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  container-type: inline-size;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.xavierites-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.xavierites-card h2 {
+  margin-bottom: 12px;
+}
+
+.xavierites-card p {
+  color: var(--text-muted);
+  font-size: 16px;
+  line-height: 1.7;
 }
 
 .extension-card {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
-  border-radius: 12px;
-  padding: 24px;
+  border-radius: 20px;
+  padding: 40px;
   text-align: center;
   transition: all 0.3s ease;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.extension-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--card-shine), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .extension-card:hover {
   background: var(--card-hover-bg);
   border-color: var(--card-hover-border);
-  transform: translateY(-2px);
+  transform: translateY(-4px);
+  --glow-opacity: 1;
+}
+
+.extension-card:hover::before {
+  opacity: 1;
 }
 
 .extension-card:has(.icon) {
@@ -624,7 +652,7 @@ a:hover {
   width: 48px;
   height: 48px;
   border-radius: 10px;
-  margin: 0 auto 16px;
+  margin: 0 auto 24px;
   overflow: visible;
 }
 
@@ -635,15 +663,16 @@ a:hover {
 }
 
 .extension-card h4 {
-  font-size: 15px;
+  font-size: 24px;
   font-weight: 600;
-  margin-bottom: 6px;
+  margin-bottom: 12px;
+  color: var(--text);
 }
 
 .extension-card .desc {
-  font-size: 12px;
   color: var(--text-muted);
-  opacity: 0.6;
+  font-size: 16px;
+  line-height: 1.7;
   margin-top: 12px;
 }
 
@@ -759,6 +788,9 @@ a:hover {
   border-top: 1px solid var(--border);
   padding: 60px 20px;
   text-align: center;
+  position: relative;
+  z-index: 150;
+  background: var(--bg);
 }
 
 .footer-links {
@@ -827,30 +859,6 @@ a:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.glow-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.6;
-  z-index: -1;
-}
-
-.orb-1 {
-  width: 300px;
-  height: 300px;
-  background: #2d00f7;
-  top: -50px;
-  left: -50px;
-}
-
-.orb-2 {
-  width: 250px;
-  height: 250px;
-  background: #f20089;
-  bottom: -50px;
-  right: -50px;
 }
 
 .calendar-card {
@@ -1056,6 +1064,13 @@ a:hover {
   user-select: none;
 }
 
+@media (max-width: 767px) {
+  .list-event-info {
+    justify-content: flex-end;
+    text-align: right;
+  }
+}
+
 .list-event-month {
   font-size: 1rem;
   color: var(--text-secondary);
@@ -1064,6 +1079,29 @@ a:hover {
   text-align: right;
   pointer-events: none;
   user-select: none;
+}
+
+@media (max-width: 767px) {
+  .list-event-date .list-event-month {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    opacity: 1;
+    min-width: 0;
+    text-align: left;
+  }
+
+  .list-event-info {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+  }
+
+  .list-event-info .discord-btn-tiny {
+    margin-left: 0;
+    margin-top: 2px;
+    padding: 4px 10px;
+    font-size: 0.8rem;
+  }
 }
 
 .calendar-footer {
@@ -1111,13 +1149,17 @@ a:hover {
 
 @keyframes scrollAvatars {
   0% { transform: translateX(0); }
-  100% { transform: translateX(-150%); }
+  100% { transform: translateX(-50%); }
 }
 
 @media (max-width: 768px) {
   header { padding: 12px; }
 
   .hero h1 { font-size: 36px; }
+
+  .hero.title-section {
+    padding-top: 40px;
+  }
 
   .trust-grid { grid-template-columns: 1fr; }
 
@@ -1150,39 +1192,64 @@ a:hover {
   .extensions-grid { grid-template-columns: repeat(3, 1fr); }
 }
 
-@container (max-width: 600px) {
-  .extensions-grid { grid-template-columns: repeat(2, 1fr); }
-}
+@media (max-width: 768px) {
+  .extensions-grid { grid-template-columns: 1fr !important; }
 
-@container (max-width: 380px) {
-  .extensions-grid { grid-template-columns: 1fr; }
+  .stats-arrow-btn {
+    display: none !important;
+  }
 }
 
 .avatar-row {
-  overflow: hidden;
-  margin: 24px 0;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .avatar-track {
   display: flex;
-  gap: 10%;
-  animation: scrollAvatars 40s linear infinite;
+  align-items: center;
+  gap: 144px;
+  animation: scrollAvatars 100s linear infinite;
 }
 
 .avatar-track img,
-.avatar-track svg {
+.avatar-shape {
   flex-shrink: 0;
-  width: 146px;
-  height: 146px;
-  border-radius: 50%;
+  align-self: center;
 }
 
 .avatar-track img {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
   object-fit: cover;
+  border: 2px solid rgba(92, 120, 226, 0.2);
 }
 
-.avatar-row:hover .avatar-track {
-  animation-play-state: paused;
+.avatar-shape {
+  width: 180px;
+  height: 180px;
+  margin-top: -20px;
+}
+
+[data-avatar-shape] {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes scrollAvatars {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 ::selection {
@@ -1265,6 +1332,7 @@ body.loading .terminal-card {
   margin-left: 16px;
   cursor: pointer;
   flex-shrink: 0;
+  z-index: 100;
 }
 
 .theme-toggle input {
@@ -1411,19 +1479,26 @@ body.loading .terminal-card {
 
 .terminal-card {
   position: fixed;
-  left: 24px;
-  right: 24px;
+  left: 50%;
   bottom: 15px;
+  width: 60%;
+  transform: translateX(-50%) translateY(20px);
   opacity: 0;
   pointer-events: none;
   z-index: 1000;
   transition: opacity 0.3s ease, transform 0.3s ease;
-  transform: translateY(20px);
+}
+
+.terminal-card.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
 
   &.visible {
     opacity: 1;
     pointer-events: auto;
-    transform: translateY(0);
+    transform: translateX(-50%) translateY(0);
   }
 
   & .window {
@@ -1471,7 +1546,7 @@ body.loading .terminal-card {
 }
 
 @media (max-width: 768px) {
-  .terminal-card,
+
   .shared-terminal {
     left: 12px;
     right: 12px;
@@ -1503,7 +1578,7 @@ body.loading .terminal-card {
   top: 88px;
   left: 50%;
   transform: translateX(-50%);
-  display: flex;
+  display: none;
   gap: 6px;
   padding: 4px 12px;
   background: var(--glass-bg);
@@ -1537,7 +1612,7 @@ body.loading .terminal-card {
   border: 1px solid var(--glass-border);
   border-right: none;
   border-radius: 12px 0 0 12px;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -1578,33 +1653,89 @@ body.loading .terminal-card {
   transform: translateY(-50%) translateX(-100%);
 }
 
-.stats-page {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: var(--bg);
-  z-index: 90;
-  transform: translateX(100%);
-  transition: transform 0.4s cubic-bezier(0.2, 0, 0.2, 1), opacity 0.4s cubic-bezier(0.2, 0, 0.2, 1);
-  overflow-y: auto;
-  pointer-events: none;
-  opacity: 0;
+.carousel {
+  position: relative;
+  z-index: 100;
 }
 
-.stats-page.open {
-  transform: translateX(0);
-  pointer-events: auto;
-  opacity: 1;
+.carousel-page {
+  width: 100%;
+  background: var(--bg);
+  position: relative;
 }
+
+@media (min-width: 769px) {
+  body {
+    min-height: 100vh;
+    overflow: hidden;
+  }
+
+  .carousel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 40px;
+    overflow-y: auto;
+    scroll-snap-type: y proximity;
+  }
+
+  .footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px 20px;
+    z-index: 200;
+  }
+
+  .carousel-page {
+    display: block;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    scroll-snap-align: start;
+  }
+
+  .carousel-page iframe {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+}
+
+.carousel-page iframe {
+  width: 100%;
+  height: 100vh;
+  border: none;
+  display: block;
+}
+
+
+
+.stats-content h2 {
+  color: var(--text);
+}
+
+/* xavierites: less bottom padding */
+#page-xavierites .stats-content {
+  padding-bottom: 40px !important;
+}
+
+#page-skills .stats-content {
+  padding-top: 0 !important;
+}
+
+
 
 .stats-content {
-  min-height: 100vh;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 100px 24px 40px;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-bottom: 120px;
 }
 
 .stats-content h2 {
@@ -1638,6 +1769,7 @@ body.loading .terminal-card {
 
 @media (max-width: 768px) {
   .stats-arrow-btn {
+    display: flex;
     width: 28px;
     height: 48px;
     border-radius: 8px 0 0 8px;
@@ -1653,8 +1785,68 @@ body.loading .terminal-card {
   }
 
   .page-indicator {
-    top: 85px;
-    z-index: 600;
+    display: flex;
+    top: auto;
+    bottom: 24px;
+    z-index: 1100;
+  }
+
+  .carousel {
+    position: fixed;
+    top: 90px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    z-index: 50;
+    scroll-snap-type: x mandatory;
+  }
+
+  .carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  .carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  header {
+    z-index: 200;
+  }
+
+  .theme-toggle {
+    display: block;
+    width: 48px;
+    height: 26px;
+  }
+
+  .stats-arrow-btn,
+  .page-indicator {
+    z-index: 300;
+  }
+
+  .carousel-page {
+    width: 100vw;
+    min-width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    position: relative;
+  }
+
+
+
+  .carousel-page iframe {
+    width: 100%;
+    height: 100%;
+    display: block;
+    touch-action: pan-x;
   }
 
   .stats-grid {
@@ -1662,10 +1854,55 @@ body.loading .terminal-card {
   }
 
   .stats-content {
-    padding: 100px 16px 30px;
+    padding-top: 100px;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 100px;
   }
 
   .stats-content h2 {
     margin-bottom: 24px;
+  }
+
+  .avatar-track {
+    animation-duration: 60s;
+    gap: 24px;
+  }
+
+  .avatar-track img {
+    width: 90px;
+    height: 90px;
+  }
+
+  .avatar-shape {
+    width: 90px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+  }
+
+  .xavierites-card {
+    margin-top: 40px;
+    padding: 24px 16px;
+  }
+
+  .xavierites-card p {
+    font-size: 14px;
+    padding: 0 8px;
+  }
+
+  .section-header h2 {
+    font-size: 24px;
+  }
+
+  .section-header p {
+    font-size: 14px;
+    padding: 0 16px;
+  }
+
+  .footer {
+    display: none;
   }
 }
