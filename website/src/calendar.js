@@ -3,42 +3,47 @@ import './theme.js';
 const html = (strings, ...vals) =>
   strings.reduce((acc, s, i) => acc + s + (vals[i] ?? ''), '');
 
+const calendarMonths = ['September', 'October', 'November', 'December'];
+const now = new Date();
+let initialMonth = now.getMonth() - 8;
+if (initialMonth < 0 || initialMonth >= calendarMonths.length) initialMonth = 0;
+
 const calendarState = {
-  months: ['September', 'October', 'November', 'December'],
-  current: 0,
+  months: calendarMonths,
+  current: initialMonth,
   year: 2026,
   view: 'list'
 };
 
+const joinBtn = '<a href="https://discord.com/invite/eRzNTw6hFm" target="_blank" rel="noopener noreferrer" class="discord-btn-tiny"><svg viewBox="0 0 24 24" fill="currentColor" style="width:12px;height:12px;"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037 13.46 13.46 0 0 0-.586 1.212 18.26 18.26 0 0 0-5.537 0 13.544 13.544 0 0 0-.585-1.212.077.077 0 0 0-.079-.037 19.736 19.736 0 0 0-4.885 1.515.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.104 1.793 12.064 0a.074.074 0 0 1 .078.01c.118.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>Join</a>';
+
 const events = [
   { monthIndex: 0, day: 29, title: 'Pro Dev and Staff meeting' },
-  { monthIndex: 0, day: 3, title: 'Tutoring with Greg @ 6pm to 7pm Central' },
-  { monthIndex: 0, day: 10, title: 'Tutoring with Greg @ 6pm to 7pm Central' },
-  { monthIndex: 0, day: 17, title: 'Tutoring with Greg @ 6pm to 7pm Central' },
-  { monthIndex: 0, day: 24, title: 'Tutoring with Greg @ 6pm to 7pm Central' },
-  { monthIndex: 0, day: 2, title: 'Tutoring with Gavin @ 6pm to 7pm Central' },
-  { monthIndex: 0, day: 9, title: 'Tutoring with Gavin @ 6pm to 7pm Central' },
-  { monthIndex: 0, day: 16, title: 'Tutoring with Gavin @ 6pm to 7pm Central' },
-  { monthIndex: 0, day: 23, title: 'Tutoring with Gavin @ 6pm to 7pm Central' },
-  { monthIndex: 0, day: 30, title: 'Tutoring with Gavin @ 6pm to 7pm Central' },
-  { monthIndex: 1, day: 1, title: 'Tutoring with Greg @ 6pm to 7pm Central' },
-  { monthIndex: 1, day: 8, title: 'Tutoring with Greg @ 6pm to 7pm Central' },
-  { monthIndex: 1, day: 15, title: 'Tutoring with Greg @ 6pm to 7pm Central' },
-  { monthIndex: 1, day: 22, title: 'Tutoring with Greg @ 6pm to 7pm Central' },
-  { monthIndex: 1, day: 29, title: 'Tutoring with Greg @ 6pm to 7pm Central' },
-  { monthIndex: 1, day: 7, title: 'Tutoring with Gavin @ 6pm to 7pm Central' },
-  { monthIndex: 1, day: 14, title: 'Tutoring with Gavin @ 6pm to 7pm Central' },
-  { monthIndex: 1, day: 21, title: 'Tutoring with Gavin @ 6pm to 7pm Central' },
-  { monthIndex: 1, day: 28, title: 'Tutoring with Gavin @ 6pm to 7pm Central' },
+  { monthIndex: 1, day: 6, title: 'Tutoring with <img src="greg.jpg" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;"> Greg: 6-7 PM Central' + joinBtn },
+  { monthIndex: 1, day: 7, title: 'Tutoring with <img src="gavin.jpg" alt="Gavin" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;"> Gavin: 6-7 PM Central' + joinBtn },
+  { monthIndex: 1, day: 8, title: 'Tutoring with <img src="greg.jpg" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;"> Greg: 6-7 PM Central' + joinBtn },
+  { monthIndex: 1, day: 13, title: 'Tutoring with <img src="greg.jpg" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;"> Greg: 6-7 PM Central' + joinBtn },
+  { monthIndex: 1, day: 14, title: 'Tutoring with <img src="gavin.jpg" alt="Gavin" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;"> Gavin: 6-7 PM Central' + joinBtn },
+  { monthIndex: 1, day: 15, title: 'Tutoring with <img src="greg.jpg" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;"> Greg: 6-7 PM Central' + joinBtn },
+  { monthIndex: 1, day: 20, title: 'Tutoring with <img src="greg.jpg" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;"> Greg: 6-7 PM Central' + joinBtn },
+  { monthIndex: 1, day: 21, title: 'Tutoring with <img src="gavin.jpg" alt="Gavin" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;"> Gavin: 6-7 PM Central' + joinBtn },
+  { monthIndex: 1, day: 22, title: 'Tutoring with <img src="greg.jpg" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;"> Greg: 6-7 PM Central' + joinBtn },
+  { monthIndex: 1, day: 27, title: 'Tutoring with <img src="greg.jpg" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;"> Greg: 6-7 PM Central' + joinBtn },
+  { monthIndex: 1, day: 28, title: 'Tutoring with <img src="gavin.jpg" alt="Gavin" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;"> Gavin: 6-7 PM Central' + joinBtn },
+  { monthIndex: 1, day: 29, title: 'Tutoring with <img src="greg.jpg" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;"> Greg: 6-7 PM Central' + joinBtn },
+  { monthIndex: 2, day: 3, title: 'Tutoring with <img src="greg.jpg" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;"> Greg: 6-7 PM Central' + joinBtn },
+  { monthIndex: 2, day: 4, title: 'Tutoring with <img src="gavin.jpg" alt="Gavin" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;"> Gavin: 6-7 PM Central' + joinBtn },
+  { monthIndex: 2, day: 5, title: 'Tutoring with <img src="greg.jpg" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;"> Greg: 6-7 PM Central' + joinBtn },
   { monthIndex: 2, day: 10, title: 'Backend systems talk' },
-  { monthIndex: 2, day: 5, title: 'Tutoring with Greg @ 6pm to 7pm Central' },
-  { monthIndex: 2, day: 12, title: 'Tutoring with Greg @ 6pm to 7pm Central' },
-  { monthIndex: 2, day: 19, title: 'Tutoring with Greg @ 6pm to 7pm Central' },
-  { monthIndex: 2, day: 26, title: 'Tutoring with Greg @ 6pm to 7pm Central' },
-  { monthIndex: 2, day: 4, title: 'Tutoring with Gavin @ 6pm to 7pm Central' },
-  { monthIndex: 2, day: 11, title: 'Tutoring with Gavin @ 6pm to 7pm Central' },
-  { monthIndex: 2, day: 18, title: 'Tutoring with Gavin @ 6pm to 7pm Central' },
-  { monthIndex: 2, day: 25, title: 'Tutoring with Gavin @ 6pm to 7pm Central' }
+  { monthIndex: 2, day: 10, title: 'Tutoring with <img src="greg.jpg" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;"> Greg: 6-7 PM Central' + joinBtn },
+  { monthIndex: 2, day: 11, title: 'Tutoring with <img src="gavin.jpg" alt="Gavin" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;"> Gavin: 6-7 PM Central' + joinBtn },
+  { monthIndex: 2, day: 12, title: 'Tutoring with <img src="greg.jpg" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;"> Greg: 6-7 PM Central' + joinBtn },
+  { monthIndex: 2, day: 17, title: 'Tutoring with <img src="greg.jpg" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;"> Greg: 6-7 PM Central' + joinBtn },
+  { monthIndex: 2, day: 18, title: 'Tutoring with <img src="gavin.jpg" alt="Gavin" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;"> Gavin: 6-7 PM Central' + joinBtn },
+  { monthIndex: 2, day: 19, title: 'Tutoring with <img src="greg.jpg" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;"> Greg: 6-7 PM Central' + joinBtn },
+  { monthIndex: 2, day: 24, title: 'Tutoring with <img src="greg.jpg" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;"> Greg: 6-7 PM Central' + joinBtn },
+  { monthIndex: 2, day: 25, title: 'Tutoring with <img src="gavin.jpg" alt="Gavin" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;"> Gavin: 6-7 PM Central' + joinBtn },
+  { monthIndex: 2, day: 26, title: 'Tutoring with <img src="greg.jpg" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;"> Greg: 6-7 PM Central' + joinBtn }
 ];
 
 const getEventsForDate = (monthIndex, day) =>
@@ -71,12 +76,40 @@ const renderCalendar = () => {
 const renderListView = () => {
   const upcomingEvents = events
     .map(e => ({ ...e, date: new Date(calendarState.year, 8 + e.monthIndex, e.day) }))
-    .filter(e => e.date >= new Date())
+    .filter(e => e.date >= new Date(new Date().setHours(0,0,0,0)))
     .sort((a, b) => a.date - b.date);
+
+  const isMobile = window.innerWidth < 768;
 
   const listHtml = upcomingEvents.map(e => {
     const monthName = calendarState.months[e.monthIndex];
     const dayName = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][e.date.getDay()];
+
+    const hasBtn = e.title.includes('discord-btn-tiny');
+    const btnStart = e.title.indexOf('<a href');
+    let titleText = e.title;
+    let btnHtml = '';
+    if (hasBtn && btnStart > 0) {
+      titleText = e.title.substring(0, btnStart).trim();
+      btnHtml = e.title.substring(btnStart);
+    }
+
+    if (isMobile) {
+      return html`
+        <div class="list-event-item" data-month="${e.monthIndex}" data-day="${e.day}">
+          <div class="list-event-date">
+            <span class="list-event-day">${dayName}</span>
+            <span class="list-event-num">${e.day}</span>
+            <span class="list-event-month">${monthName}</span>
+          </div>
+          <div class="list-event-info">
+            <span class="list-event-title">${titleText}</span>
+            ${btnHtml}
+          </div>
+        </div>
+      `;
+    }
+
     return html`
       <div class="list-event-item" data-month="${e.monthIndex}" data-day="${e.day}">
         <div class="list-event-date">
@@ -123,78 +156,12 @@ document.addEventListener('click', (e) => {
   }
 });
 
-const sharedTerminal = document.getElementById('sharedTerminal');
-const terminalBody = document.getElementById('terminalBody');
-const closeTerminalBtn = document.getElementById('closeTerminal');
-
-const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-const monthNames = ['September', 'October', 'November', 'December'];
-
-function openTerminal(day, monthIndex) {
-  const monthNum = 8 + monthIndex;
-  const dateObj = new Date(calendarState.year, monthNum, day);
-  const dayName = dayNames[dateObj.getDay()];
-  const monthName = monthNames[monthIndex];
-  const dayEvents = getEventsForDate(monthIndex, day);
-  const hasEvents = dayEvents.length > 0;
-
-  let eventHtml = '';
-  if (hasEvents) {
-    eventHtml = '<div style="margin-top: 10px; margin-bottom: 8px;"><span style="color: #60a5fa;">📌 Events:</span></div>';
-    dayEvents.forEach(evt => {
-      eventHtml += `<div class="output" style="margin-bottom: 4px; padding-left: 16px;">
-        <span style="color: #5865F2;">▸</span> ${evt.title}
-      </div>`;
-    });
-  }
-
-  const content = `
-    <div style="color: #888; font-size: 12px; margin-bottom: 10px;">
-      <span style="color: #27c93f;">$</span> calendar info ${day} ${monthName} ${calendarState.year}
-    </div>
-    <div class="output" style="margin-bottom: 8px;">
-      <span style="color: #86efac;">Hello!</span> You selected:
-    </div>
-    <div class="output" style="margin-bottom: 4px;">
-      <span style="color: #d4a574;">Day:</span> ${dayName}
-    </div>
-    <div class="output" style="margin-bottom: 4px;">
-      <span style="color: #d4a574;">Date:</span> ${monthName} ${day}, ${calendarState.year}
-    </div>
-    ${eventHtml}
-    <div style="margin-top: 15px; color: #888;">
-      <span style="color: #27c93f;">$</span> <span class="cursor"></span>
-    </div>
-  `;
-
-  terminalBody.innerHTML = content;
-  sharedTerminal?.classList.add('visible');
-}
-
-closeTerminalBtn?.addEventListener('click', () => sharedTerminal?.classList.remove('visible'));
-
 const viewToggle = document.getElementById('viewToggle');
 viewToggle.checked = calendarState.view === 'list';
 
 viewToggle?.addEventListener('change', () => {
   calendarState.view = viewToggle.checked ? 'list' : 'calendar';
   renderView();
-});
-
-calendarDaysContainer?.addEventListener('click', (e) => {
-  const dateCell = e.target.closest('.date-cell');
-  if (dateCell) {
-    const day = parseInt(dateCell.getAttribute('data-day'), 10);
-    openTerminal(day, calendarState.current);
-    return;
-  }
-
-  const listItem = e.target.closest('.list-event-item');
-  if (listItem) {
-    const monthIdx = parseInt(listItem.getAttribute('data-month'), 10);
-    const day = parseInt(listItem.getAttribute('data-day'), 10);
-    openTerminal(day, monthIdx);
-  }
 });
 
 
