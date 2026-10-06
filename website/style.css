@@ -255,6 +255,8 @@ a:hover {
   text-decoration: none;
   vertical-align: middle;
   margin-left: 4px;
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 .floating {
