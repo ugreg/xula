@@ -83,43 +83,35 @@ function cleanupMeshes() {
   voxelMeshes.length = 0;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const track = document.querySelector('.avatar-track');
-  if (track) {
-    const items = Array.from(track.children);
-    for (let i = items.length - 1; i > 0; i--) {
-      const shapeCanvas = createAvatarShape();
-      const wrapper = document.createElement('div');
-      wrapper.className = 'avatar-shape';
-      wrapper.style.flexShrink = '0';
-      wrapper.appendChild(shapeCanvas);
-      items[i].before(wrapper);
-    }
-    animateAll();
-
-    const header = document.querySelector('.section-header');
-    if (header) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            if (!isAnimating) {
-              isAnimating = true;
-              animateAll();
-            }
-          } else {
-            stopAnimation();
-          }
-        });
-      }, { threshold: 0.1 });
-      observer.observe(header);
-
-      window.addEventListener('beforeunload', () => {
-        stopAnimation();
-        cleanupMeshes();
-        observer.disconnect();
-      });
-    }
+const track = document.querySelector('.avatar-track');
+if (track) {
+  const items = Array.from(track.children);
+  for (let i = items.length - 1; i > 0; i--) {
+    const shapeCanvas = createAvatarShape();
+    const wrapper = document.createElement('div');
+    wrapper.className = 'avatar-shape';
+    wrapper.style.flexShrink = '0';
+    wrapper.appendChild(shapeCanvas);
+    items[i].before(wrapper);
   }
-});
+  animateAll();
+
+  const header = document.querySelector('.section-header');
+  if (header) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          if (!isAnimating) {
+            isAnimating = true;
+            animateAll();
+          }
+        } else {
+          stopAnimation();
+        }
+      });
+    }, { threshold: 0.1 });
+    observer.observe(header);
+  }
+}
 
 

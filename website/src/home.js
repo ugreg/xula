@@ -104,32 +104,24 @@ function cleanupMeshes() {
   voxelMeshes.length = 0;
 }
 
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    initArrow();
-    animateAll();
+setTimeout(() => {
+  initArrow();
+  animateAll();
 
-    const canvas = document.getElementById('arrowCanvas');
-    if (canvas) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            if (!isAnimating) {
-              isAnimating = true;
-              animateAll();
-            }
-          } else {
-            stopAnimation();
+  const canvas = document.getElementById('arrowCanvas');
+  if (canvas) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          if (!isAnimating) {
+            isAnimating = true;
+            animateAll();
           }
-        });
-      }, { threshold: 0.1 });
-      observer.observe(canvas);
-
-      window.addEventListener('beforeunload', () => {
-        stopAnimation();
-        cleanupMeshes();
-        observer.disconnect();
+        } else {
+          stopAnimation();
+        }
       });
-    }
-  }, 500);
-});
+    }, { threshold: 0.1 });
+    observer.observe(canvas);
+  }
+}, 500);

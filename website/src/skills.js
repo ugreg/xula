@@ -158,41 +158,33 @@ function cleanupMeshes() {
   voxelMeshes.length = 0;
 }
 
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    createIconScene('crane');
-    createIconScene('wrench');
-    createIconScene('robot');
-    createIconScene('heart');
-    createIconScene('grad');
-    createIconScene('briefcase');
-    createIconScene('money');
-    animateAll();
+setTimeout(() => {
+  createIconScene('crane');
+  createIconScene('wrench');
+  createIconScene('robot');
+  createIconScene('heart');
+  createIconScene('grad');
+  createIconScene('briefcase');
+  createIconScene('money');
+  animateAll();
 
-    const content = document.querySelector('.stats-content');
-    if (content) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            if (!isAnimating) {
-              isAnimating = true;
-              animateAll();
-            }
-          } else {
-            stopAnimation();
+  const content = document.querySelector('.stats-content');
+  if (content) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          if (!isAnimating) {
+            isAnimating = true;
+            animateAll();
           }
-        });
-      }, { threshold: 0.1 });
-      observer.observe(content);
-
-      window.addEventListener('beforeunload', () => {
-        stopAnimation();
-        cleanupMeshes();
-        observer.disconnect();
+        } else {
+          stopAnimation();
+        }
       });
-    }
-  }, 500);
-});
+    }, { threshold: 0.1 });
+    observer.observe(content);
+  }
+}, 500);
 
 document.addEventListener('dblclick', (e) => {
   const clickedCard = e.target.closest('.extension-card');

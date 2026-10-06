@@ -1,4 +1,4 @@
-import '../src/theme.js';
+import './theme.js';
 
 const html = (strings, ...vals) =>
   strings.reduce((acc, s, i) => acc + s + (vals[i] ?? ''), '');
