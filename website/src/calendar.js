@@ -12,14 +12,33 @@ const calendarState = {
 
 const events = [
   { monthIndex: 0, day: 29, title: 'Pro Dev and Staff meeting' },
-  { monthIndex: 1, day: 13, title: 'Tutoring' },
-  { monthIndex: 1, day: 20, title: 'Tutoring' },
-  { monthIndex: 1, day: 27, title: 'Tutoring' },
+  { monthIndex: 0, day: 3, title: 'Tutoring with Greg @ 6pm to 7pm Central' },
+  { monthIndex: 0, day: 10, title: 'Tutoring with Greg @ 6pm to 7pm Central' },
+  { monthIndex: 0, day: 17, title: 'Tutoring with Greg @ 6pm to 7pm Central' },
+  { monthIndex: 0, day: 24, title: 'Tutoring with Greg @ 6pm to 7pm Central' },
+  { monthIndex: 0, day: 2, title: 'Tutoring with Gavin @ 6pm to 7pm Central' },
+  { monthIndex: 0, day: 9, title: 'Tutoring with Gavin @ 6pm to 7pm Central' },
+  { monthIndex: 0, day: 16, title: 'Tutoring with Gavin @ 6pm to 7pm Central' },
+  { monthIndex: 0, day: 23, title: 'Tutoring with Gavin @ 6pm to 7pm Central' },
+  { monthIndex: 0, day: 30, title: 'Tutoring with Gavin @ 6pm to 7pm Central' },
+  { monthIndex: 1, day: 1, title: 'Tutoring with Greg @ 6pm to 7pm Central' },
+  { monthIndex: 1, day: 8, title: 'Tutoring with Greg @ 6pm to 7pm Central' },
+  { monthIndex: 1, day: 15, title: 'Tutoring with Greg @ 6pm to 7pm Central' },
+  { monthIndex: 1, day: 22, title: 'Tutoring with Greg @ 6pm to 7pm Central' },
+  { monthIndex: 1, day: 29, title: 'Tutoring with Greg @ 6pm to 7pm Central' },
+  { monthIndex: 1, day: 7, title: 'Tutoring with Gavin @ 6pm to 7pm Central' },
+  { monthIndex: 1, day: 14, title: 'Tutoring with Gavin @ 6pm to 7pm Central' },
+  { monthIndex: 1, day: 21, title: 'Tutoring with Gavin @ 6pm to 7pm Central' },
+  { monthIndex: 1, day: 28, title: 'Tutoring with Gavin @ 6pm to 7pm Central' },
   { monthIndex: 2, day: 10, title: 'Backend systems talk' },
-  { monthIndex: 2, day: 17, title: 'Tutoring' },
-  { monthIndex: 2, day: 19, title: 'Tutoring' },
-  { monthIndex: 3, day: 3, title: 'Last talk' },
-  { monthIndex: 3, day: 17, title: 'Year-End Celebration' }
+  { monthIndex: 2, day: 5, title: 'Tutoring with Greg @ 6pm to 7pm Central' },
+  { monthIndex: 2, day: 12, title: 'Tutoring with Greg @ 6pm to 7pm Central' },
+  { monthIndex: 2, day: 19, title: 'Tutoring with Greg @ 6pm to 7pm Central' },
+  { monthIndex: 2, day: 26, title: 'Tutoring with Greg @ 6pm to 7pm Central' },
+  { monthIndex: 2, day: 4, title: 'Tutoring with Gavin @ 6pm to 7pm Central' },
+  { monthIndex: 2, day: 11, title: 'Tutoring with Gavin @ 6pm to 7pm Central' },
+  { monthIndex: 2, day: 18, title: 'Tutoring with Gavin @ 6pm to 7pm Central' },
+  { monthIndex: 2, day: 25, title: 'Tutoring with Gavin @ 6pm to 7pm Central' }
 ];
 
 const getEventsForDate = (monthIndex, day) =>
@@ -52,7 +71,7 @@ const renderCalendar = () => {
 const renderListView = () => {
   const upcomingEvents = events
     .map(e => ({ ...e, date: new Date(calendarState.year, 8 + e.monthIndex, e.day) }))
-    .filter(e => e.date >= new Date(2026, 8, 1))
+    .filter(e => e.date >= new Date())
     .sort((a, b) => a.date - b.date);
 
   const listHtml = upcomingEvents.map(e => {
