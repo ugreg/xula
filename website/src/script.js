@@ -1,10 +1,13 @@
 const scrollTopButton = document.querySelector('.scroll-top-btn');
 const themeToggle = document.getElementById('themeToggle');
-const homeTerminal = document.getElementById('homeTerminal');
 const carousel = document.getElementById('carousel');
 const statsArrowBtn = document.querySelector('.stats-arrow-btn:not(.back)');
 const backArrowBtn = document.querySelector('.stats-arrow-btn.back');
 const dots = document.querySelectorAll('.page-indicator .dot');
+
+function getTerminal() {
+  return document.getElementById('homeTerminal');
+}
 
 let isMobile = window.matchMedia('(max-width: 768px)').matches;
 window.addEventListener('resize', () => {
@@ -13,7 +16,7 @@ window.addEventListener('resize', () => {
 
 async function loadPage(pageName, container) {
   try {
-    const response = await fetch(`${pageName}.html`);
+    const response = await fetch(`pages/${pageName}.html`);
     const html = await response.text();
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
@@ -32,61 +35,79 @@ async function loadPage(pageName, container) {
 }
 
 async function loadAllPages() {
+  await loadIncludes(); // includes.js (defer) already called this, but we await to ensure pages load after
+
   const pages = carousel.querySelectorAll('.carousel-page');
+  const promises = [];
   for (const page of pages) {
     const pageName = page.getAttribute('data-page');
     if (pageName) {
-      loadPage(pageName, page);
+      promises.push(loadPage(pageName, page));
     }
   }
+  await Promise.all(promises);
 }
 
-const savedTheme = localStorage.getItem('theme');
-const isLight = savedTheme === 'light' || !savedTheme;
-
-if (isLight) {
-  document.documentElement.classList.add('light');
-  themeToggle.checked = true;
-}
-
-themeToggle.addEventListener('change', () => {
-  const light = themeToggle.checked;
-  document.documentElement.classList.toggle('light', light);
-  localStorage.setItem('theme', light ? 'light' : 'dark');
-});
-
-window.addEventListener('load', () => {
+window.addEventListener('load', async () => {
   document.body.classList.remove('loading');
-  loadAllPages();
+  await loadAllPages();
+
+  const savedTheme = localStorage.getItem('theme');
+  const isLight = savedTheme === 'light' || !savedTheme;
+
+  if (isLight) {
+    document.documentElement.classList.add('light');
+    if (themeToggle) {
+      themeToggle.checked = true;
+    }
+  }
+
+  if (themeToggle) {
+    themeToggle.addEventListener('change', () => {
+      const light = themeToggle.checked;
+      document.documentElement.classList.toggle('light', light);
+      localStorage.setItem('theme', light ? 'light' : 'dark');
+    });
+  }
 
   if (isMobile) {
-    if (homeTerminal) homeTerminal.classList.remove('visible');
+    const t = getTerminal();
+    if (t) t.classList.remove('visible');
     if (carousel) carousel.style.overflowX = 'auto';
   } else {
-    homeTerminal?.classList.add('visible');
+    const t = getTerminal();
+    if (t) t.classList.add('visible');
   }
 });
 
 window.addEventListener('scroll', () => {
   const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
   const showScrollTop = window.scrollY > totalScroll * 0.5;
-  scrollTopButton?.classList.toggle('visible', showScrollTop);
+  if (scrollTopButton) {
+    scrollTopButton.classList.toggle('visible', showScrollTop);
+  }
 
-  if (homeTerminal && !isMobile) {
+  const t = getTerminal();
+  if (t && !isMobile) {
     const scrollPos = carousel ? carousel.scrollTop : window.scrollY;
-    homeTerminal.classList.toggle('visible', scrollPos <= 50);
+    t.classList.toggle('visible', scrollPos <= 50);
   }
 });
 
-scrollTopButton?.addEventListener('click', () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-});
+if (scrollTopButton) {
+  scrollTopButton.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
 
-carousel?.addEventListener('scroll', () => {
-  if (homeTerminal && !isMobile) {
-    homeTerminal.classList.toggle('visible', carousel.scrollTop <= 50);
-  }
-}, { passive: true });
+if (carousel) {
+  carousel.addEventListener('scroll', () => {
+    const t = getTerminal();
+    if (t && !isMobile) {
+      t.classList.toggle('visible', carousel.scrollTop <= 50);
+    }
+  }, { passive: true });
+}
 
 
 
@@ -101,23 +122,27 @@ function goToPage(page) {
 
 
 
-dots.forEach(dot => {
-  dot.addEventListener('click', () => {
-    const page = parseInt(dot.getAttribute('data-page'), 10);
-    goToPage(page);
+if (dots) {
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const page = parseInt(dot.getAttribute('data-page'), 10);
+      goToPage(page);
+    });
   });
-});
+}
 
 
 
-window.addEventListener('resize', () => {
-  if (!window.matchMedia('(max-width: 768px)').matches) {
-    carousel.style.transition = 'none';
-    carousel.style.transform = '';
-    carousel.style.overflowX = '';
-    return;
-  }
-});
+if (carousel) {
+  window.addEventListener('resize', () => {
+    if (!window.matchMedia('(max-width: 768px)').matches) {
+      carousel.style.transition = 'none';
+      carousel.style.transform = '';
+      carousel.style.overflowX = '';
+      return;
+    }
+  });
+}
 
 if (carousel) {
   let touchStartX = 0;
@@ -130,7 +155,9 @@ if (carousel) {
     const idx = Math.round(carousel.scrollLeft / pageWidth);
     if (idx >= 0 && idx < totalPages) {
       currentPage = idx;
-      dots.forEach((dot, i) => dot.classList.toggle('active', i === idx));
+      if (dots) {
+        dots.forEach((dot, i) => dot.classList.toggle('active', i === idx));
+      }
       statsArrowBtn.classList.toggle('hidden', idx === totalPages - 1);
       backArrowBtn.classList.toggle('hidden', idx === 0);
     }
