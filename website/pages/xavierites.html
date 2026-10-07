@@ -3,14 +3,17 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="../xu.png">
+    <link rel="icon" href="img/xu.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <title>XULA CPSC - Features</title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="src/includes.js" defer></script>
+    <script type="module" src="src/xavierites.js"></script>
   </head>
 
   <body>
+    <div data-include="components/header.html"></div>
     <div class="background-gradient"></div>
     <div class="noise-overlay"></div>
 
@@ -18,14 +21,14 @@
       <div class="section-header">
         <div class="avatar-row">
           <div class="avatar-track">
-            <img loading="lazy" src="../gavin.jpg" alt="Gavin">
-            <img loading="lazy" src="../greg.jpg" alt="Greg">
-            <img loading="lazy" src="../josh.jpg" alt="Josh">
-            <img loading="lazy" src="../nam.jpg" alt="Nam">
-            <img loading="lazy" src="../gavin.jpg" alt="Gavin">
-            <img loading="lazy" src="../greg.jpg" alt="Greg">
-            <img loading="lazy" src="../josh.jpg" alt="Josh">
-            <img loading="lazy" src="../nam.jpg" alt="Nam">
+            <img loading="lazy" src="gavin.jpg" alt="Gavin">
+            <img loading="lazy" src="greg.jpg" alt="Greg">
+            <img loading="lazy" src="josh.jpg" alt="Josh">
+            <img loading="lazy" src="nam.jpg" alt="Nam">
+            <img loading="lazy" src="gavin.jpg" alt="Gavin">
+            <img loading="lazy" src="greg.jpg" alt="Greg">
+            <img loading="lazy" src="josh.jpg" alt="Josh">
+            <img loading="lazy" src="nam.jpg" alt="Nam">
           </div>
         </div>
 
@@ -36,6 +39,6 @@
       </div>
     </div>
 
-    <script type="module" src="../src/xavierites.js"></script>
+    <div data-include="components/footer.html"></div>
   </body>
 </html>

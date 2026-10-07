@@ -13,7 +13,7 @@ window.addEventListener('resize', () => {
 
 async function loadPage(pageName, container) {
   try {
-    const response = await fetch(`pages/${pageName}.html`);
+    const response = await fetch(`${pageName}.html`);
     const html = await response.text();
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
