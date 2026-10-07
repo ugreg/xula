@@ -82,6 +82,11 @@ const renderCalendar = () => {
   const month = calendarState.months[calendarState.current];
   calendarMonthDisplay && (calendarMonthDisplay.textContent = month);
 
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  if (prevBtn) prevBtn.style.display = calendarState.current === SEPTEMBER ? 'none' : '';
+  if (nextBtn) nextBtn.style.display = calendarState.current === DECEMBER ? 'none' : '';
+
   const firstDay = new Date(calendarState.year, 8 + calendarState.current, 1).getDay();
   const lastDay = new Date(calendarState.year, 8 + calendarState.current + 1, 0).getDate();
 
