@@ -259,7 +259,7 @@ a:hover {
   cursor: pointer;
 }
 
-.down-arrow {
+.discord-arrow {
   width: 48px;
   height: 48px;
   margin: 40px auto 0;
@@ -267,9 +267,12 @@ a:hover {
   animation: arrow-bounce 4s ease-in-out infinite;
   align-self: center;
   overflow: visible;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.down-arrow canvas {
+.discord-arrow canvas {
   width: 48px;
   height: 48px;
   display: block;
@@ -1391,13 +1394,17 @@ body.loading .terminal-card {
   z-index: 100;
 }
 
+.toggle.theme .slider {
+  background: transparent;
+}
+
 .toggle.theme .slider::before {
   background: var(--accent);
 }
 
 .toggle.theme input:checked + .slider {
-  background: var(--gradient-1);
-  border-color: var(--gradient-2);
+  background: transparent;
+  border-color: var(--accent);
 }
 
 .toggle.theme input:checked + .slider::before {
@@ -1819,4 +1826,23 @@ body.loading .terminal-card {
   .footer {
     display: none;
   }
+}
+
+@keyframes loading-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-spinner {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(212, 165, 116, 0.2);
+  border-top-color: #d4a574;
+  border-radius: 50%;
+  animation: loading-spin 1.2s linear infinite;
+  flex-shrink: 0;
+  background: transparent;
 }

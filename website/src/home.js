@@ -108,7 +108,10 @@ setTimeout(() => {
   initArrow();
   animateAll();
 
+  const spinner = document.getElementById('arrowSpinner');
   const canvas = document.getElementById('arrowCanvas');
+  if (spinner) spinner.style.display = 'none';
+  if (canvas) canvas.style.display = 'block';
   if (canvas) {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {

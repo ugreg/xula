@@ -9,12 +9,11 @@
     <link rel="preconnect" href="https://images.unsplash.com">
     <title>XULA CPSC - Home</title>
     <link rel="stylesheet" href="../style.css">
-    <script src="../src/includes.js" defer></script>
     <script type="module" src="../src/home.js"></script>
   </head>
 
   <body>
-    <div data-include="../components/header.html"></div>
+    <div data-include="pages/components/header.html"></div>
     <div class="background-gradient"></div>
     <div class="noise-overlay"></div>
 
@@ -26,11 +25,12 @@
         Discord
       </a>
 
-      <div class="down-arrow">
-        <canvas id="arrowCanvas" width="64" height="64"></canvas>
+      <div class="discord-arrow">
+        <div id="arrowSpinner" class="loading-spinner"></div>
+        <canvas id="arrowCanvas" width="64" height="64" style="display:none;"></canvas>
       </div>
     </section>
 
-    <div data-include="../components/footer.html"></div>
+    <div data-include="pages/components/footer.html"></div>
   </body>
 </html>

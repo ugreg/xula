@@ -1,3 +1,19 @@
+async function loadComponents() {
+  const elements = document.querySelectorAll('[data-include]');
+
+  for (const el of elements) {
+    const path = el.getAttribute('data-include');
+    try {
+      const response = await fetch(path);
+      if (!response.ok) throw new Error(`failed to load ${path}`);
+      el.innerHTML = await response.text();
+    } catch (err) {
+      console.error(err);
+      el.textContent = 'Error loading component.';
+    }
+  }
+}
+
 const scrollTopButton = document.querySelector('.scroll-top-btn');
 const carousel = document.getElementById('carousel');
 const statsArrowBtn = document.querySelector('.stats-arrow-btn:not(.back)');
@@ -28,13 +44,15 @@ async function loadPage(pageName, container) {
       newScript.src = script.src;
       container.appendChild(newScript);
     }
+
+    await loadComponents();
   } catch (e) {
     console.error(`[load] failed to load ${pageName}:`, e);
   }
 }
 
 async function loadAllPages() {
-  await loadIncludes(); // includes.js (defer) already called this, but we await to ensure pages load after
+  await loadComponents();
 
   const pages = carousel.querySelectorAll('.carousel-page');
   const promises = [];
