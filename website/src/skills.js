@@ -115,12 +115,9 @@ function createIconScene(iconType) {
   }
 }
 
-let animationFrameId = null;
-let isAnimating = true;
+import { createSceneLoop } from './scene-loop.js';
 
 function animateAll() {
-  if (!isAnimating) return;
-  animationFrameId = requestAnimationFrame(animateAll);
   const t = Date.now() * 0.001;
 
   for (const item of voxelMeshes) {
@@ -129,14 +126,6 @@ function animateAll() {
       item.mesh.rotation.x = Math.sin(t) * 0.15;
     }
     item.renderer.render(item.scene, item.camera);
-  }
-}
-
-function stopAnimation() {
-  isAnimating = false;
-  if (animationFrameId !== null) {
-    cancelAnimationFrame(animationFrameId);
-    animationFrameId = null;
   }
 }
 
@@ -157,33 +146,14 @@ function cleanupMeshes() {
   voxelMeshes.length = 0;
 }
 
-setTimeout(() => {
-  createIconScene('crane');
-  createIconScene('wrench');
-  createIconScene('robot');
-  createIconScene('heart');
-  createIconScene('grad');
-  createIconScene('briefcase');
-  createIconScene('money');
-  animateAll();
-
-  const content = document.querySelector('.stats-content');
-  if (content) {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          if (!isAnimating) {
-            isAnimating = true;
-            animateAll();
-          }
-        } else {
-          stopAnimation();
-        }
-      });
-    }, { threshold: 0.1 });
-    observer.observe(content);
-  }
-}, 500);
+createIconScene('crane');
+createIconScene('wrench');
+createIconScene('robot');
+createIconScene('heart');
+createIconScene('grad');
+createIconScene('briefcase');
+createIconScene('money');
+createSceneLoop(animateAll);
 
 document.addEventListener('dblclick', (e) => {
   const clickedCard = e.target.closest('.extension-card');

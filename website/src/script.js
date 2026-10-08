@@ -147,17 +147,6 @@ if (dots) {
 
 
 if (carousel) {
-  window.addEventListener('resize', () => {
-    if (!window.matchMedia('(max-width: 768px)').matches) {
-      carousel.style.transition = 'none';
-      carousel.style.transform = '';
-      carousel.style.overflowX = '';
-      return;
-    }
-  });
-}
-
-if (carousel) {
   let touchStartX = 0;
   let touchStartY = 0;
   let touchStartTime = 0;

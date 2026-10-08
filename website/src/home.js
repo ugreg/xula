@@ -59,12 +59,9 @@ function initArrow() {
   }
 }
 
-let animationFrameId = null;
-let isAnimating = true;
+import { createSceneLoop } from './scene-loop.js';
 
 function animateAll() {
-  if (!isAnimating) return;
-  animationFrameId = requestAnimationFrame(animateAll);
   const t = Date.now() * 0.001;
 
   for (const item of voxelMeshes) {
@@ -83,14 +80,6 @@ function animateAll() {
   }
 }
 
-function stopAnimation() {
-  isAnimating = false;
-  if (animationFrameId !== null) {
-    cancelAnimationFrame(animationFrameId);
-    animationFrameId = null;
-  }
-}
-
 function cleanupMeshes() {
   voxelMeshes.forEach(item => {
     item.mesh.geometry.dispose();
@@ -104,27 +93,9 @@ function cleanupMeshes() {
   voxelMeshes.length = 0;
 }
 
-setTimeout(() => {
-  initArrow();
-  animateAll();
-
-  const spinner = document.getElementById('arrowSpinner');
-  const canvas = document.getElementById('arrowCanvas');
-  if (spinner) spinner.style.display = 'none';
-  if (canvas) canvas.style.display = 'block';
-  if (canvas) {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          if (!isAnimating) {
-            isAnimating = true;
-            animateAll();
-          }
-        } else {
-          stopAnimation();
-        }
-      });
-    }, { threshold: 0.1 });
-    observer.observe(canvas);
-  }
-}, 500);
+initArrow();
+const spinner = document.getElementById('arrowSpinner');
+const canvas = document.getElementById('arrowCanvas');
+if (spinner) spinner.style.display = 'none';
+if (canvas) canvas.style.display = 'block';
+createSceneLoop(animateAll);

@@ -850,7 +850,7 @@ a:hover {
   border: 1px solid var(--glass-border);
   border-radius: 20px;
   padding: 100px;
-  box-shadow: 0 25px 45px rgba(0,0,0,0.5);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.3);
   transition: transform 0.3s;
   font-family: 'Rajdhani', sans-serif;
 }
@@ -1163,7 +1163,6 @@ a:hover {
     padding: 30px 20px;
     width: 100%;
     border: 1px solid var(--glass-border);
-    box-shadow: none;
   }
 
   .extensions-grid { grid-template-columns: repeat(2, 1fr) !important; }
@@ -1431,7 +1430,7 @@ body.loading .terminal-card {
   background: var(--terminal-bg);
   border: 1px solid var(--terminal-border);
   border-radius: 8px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.3);
 }
 
 .terminal-card .header {
