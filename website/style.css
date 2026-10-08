@@ -1129,8 +1129,16 @@ a:hover {
   font-style: italic;
 }
 
+.header-logo {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+
 @media (max-width: 768px) {
-  header { padding: 12px; }
+  header { padding: 2px; }
+  header nav { height: 18px; }
+  .header-logo { width: 32px; height: 32px; }
 
   .hero h1 { font-size: 36px; }
 
