@@ -1,4 +1,3 @@
-import './theme.js';
 import * as THREE from 'three';
 
 const voxelMeshes = [];
