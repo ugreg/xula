@@ -71,7 +71,7 @@ window.addEventListener('load', async () => {
     if (carousel) carousel.style.overflowX = 'auto';
   } else {
     const t = getTerminal();
-    if (t) t.classList.add('visible');
+    if (t && carousel.scrollTop === 0) t.classList.add('visible');
   }
 });
 
@@ -85,7 +85,7 @@ window.addEventListener('scroll', () => {
   const t = getTerminal();
   if (t && !isMobile) {
     const scrollPos = carousel ? carousel.scrollTop : window.scrollY;
-    t.classList.toggle('visible', scrollPos <= 50);
+    t.classList.toggle('visible', scrollPos === 0);
   }
 });
 
@@ -99,7 +99,7 @@ if (carousel) {
   carousel.addEventListener('scroll', () => {
     const t = getTerminal();
     if (t && !isMobile) {
-      t.classList.toggle('visible', carousel.scrollTop <= 50);
+      t.classList.toggle('visible', carousel.scrollTop === 0);
     }
   }, { passive: true });
 }

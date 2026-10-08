@@ -1155,6 +1155,8 @@ a:hover {
   .calendar-card {
     padding: 30px 20px;
     width: 100%;
+    border: 1px solid var(--glass-border);
+    box-shadow: none;
   }
 
   .extensions-grid { grid-template-columns: repeat(2, 1fr) !important; }
