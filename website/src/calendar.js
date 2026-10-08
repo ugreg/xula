@@ -16,7 +16,7 @@ if (initialMonth < 0 || initialMonth >= calendarMonths.length) initialMonth = 0;
 const calendarState = {
   months: calendarMonths,
   current: initialMonth,
-  year: 2026,
+  year: now.getFullYear() + 1,
   view: 'list'
 };
 
@@ -35,9 +35,9 @@ events.push({
 });
 
 for (let month = OCTOBER; month <= NOVEMBER; month++) {
-  const daysInMonth = new Date(2026, 8 + month + 1, 0).getDate();
+  const daysInMonth = new Date(calendarState.year, 8 + month + 1, 0).getDate();
   for (let day = 1; day <= daysInMonth; day++) {
-    const date = new Date(2026, 8 + month, day);
+    const date = new Date(calendarState.year, 8 + month, day);
     const dayOfWeek = date.getDay();
 
     if (month === OCTOBER && (day === 1 || day === 20)) continue;
@@ -66,8 +66,8 @@ for (let month = OCTOBER; month <= NOVEMBER; month++) {
 }
 
 events.sort((a, b) => {
-  const dateA = new Date(2026, 8 + a.monthIndex, a.day);
-  const dateB = new Date(2026, 8 + b.monthIndex, b.day);
+  const dateA = new Date(calendarState.year, 8 + a.monthIndex, a.day);
+  const dateB = new Date(calendarState.year, 8 + b.monthIndex, b.day);
   return dateA - dateB;
 });
 
