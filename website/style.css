@@ -1338,6 +1338,7 @@ body.loading .terminal-card {
   border-radius: 50%;
   transition: all 0.3s ease;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  z-index: 2;
 }
 
 .toggle input:checked + .slider {
@@ -1354,14 +1355,16 @@ body.loading .terminal-card {
   border-color: var(--accent-color);
 }
 
-.toggle svg {
+.toggle img {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   width: 14px;
   height: 14px;
-  color: var(--text-muted);
+  object-fit: contain;
   transition: all 0.3s ease;
+  z-index: 1;
+  opacity: 0.5;
 }
 
 .toggle .icon-left {
@@ -1372,12 +1375,12 @@ body.loading .terminal-card {
   right: 5px;
 }
 
-.toggle input:checked ~ .slider .icon-right {
-  color: #fff;
+.toggle input:checked ~ .slider .icon-left {
+  opacity: 1;
 }
 
-.toggle input:not(:checked) ~ .slider .icon-left {
-  color: var(--accent-color);
+.toggle input:not(:checked) ~ .slider .icon-right {
+  opacity: 1;
 }
 
 /* theme toggle variant — overrides accent color */
@@ -1393,6 +1396,10 @@ body.loading .terminal-card {
 .toggle.theme input:checked + .slider {
   background: var(--gradient-1);
   border-color: var(--gradient-2);
+}
+
+.toggle.theme input:checked + .slider::before {
+  background: var(--accent);
 }
 
 .toggle.theme:hover .slider {

@@ -1,5 +1,4 @@
 const scrollTopButton = document.querySelector('.scroll-top-btn');
-const themeToggle = document.getElementById('themeToggle');
 const carousel = document.getElementById('carousel');
 const statsArrowBtn = document.querySelector('.stats-arrow-btn:not(.back)');
 const backArrowBtn = document.querySelector('.stats-arrow-btn.back');
@@ -52,14 +51,10 @@ window.addEventListener('load', async () => {
   document.body.classList.remove('loading');
   await loadAllPages();
 
-  const savedTheme = localStorage.getItem('theme');
-  const isLight = savedTheme === 'light' || !savedTheme;
-
-  if (isLight) {
-    document.documentElement.classList.add('light');
-    if (themeToggle) {
-      themeToggle.checked = true;
-    }
+  const themeToggle = document.getElementById('themeToggle');
+  document.documentElement.classList.add('light');
+  if (themeToggle) {
+    themeToggle.checked = true;
   }
 
   if (themeToggle) {
