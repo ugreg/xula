@@ -1,3 +1,5 @@
+import { log } from './observability/log.js';
+
 async function loadComponents() {
   const elements = document.querySelectorAll('[data-include]');
 
@@ -124,13 +126,14 @@ if (carousel) {
 
 
 
-let currentPage = 0;
-const totalPages = 5;
+const pageOrder = ['home', 'calendar', 'xavierites', 'skills', 'stats'];
+let currentPage = pageOrder[0];
 
-function goToPage(page) {
-  if (page < 0 || page >= totalPages) return;
+function goToPage(pageName) {
+  const idx = pageOrder.indexOf(pageName);
+  if (idx < 0) return;
   if (!carousel) return;
-  carousel.scrollTo({ left: page * window.innerWidth, behavior: 'smooth' });
+  carousel.scrollTo({ left: idx * window.innerWidth, behavior: 'smooth' });
 }
 
 
@@ -138,8 +141,8 @@ function goToPage(page) {
 if (dots) {
   dots.forEach(dot => {
     dot.addEventListener('click', () => {
-      const page = parseInt(dot.getAttribute('data-page'), 10);
-      goToPage(page);
+      const pageName = dot.getAttribute('data-page');
+      goToPage(pageName);
     });
   });
 }
@@ -155,12 +158,26 @@ if (carousel) {
   function updatePageFromScroll() {
     const pageWidth = window.innerWidth;
     const idx = Math.round(carousel.scrollLeft / pageWidth);
-    if (idx >= 0 && idx < totalPages) {
-      currentPage = idx;
+    if (idx >= 0 && idx < pageOrder.length) {
+      const prevPage = currentPage;
+      currentPage = pageOrder[idx];
       if (dots) {
-        dots.forEach((dot, i) => dot.classList.toggle('active', i === idx));
+        dots.forEach(dot => {
+          const name = dot.getAttribute('data-page');
+          dot.classList.toggle('active', name === currentPage);
+        });
       }
-      statsArrowBtn.classList.toggle('hidden', idx === totalPages - 1);
+      if (idx !== pageOrder.indexOf(prevPage) && isMobile) {
+        if (window.sceneRegistry?.[prevPage]) {
+          window.sceneRegistry[prevPage].cleanup();
+          log.info(`${prevPage}.html`, 'cleanup triggered');
+        }
+        if (window.sceneRegistry?.[currentPage]) {
+          window.sceneRegistry[currentPage].restart();
+          log.info(`${currentPage}.html`, 'restart triggered');
+        }
+      }
+      statsArrowBtn.classList.toggle('hidden', idx === pageOrder.length - 1);
       backArrowBtn.classList.toggle('hidden', idx === 0);
     }
   }
@@ -183,27 +200,30 @@ if (carousel) {
     const touchEndY = e.changedTouches[0].clientY;
     const deltaX = touchEndX - touchStartX;
     const deltaY = touchEndY - touchStartY;
-    const elapsed = Date.now() - touchStartTime;
 
     if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
-      if (deltaX < 0 && currentPage < totalPages - 1) {
-        goToPage(currentPage + 1);
-      } else if (deltaX > 0 && currentPage > 0) {
-        goToPage(currentPage - 1);
+      const idx = pageOrder.indexOf(currentPage);
+      if (deltaX < 0 && idx < pageOrder.length - 1) {
+        goToPage(pageOrder[idx + 1]);
+      } else if (deltaX > 0 && idx > 0) {
+        goToPage(pageOrder[idx - 1]);
       }
     }
   }, { passive: true });
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight' && currentPage < totalPages - 1) goToPage(currentPage + 1);
-    if (e.key === 'ArrowLeft' && currentPage > 0) goToPage(currentPage - 1);
+    const idx = pageOrder.indexOf(currentPage);
+    if (e.key === 'ArrowRight' && idx < pageOrder.length - 1) goToPage(pageOrder[idx + 1]);
+    if (e.key === 'ArrowLeft' && idx > 0) goToPage(pageOrder[idx - 1]);
   });
 
   statsArrowBtn?.addEventListener('click', () => {
-    if (currentPage < totalPages - 1) goToPage(currentPage + 1);
+    const idx = pageOrder.indexOf(currentPage);
+    if (idx < pageOrder.length - 1) goToPage(pageOrder[idx + 1]);
   });
 
   backArrowBtn?.addEventListener('click', () => {
-    if (currentPage > 0) goToPage(currentPage - 1);
+    const idx = pageOrder.indexOf(currentPage);
+    if (idx > 0) goToPage(pageOrder[idx - 1]);
   });
 }

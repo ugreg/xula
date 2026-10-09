@@ -59,7 +59,8 @@ function initArrow() {
   }
 }
 
-import { createSceneLoop } from './scene-loop.js';
+import { createSceneLoop, stopAnimation } from './scene-loop.js';
+import { log } from './observability/log.js';
 
 function animateAll() {
   const t = Date.now() * 0.001;
@@ -83,19 +84,32 @@ function animateAll() {
 function cleanupMeshes() {
   voxelMeshes.forEach(item => {
     item.mesh.geometry.dispose();
+    log.info('home.html', 'disposed geometry:', item.mesh.geometry.type);
     if (Array.isArray(item.mesh.material)) {
-      item.mesh.material.forEach(m => m.dispose());
+      item.mesh.material.forEach(m => { m.dispose(); log.info('home.html', 'disposed material:', m.type); });
     } else {
       item.mesh.material.dispose();
+      log.info('home.html', 'disposed material:', item.mesh.material.type);
     }
     item.renderer.dispose();
+    log.info('home.html', 'disposed renderer');
   });
   voxelMeshes.length = 0;
+  log.info('home.html', 'cleanup complete:', voxelMeshes.length, 'meshes remaining');
 }
 
-initArrow();
-const spinner = document.getElementById('arrowSpinner');
-const canvas = document.getElementById('arrowCanvas');
-if (spinner) spinner.style.display = 'none';
-if (canvas) canvas.style.display = 'block';
-createSceneLoop(animateAll);
+function initHome() {
+  initArrow();
+  const spinner = document.getElementById('arrowSpinner');
+  const canvas = document.getElementById('arrowCanvas');
+  if (spinner) spinner.style.display = 'none';
+  if (canvas) canvas.style.display = 'block';
+  createSceneLoop(animateAll);
+}
+
+initHome();
+window.sceneRegistry = window.sceneRegistry || {};
+window.sceneRegistry['home'] = {
+  cleanup: () => { cleanupMeshes(); stopAnimation(); },
+  restart: () => { initHome(); }
+};

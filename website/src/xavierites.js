@@ -49,7 +49,8 @@ function createAvatarShape() {
   return canvas;
 }
 
-import { createSceneLoop } from './scene-loop.js';
+import { createSceneLoop, stopAnimation } from './scene-loop.js';
+import { log } from './observability/log.js';
 
 function animateAll() {
   const t = Date.now() * 0.001;
@@ -66,24 +67,51 @@ function animateAll() {
 function cleanupMeshes() {
   voxelMeshes.forEach(item => {
     item.mesh.geometry.dispose();
+    log.info('xavierites.html', 'disposed geometry:', item.mesh.geometry.type);
     item.mesh.material.dispose();
+    log.info('xavierites.html', 'disposed material:', item.mesh.material.type);
     item.renderer.dispose();
+    log.info('xavierites.html', 'disposed renderer');
   });
   voxelMeshes.length = 0;
+  log.info('xavierites.html', 'cleanup complete:', voxelMeshes.length, 'meshes remaining');
 }
 
-const track = document.querySelector('.avatar-track');
-if (track) {
-  const items = Array.from(track.children);
-  for (let i = items.length - 1; i > 0; i--) {
-    const shapeCanvas = createAvatarShape();
-    const wrapper = document.createElement('div');
-    wrapper.className = 'avatar-shape';
-    wrapper.style.flexShrink = '0';
-    wrapper.appendChild(shapeCanvas);
-    items[i].before(wrapper);
+const avatars = [
+  { src: '../img/gavin.jpg', alt: 'Gavin' },
+  { src: '../img/greg.jpg', alt: 'Greg' },
+  { src: '../img/josh.jpg', alt: 'Josh' },
+  { src: '../img/nam.jpg', alt: 'Nam' }
+];
+
+function initXavierites() {
+  const track = document.getElementById('avatarTrack');
+  if (!track) return;
+  const fragment = document.createDocumentFragment();
+  for (let repeat = 0; repeat < 3; repeat++) {
+    for (const avatar of avatars) {
+      const img = document.createElement('img');
+      img.loading = 'lazy';
+      img.src = avatar.src;
+      img.alt = avatar.alt;
+      fragment.appendChild(img);
+      const shapeCanvas = createAvatarShape();
+      const wrapper = document.createElement('div');
+      wrapper.className = 'avatar-shape';
+      wrapper.style.flexShrink = '0';
+      wrapper.appendChild(shapeCanvas);
+      fragment.appendChild(wrapper);
+    }
   }
+  track.appendChild(fragment);
   createSceneLoop(animateAll);
 }
+
+initXavierites();
+window.sceneRegistry = window.sceneRegistry || {};
+window.sceneRegistry['xavierites'] = {
+  cleanup: () => { cleanupMeshes(); stopAnimation(); },
+  restart: () => { initXavierites(); }
+};
 
 

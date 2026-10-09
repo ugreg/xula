@@ -11,3 +11,11 @@ export function createSceneLoop(animateFn) {
 
   animationFrameId = requestAnimationFrame(loop);
 }
+
+export function stopAnimation() {
+  if (animationFrameId !== null) {
+    cancelAnimationFrame(animationFrameId);
+    animationFrameId = null;
+  }
+  currentAnimateFn = null;
+}

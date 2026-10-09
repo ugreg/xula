@@ -841,6 +841,7 @@ a:hover {
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 8px;
 }
 
 .calendar-card {
@@ -1193,6 +1194,11 @@ a:hover {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@keyframes scrollAvatars {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 .avatar-track {
@@ -1785,8 +1791,9 @@ body.loading .terminal-card {
   }
 
   .xavierites-card {
-    margin-top: 40px;
+    margin: 40px 16px 0;
     padding: 24px 16px;
+    max-width: 480px;
   }
 
   .xavierites-card p {
