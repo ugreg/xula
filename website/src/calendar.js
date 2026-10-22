@@ -29,9 +29,9 @@ const gregAvatarSmall = '<img src="img/greg.jpg" alt="Greg" style="width:20px;he
 const events = [];
 
 events.push({
-  monthIndex: OCTOBER,
-  day: 20,
-  title: gregAvatarSmall + gavinAvatar + ' G & G Free AI Tools Talk'
+  monthIndex: DECEMBER,
+  day: 14,
+  title: gregAvatarSmall + gavinAvatar + ' G & G Landing the Internship'
 });
 
 for (let month = OCTOBER; month <= NOVEMBER; month++) {
@@ -48,12 +48,6 @@ for (let month = OCTOBER; month <= NOVEMBER; month++) {
         monthIndex: month,
         day: day,
         title: 'Tutoring with ' + gregAvatar + ' Greg: 6-7 PM Central' + joinBtn
-      });
-    } else if (dayOfWeek === 3) {
-      events.push({
-        monthIndex: month,
-        day: day,
-        title: 'Tutoring with ' + gavinAvatar + ' Gavin: 6-7 PM Central' + joinBtn
       });
     } else if (dayOfWeek === 4) {
       events.push({
@@ -193,5 +187,3 @@ viewToggle?.addEventListener('change', () => {
   calendarState.view = viewToggle.checked ? 'list' : 'calendar';
   renderView();
 });
-
-
