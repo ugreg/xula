@@ -181,4 +181,82 @@ document.addEventListener('dblclick', (e) => {
   }
 });
 
+// auto-scroll extensions grid on mobile
+(function initAutoScroll() {
+  const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
+
+  let scrolling = false;
+  let speed = 0.5; // px per frame (~30px/sec)
+  let resumeTimeout;
+  let grid = null;
+  let observer = null;
+
+  function scroll() {
+    if (!scrolling || !grid) return;
+    if (grid.scrollLeft >= grid.scrollWidth - grid.clientWidth - 5) {
+      grid.scrollTo({ left: 0, behavior: 'smooth' });
+    } else {
+      grid.scrollLeft += speed;
+    }
+    requestAnimationFrame(scroll);
+  }
+
+  function pause() {
+    scrolling = false;
+    clearTimeout(resumeTimeout);
+  }
+
+  function resume() {
+    clearTimeout(resumeTimeout);
+    resumeTimeout = setTimeout(() => { scrolling = true; }, 3000);
+  }
+
+  function startScrolling() {
+    if (!isMobile()) return;
+    grid = document.querySelector('.extensions-grid');
+    if (!grid) return;
+
+    // remove old listeners if any
+    grid.removeEventListener('touchstart', pause);
+    grid.removeEventListener('touchmove', pause);
+    grid.removeEventListener('touchend', resume);
+    grid.removeEventListener('mouseenter', pause);
+    grid.removeEventListener('mouseleave', resume);
+
+    grid.addEventListener('touchstart', pause, { passive: true });
+    grid.addEventListener('touchmove', pause, { passive: true });
+    grid.addEventListener('touchend', resume, { passive: true });
+    grid.addEventListener('mouseenter', pause);
+    grid.addEventListener('mouseleave', resume);
+
+    scrolling = true;
+    requestAnimationFrame(scroll);
+  }
+
+  // wait for grid to exist (it's loaded dynamically)
+  function waitForGrid() {
+    grid = document.querySelector('.extensions-grid');
+    if (grid) {
+      startScrolling();
+      return;
+    }
+    // observe DOM for grid appearance
+    observer = new MutationObserver((mutations, obs) => {
+      grid = document.querySelector('.extensions-grid');
+      if (grid) {
+        obs.disconnect();
+        observer = null;
+        startScrolling();
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', waitForGrid);
+  } else {
+    waitForGrid();
+  }
+})();
+
 

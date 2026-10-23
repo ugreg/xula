@@ -951,7 +951,48 @@ a:hover {
 }
 
 @media (max-width: 768px) {
-  .extensions-grid { grid-template-columns: 1fr !important; }
+  .extensions-grid {
+    display: flex !important;
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    scroll-behavior: smooth !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding: 0 16px !important;
+    gap: 16px !important;
+  }
+
+  .extensions-grid::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .extension-card {
+    flex: 0 0 calc(100vw - 32px) !important;
+    scroll-snap-align: center !important;
+    margin: 0 !important;
+    padding: 20px 16px !important;
+  }
+
+  .extension-card .icon {
+    width: 36px !important;
+    height: 36px !important;
+    margin: 0 auto 12px !important;
+  }
+
+  .extension-card .icon canvas {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .extension-card h4 {
+    font-size: 18px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .extension-card .desc {
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+  }
 
   .stats-arrow-btn {
     display: none !important;
@@ -1470,6 +1511,7 @@ body.loading .terminal-card {
   border: 1px solid var(--card-border);
 }
 
+
 @media (max-width: 768px) {
   .stats-arrow-btn {
     display: flex;
@@ -1536,15 +1578,13 @@ body.loading .terminal-card {
     width: 100vw;
     min-width: 100vw;
     height: calc(100vh - 90px);
-    overflow: hidden;
+    overflow: visible;
     box-sizing: border-box;
     flex-shrink: 0;
     scroll-snap-align: start;
     scroll-snap-stop: always;
     position: relative;
   }
-
-
 
   .carousel-page iframe {
     width: 100%;
@@ -1558,11 +1598,12 @@ body.loading .terminal-card {
   }
 
   .stats-content {
-    padding-top: 100px;
+    padding-top: 40px;
     padding-left: 16px;
     padding-right: 16px;
-    padding-bottom: 100px;
+    padding-bottom: 40px;
     overflow: visible;
+    min-height: auto !important;
   }
 
   .stats-content h2 {
@@ -1589,14 +1630,39 @@ body.loading .terminal-card {
   }
 
   .xavierites-card {
-    margin: 40px 16px 0;
-    padding: 24px 16px;
-    max-width: 480px;
+    margin: 24px 16px 0;
+    padding: 20px 16px;
+    max-width: 100%;
+    background: var(--card-bg) !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: 16px !important;
+    text-align: center !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .xavierites-card h2 {
+    margin-bottom: 10px !important;
+    font-size: 18px !important;
+    color: var(--text) !important;
   }
 
   .xavierites-card p {
-    font-size: 14px;
-    padding: 0 8px;
+    font-size: 13px !important;
+    line-height: 1.6 !important;
+    color: var(--text-muted) !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .section-header {
+    margin-bottom: 16px !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
   }
 
   .section-header h2 {
@@ -1606,6 +1672,11 @@ body.loading .terminal-card {
   .section-header p {
     font-size: 14px;
     padding: 0 16px;
+  }
+
+  .avatar-row {
+    padding: 16px 0 !important;
+    margin-bottom: 16px !important;
   }
 
   .footer {
