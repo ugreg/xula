@@ -34,48 +34,7 @@
       </div>
     </div>
 
-    <section class="section calendar-section">
-      <div class="calendar-container">
-        <div class="calendar-card">
-          <div class="calendar-header">
-            <div class="header-left">
-              <h1 class="year">2026</h1>
-              <p class="subtitle">XULA TECH CALENDAR</p>
-            </div>
-
-            <div class="header-right">
-              <div class="nav-btn" id="prevBtn">
-                <svg viewBox="0 0 24 24" width="24" height="24">
-                  <path fill="currentColor" d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-                </svg>
-              </div>
-
-              <h2 id="monthDisplay"></h2>
-
-              <div class="nav-btn" id="nextBtn">
-                <svg viewBox="0 0 24 24" width="24" height="24">
-                  <path fill="currentColor" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
-                </svg>
-              </div>
-
-              <label class="toggle" aria-label="Toggle calendar/list view" style="margin-left: 16px;">
-                <input type="checkbox" id="viewToggle">
-                <span class="slider">
-                  <img class="icon-left" src="../img/calendar.svg" alt="">
-                  <img class="icon-right" src="../img/list.svg" alt="">
-                </span>
-              </label>
-            </div>
-          </div>
-
-          <div class="calendar-body">
-            <div class="days" id="calendarDays"></div>
-          </div>
-
-          <div class="calendar-footer"></div>
-        </div>
-      </div>
-    </section>
+    <div data-include="/pages/components/calendar.html"></div>
 
     <div data-include="/pages/components/footer.html"></div>
   </body>

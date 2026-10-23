@@ -68,13 +68,18 @@ events.sort((a, b) => {
 const getEventsForDate = (monthIndex, day) =>
   events.filter(e => e.monthIndex === monthIndex && e.day === day);
 
-const calendarMonthDisplay = document.querySelector('#monthDisplay');
-const calendarDaysContainer = document.querySelector('#calendarDays');
-const calendarCard = document.querySelector('.calendar-card');
+function getCalendarElements() {
+  return {
+    monthDisplay: document.querySelector('#monthDisplay'),
+    daysContainer: document.querySelector('#calendarDays'),
+    card: document.querySelector('.calendar-card')
+  };
+}
 
 const renderCalendar = () => {
+  const el = getCalendarElements();
   const month = calendarState.months[calendarState.current];
-  calendarMonthDisplay && (calendarMonthDisplay.textContent = month);
+  el.monthDisplay && (el.monthDisplay.textContent = month);
 
   const prevBtn = document.getElementById('prevBtn');
   const nextBtn = document.getElementById('nextBtn');
@@ -94,7 +99,7 @@ const renderCalendar = () => {
     cells.push(html`<div data-day="${day}" class="date-cell${hasEvents ? ' has-event' : ''}">${day}</div>`);
   }
 
-  calendarDaysContainer && (calendarDaysContainer.innerHTML = cells.join(''));
+  el.daysContainer && (el.daysContainer.innerHTML = cells.join(''));
 };
 
 const renderListView = () => {
@@ -149,22 +154,24 @@ const renderListView = () => {
     `;
   }).join('');
 
-  calendarDaysContainer.innerHTML = html`<div class="events-list" style="width: 100%;">${listHtml}</div>`;
+  const el = getCalendarElements();
+  el.daysContainer.innerHTML = html`<div class="events-list" style="width: 100%;">${listHtml}</div>`;
 };
 
 const renderView = () => {
+  const el = getCalendarElements();
   const isListView = calendarState.view === 'list';
-  calendarCard?.classList.toggle('list-view', isListView);
+  el.card?.classList.toggle('list-view', isListView);
 
   if (isListView) {
-    calendarMonthDisplay.textContent = 'Upcoming Events';
+    el.monthDisplay.textContent = 'Upcoming Events';
     renderListView();
   } else {
     renderCalendar();
   }
 };
 
-renderView();
+let initialized = false;
 
 document.addEventListener('click', (e) => {
   if (calendarState.view !== 'calendar') return;
@@ -181,10 +188,16 @@ document.addEventListener('click', (e) => {
   }
 });
 
-const viewToggle = document.getElementById('viewToggle');
-viewToggle.checked = calendarState.view === 'list';
-
-viewToggle?.addEventListener('change', () => {
-  calendarState.view = viewToggle.checked ? 'list' : 'calendar';
+function initCalendar() {
+  if (initialized) return;
+  initialized = true;
   renderView();
-});
+
+  const viewToggle = document.getElementById('viewToggle');
+  viewToggle?.addEventListener('change', () => {
+    calendarState.view = viewToggle.checked ? 'list' : 'calendar';
+    renderView();
+  });
+}
+
+window.initCalendar = initCalendar;

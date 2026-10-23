@@ -8,7 +8,18 @@ async function loadComponents() {
     try {
       const response = await fetch(path);
       if (!response.ok) throw new Error(`failed to load ${path}`);
-      el.innerHTML = await response.text();
+      const html = await response.text();
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      el.innerHTML = doc.body.innerHTML;
+
+      const scripts = doc.querySelectorAll('script[type="module"]');
+      for (const script of scripts) {
+        const newScript = document.createElement('script');
+        newScript.type = 'module';
+        newScript.src = script.src;
+        el.appendChild(newScript);
+      }
     } catch (err) {
       console.error(err);
       el.textContent = 'Error loading component.';
@@ -46,8 +57,6 @@ async function loadPage(pageName, container) {
       newScript.src = script.src;
       container.appendChild(newScript);
     }
-
-    await loadComponents();
   } catch (e) {
     console.error(`[load] failed to load ${pageName}:`, e);
   }
@@ -67,9 +76,58 @@ async function loadAllPages() {
   await Promise.all(promises);
 }
 
+function setupCalendarModal() {
+  const calendarFab = document.querySelector('.calendar-fab');
+  const calendarModal = document.getElementById('calendarModal');
+  const calendarModalBackdrop = document.querySelector('.calendar-modal-backdrop');
+  const calendarModalClose = document.querySelector('.calendar-modal-close');
+
+  function openCalendar() {
+    if (calendarModal) {
+      calendarModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      if (window.initCalendar) window.initCalendar();
+    }
+  }
+
+  function closeCalendar() {
+    if (calendarModal) {
+      calendarModal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  }
+
+  if (calendarFab) {
+    calendarFab.addEventListener('click', openCalendar);
+  }
+
+  if (calendarModalClose) {
+    calendarModalClose.addEventListener('click', closeCalendar);
+  }
+
+  if (calendarModalBackdrop) {
+    calendarModalBackdrop.addEventListener('click', closeCalendar);
+  }
+
+  if (calendarModal) {
+    calendarModal.addEventListener('click', (e) => {
+      if (e.target === calendarModal) {
+        closeCalendar();
+      }
+    });
+  }
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && calendarModal?.classList.contains('active')) {
+      closeCalendar();
+    }
+  });
+}
+
 window.addEventListener('load', async () => {
   document.body.classList.remove('loading');
   await loadAllPages();
+  setupCalendarModal();
 
   const themeToggle = document.getElementById('themeToggle');
   document.documentElement.classList.add('light');
@@ -126,7 +184,7 @@ if (carousel) {
 
 
 
-const pageOrder = ['home', 'calendar', 'xavierites', 'skills', 'stats'];
+const pageOrder = ['home', 'xavierites', 'skills', 'stats'];
 let currentPage = pageOrder[0];
 
 function goToPage(pageName) {

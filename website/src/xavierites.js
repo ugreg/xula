@@ -8,13 +8,15 @@ const avatarShapeIndex = { current: 0 };
 function createAvatarShape() {
   const canvas = document.createElement('canvas');
   canvas.setAttribute('data-avatar-shape', 'true');
+  canvas.width = 180;
+  canvas.height = 180;
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
   camera.position.z = 3;
 
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-  renderer.setSize(256, 256);
+  renderer.setSize(180, 180);
   renderer.setPixelRatio(window.devicePixelRatio);
 
   const types = ['cube', 'pyramid', 'sphere', 'octahedron'];
