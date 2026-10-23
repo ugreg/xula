@@ -88,7 +88,7 @@ window.addEventListener('load', async () => {
   if (isMobile) {
     const t = getTerminal();
     if (t) t.classList.remove('visible');
-    if (carousel) carousel.style.overflowX = 'auto';
+    if (carousel) carousel.style.overflowY = 'auto';
   } else {
     const t = getTerminal();
     if (t && carousel.scrollTop === 0) t.classList.add('visible');
@@ -133,7 +133,7 @@ function goToPage(pageName) {
   const idx = pageOrder.indexOf(pageName);
   if (idx < 0) return;
   if (!carousel) return;
-  carousel.scrollTo({ left: idx * window.innerWidth, behavior: 'smooth' });
+  carousel.scrollTo({ top: idx * window.innerHeight, behavior: 'smooth' });
 }
 
 
@@ -156,8 +156,8 @@ if (carousel) {
   let isSwiping = false;
 
   function updatePageFromScroll() {
-    const pageWidth = window.innerWidth;
-    const idx = Math.round(carousel.scrollLeft / pageWidth);
+    const pageHeight = window.innerHeight;
+    const idx = Math.round(carousel.scrollTop / pageHeight);
     if (idx >= 0 && idx < pageOrder.length) {
       const prevPage = currentPage;
       currentPage = pageOrder[idx];
@@ -201,11 +201,11 @@ if (carousel) {
     const deltaX = touchEndX - touchStartX;
     const deltaY = touchEndY - touchStartY;
 
-    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+    if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 50) {
       const idx = pageOrder.indexOf(currentPage);
-      if (deltaX < 0 && idx < pageOrder.length - 1) {
+      if (deltaY < 0 && idx < pageOrder.length - 1) {
         goToPage(pageOrder[idx + 1]);
-      } else if (deltaX > 0 && idx > 0) {
+      } else if (deltaY > 0 && idx > 0) {
         goToPage(pageOrder[idx - 1]);
       }
     }
@@ -213,8 +213,14 @@ if (carousel) {
 
   document.addEventListener('keydown', (e) => {
     const idx = pageOrder.indexOf(currentPage);
-    if (e.key === 'ArrowRight' && idx < pageOrder.length - 1) goToPage(pageOrder[idx + 1]);
-    if (e.key === 'ArrowLeft' && idx > 0) goToPage(pageOrder[idx - 1]);
+    if (e.key === 'ArrowUp' && idx > 0) {
+      e.preventDefault();
+      goToPage(pageOrder[idx - 1]);
+    }
+    if (e.key === 'ArrowDown' && idx < pageOrder.length - 1) {
+      e.preventDefault();
+      goToPage(pageOrder[idx + 1]);
+    }
   });
 
   statsArrowBtn?.addEventListener('click', () => {
