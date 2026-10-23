@@ -103,9 +103,11 @@ const renderCalendar = () => {
 };
 
 const renderListView = () => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
   const upcomingEvents = events
     .map(e => ({ ...e, date: new Date(calendarState.year, 8 + e.monthIndex, e.day) }))
-    .filter(e => e.date >= new Date(new Date().setHours(0,0,0,0)))
+    .filter(e => e.date >= today)
     .sort((a, b) => a.date - b.date);
 
   const isMobile = window.innerWidth < 768;

@@ -1058,7 +1058,7 @@ a:hover {
     flex-direction: row !important;
     overflow-x: auto !important;
     scroll-snap-type: x mandatory !important;
-    scroll-behavior: smooth !important;
+    scroll-behavior: auto !important;
     -webkit-overflow-scrolling: touch !important;
     padding: 0 16px !important;
     gap: 16px !important;
@@ -1293,11 +1293,11 @@ body.loading .terminal-card {
   right: 5px;
 }
 
-.toggle input:checked ~ .slider .icon-left {
+.toggle input:checked ~ .slider .icon-right {
   opacity: 1;
 }
 
-.toggle input:not(:checked) ~ .slider .icon-right {
+.toggle input:not(:checked) ~ .slider .icon-left {
   opacity: 1;
 }
 
@@ -1696,7 +1696,24 @@ body.loading .terminal-card {
   }
 
   .stats-grid {
-    grid-template-columns: 1fr;
+    display: flex !important;
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    scroll-behavior: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding: 0 16px !important;
+    gap: 16px !important;
+  }
+
+  .stats-grid::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .stats-card {
+    flex: 0 0 calc(100vw - 32px) !important;
+    scroll-snap-align: center !important;
+    max-width: calc(100vw - 32px) !important;
   }
 
   .stats-content {
@@ -1796,6 +1813,18 @@ body.loading .terminal-card {
   .calendar-fab img {
     width: 18px;
     height: 18px;
+  }
+
+  .calendar-modal-close {
+    width: 22px !important;
+    height: 22px !important;
+    top: -11px !important;
+    right: -11px !important;
+  }
+
+  .calendar-modal-close svg {
+    width: 10px !important;
+    height: 10px !important;
   }
 }
 

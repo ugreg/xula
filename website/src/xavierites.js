@@ -89,6 +89,7 @@ const avatars = [
 function initXavierites() {
   const track = document.getElementById('avatarTrack');
   if (!track) return;
+  track.innerHTML = '';
   const fragment = document.createDocumentFragment();
   for (let repeat = 0; repeat < 3; repeat++) {
     for (const avatar of avatars) {
