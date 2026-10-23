@@ -118,16 +118,17 @@ const renderListView = () => {
       btnHtml = e.title.substring(btnStart);
     }
 
+    const fs = isMobile ? 'font-size:0.70rem' : '';
     if (isMobile) {
       return html`
         <div class="list-event-item" data-month="${e.monthIndex}" data-day="${e.day}">
           <div class="list-event-date">
-            <span class="list-event-day">${dayName}</span>
-            <span class="list-event-num">${e.day}</span>
-            <span class="list-event-month">${monthName}</span>
+            <span class="list-event-day" style="${fs}">${dayName}</span>
+            <span class="list-event-num" style="${fs}">${e.day}</span>
+            <span class="list-event-month" style="${fs}">${monthName}</span>
           </div>
           <div class="list-event-info">
-            <span class="list-event-title">${titleText}</span>
+            <span class="list-event-title" style="${fs}">${titleText}</span>
             ${btnHtml}
           </div>
         </div>

@@ -133,7 +133,8 @@ function goToPage(pageName) {
   const idx = pageOrder.indexOf(pageName);
   if (idx < 0) return;
   if (!carousel) return;
-  carousel.scrollTo({ top: idx * window.innerHeight, behavior: 'smooth' });
+  const pageH = isMobile ? window.innerHeight - 90 : window.innerHeight;
+  carousel.scrollTo({ top: idx * pageH, behavior: 'smooth' });
 }
 
 
@@ -156,7 +157,7 @@ if (carousel) {
   let isSwiping = false;
 
   function updatePageFromScroll() {
-    const pageHeight = window.innerHeight;
+    const pageHeight = isMobile ? window.innerHeight - 90 : window.innerHeight;
     const idx = Math.round(carousel.scrollTop / pageHeight);
     if (idx >= 0 && idx < pageOrder.length) {
       const prevPage = currentPage;

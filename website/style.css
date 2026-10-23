@@ -1253,6 +1253,27 @@ body.loading .terminal-card {
     right: 12px;
     bottom: 10px;
   }
+
+  .calendar-card {
+    box-shadow: none;
+    padding: 24px 20px;
+  }
+
+  .calendar-container .year {
+    font-size: 1.25rem !important;
+  }
+
+  .calendar-container .subtitle {
+    font-size: 0.55rem !important;
+  }
+
+  .calendar-container #monthDisplay {
+    font-size: 0.75rem !important;
+  }
+
+  .calendar-body .days {
+    min-height: 0;
+  }
 }
 
 .page-indicator {
@@ -1473,7 +1494,7 @@ body.loading .terminal-card {
     width: 28px;
     top: 50%;
     left: auto;
-    right: 16px;
+    right: 6px;
     transform: translateY(-50%);
     z-index: 1100;
   }
@@ -1514,7 +1535,7 @@ body.loading .terminal-card {
   .carousel-page {
     width: 100vw;
     min-width: 100vw;
-    height: 100vh;
+    height: calc(100vh - 90px);
     overflow: hidden;
     box-sizing: border-box;
     flex-shrink: 0;
@@ -1541,6 +1562,7 @@ body.loading .terminal-card {
     padding-left: 16px;
     padding-right: 16px;
     padding-bottom: 100px;
+    overflow: visible;
   }
 
   .stats-content h2 {
