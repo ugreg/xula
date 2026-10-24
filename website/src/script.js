@@ -79,12 +79,12 @@ async function loadAllPages() {
 function setupCalendarModal() {
   const calendarFab = document.querySelector('.calendar-fab');
   const calendarModal = document.getElementById('calendarModal');
-  const calendarModalBackdrop = document.querySelector('.calendar-modal-backdrop');
   const calendarModalClose = document.querySelector('.calendar-modal-close');
 
   function openCalendar() {
     if (calendarModal) {
       calendarModal.classList.add('active');
+      document.body.classList.add('calendar-open');
       document.body.style.overflow = 'hidden';
       if (window.initCalendar) window.initCalendar();
     }
@@ -93,6 +93,7 @@ function setupCalendarModal() {
   function closeCalendar() {
     if (calendarModal) {
       calendarModal.classList.remove('active');
+      document.body.classList.remove('calendar-open');
       document.body.style.overflow = '';
     }
   }
@@ -105,13 +106,10 @@ function setupCalendarModal() {
     calendarModalClose.addEventListener('click', closeCalendar);
   }
 
-  if (calendarModalBackdrop) {
-    calendarModalBackdrop.addEventListener('click', closeCalendar);
-  }
-
   if (calendarModal) {
     calendarModal.addEventListener('click', (e) => {
-      if (e.target === calendarModal) {
+      const calendarCard = calendarModal.querySelector('.calendar-card');
+      if (!calendarCard || !calendarCard.contains(e.target)) {
         closeCalendar();
       }
     });
@@ -127,19 +125,19 @@ function setupCalendarModal() {
 window.addEventListener('load', async () => {
   document.body.classList.remove('loading');
   await loadAllPages();
+  setupAutoScroll();
   setupCalendarModal();
 
   const themeToggle = document.getElementById('themeToggle');
   document.documentElement.classList.add('light');
-  if (themeToggle) {
-    themeToggle.checked = true;
-  }
+  document.documentElement.classList.remove('dark');
+  if (themeToggle) themeToggle.checked = true;
 
   if (themeToggle) {
     themeToggle.addEventListener('change', () => {
       const light = themeToggle.checked;
       document.documentElement.classList.toggle('light', light);
-      localStorage.setItem('theme', light ? 'light' : 'dark');
+      document.documentElement.classList.toggle('dark', !light);
     });
   }
 
@@ -292,3 +290,35 @@ if (carousel) {
     if (idx > 0) goToPage(pageOrder[idx - 1]);
   });
 }
+
+function setupAutoScroll() {
+  const grids = document.querySelectorAll('.extensions-grid, .stats-grid');
+  grids.forEach((grid) => {
+    let scrollInterval;
+    let isHovering = false;
+    let isTouching = false;
+
+    const startScroll = () => {
+      if (scrollInterval) return;
+      scrollInterval = setInterval(() => {
+        if (isHovering || isTouching) return;
+        const maxScroll = grid.scrollWidth - grid.clientWidth;
+        if (maxScroll <= 0) return;
+        if (grid.scrollLeft >= maxScroll - 1) {
+          grid.scrollLeft = 0;
+        } else {
+          grid.scrollLeft += 1;
+        }
+      }, 50);
+    };
+
+    grid.addEventListener('mouseenter', () => { isHovering = true; });
+    grid.addEventListener('mouseleave', () => { isHovering = false; });
+    grid.addEventListener('touchstart', () => { isTouching = true; });
+    grid.addEventListener('touchend', () => { isTouching = false; });
+
+    startScroll();
+  });
+}
+
+

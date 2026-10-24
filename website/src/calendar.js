@@ -103,7 +103,8 @@ const renderCalendar = () => {
 };
 
 const renderListView = () => {
-  const today = new Date();
+  const ref = new Date();
+  const today = new Date(calendarState.year, ref.getMonth(), ref.getDate());
   today.setHours(0, 0, 0, 0);
   const upcomingEvents = events
     .map(e => ({ ...e, date: new Date(calendarState.year, 8 + e.monthIndex, e.day) }))
@@ -196,8 +197,10 @@ function initCalendar() {
   renderView();
 
   const viewToggle = document.getElementById('viewToggle');
+  const slider = viewToggle?.closest('.toggle').querySelector('.slider');
   viewToggle?.addEventListener('change', () => {
     calendarState.view = viewToggle.checked ? 'list' : 'calendar';
+    slider?.classList.toggle('checked', viewToggle.checked);
     renderView();
   });
 }

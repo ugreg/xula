@@ -19,13 +19,6 @@
   --text-muted: #a0a0a0;
   --accent: #d4a574;
   --border: #3a3a3a;
-  --gradient-1: #d4a574;
-  --gradient-2: #c49463;
-  --gradient-4: #a0b86a;
-  --bg-gradient-1: #1a1a2e;
-  --bg-gradient-2: #1e2a4a;
-  --bg-gradient-3: #2a1e4a;
-  --bg-gradient-4: #1a2a4a;
   --glass-bg: rgba(26, 26, 26, 0.8);
   --glass-border: rgba(255, 255, 255, 0.1);
   --card-bg: rgba(255, 255, 255, 0.05);
@@ -48,9 +41,45 @@
   --scroll-btn-border: rgba(255, 255, 255, 0.15);
   --scroll-btn-hover-bg: rgba(212, 165, 116, 0.2);
   --scroll-btn-hover-border: rgba(212, 165, 116, 0.4);
+  --icon-filter: invert(1);
+}
+
+:root.dark {
+  color-scheme: dark;
+  accent-color: #d4a574;
+  --bg: #1a1a1a;
+  --surface: #242424;
+  --text: #ffffff;
+  --text-muted: #a0a0a0;
+  --accent: #d4a574;
+  --border: #3a3a3a;
+  --glass-bg: rgba(26, 26, 26, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --card-border: rgba(255, 255, 255, 0.12);
+  --card-hover-bg: rgba(255, 255, 255, 0.15);
+  --card-hover-border: rgba(255, 255, 255, 0.2);
+  --card-shine: rgba(255, 255, 255, 0.2);
+  --overlay-bg: rgba(0, 0, 0, 0.2);
+  --hero-gradient-start: #fff;
+  --hero-gradient-end: #a0a0a0;
+  --terminal-bg: rgba(26, 26, 26, 0.95);
+  --terminal-border: #444;
+  --terminal-header-bg: rgba(36, 36, 36, 0.9);
+  --btn-secondary-bg: rgba(255, 255, 255, 0.1);
+  --btn-secondary-color: #fff;
+  --btn-secondary-border: rgba(255, 255, 255, 0.2);
+  --btn-secondary-hover-bg: rgba(255, 255, 255, 0.15);
+  --btn-secondary-hover-border: rgba(255, 255, 255, 0.3);
+  --scroll-btn-bg: rgba(26, 26, 26, 0.85);
+  --scroll-btn-border: rgba(255, 255, 255, 0.15);
+  --scroll-btn-hover-bg: rgba(212, 165, 116, 0.2);
+  --scroll-btn-hover-border: rgba(212, 165, 116, 0.4);
+  --icon-filter: invert(1);
 }
 
 :root.light {
+  --icon-filter: invert(0.1);
   color-scheme: light;
   --bg: #f5f5f0;
   --surface: #ffffff;
@@ -58,13 +87,6 @@
   --text-muted: #6b6b6b;
   --accent: #b8894f;
   --border: #e0e0d8;
-  --gradient-1: #d4a574;
-  --gradient-2: #c49463;
-  --gradient-4: #8fa85a;
-  --bg-gradient-1: #e8e8f0;
-  --bg-gradient-2: #e0e4f0;
-  --bg-gradient-3: #f0e8f0;
-  --bg-gradient-4: #e0eaf0;
   --glass-bg: rgba(245, 245, 240, 0.85);
   --glass-border: rgba(0, 0, 0, 0.08);
   --card-bg: rgba(255, 255, 255, 0.6);
@@ -87,6 +109,25 @@
   --scroll-btn-border: rgba(0, 0, 0, 0.1);
   --scroll-btn-hover-bg: rgba(184, 137, 79, 0.15);
   --scroll-btn-hover-border: rgba(184, 137, 79, 0.4);
+}
+
+.background-gradient {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background: var(--bg);
+  pointer-events: none;
+}
+
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+  pointer-events: none;
 }
 
 * {
@@ -317,7 +358,7 @@ a:hover {
   font-weight: 600;
   color: var(--text);
   background: var(--bg);
-  border: 1px solid var(--accent);
+  border: 1px solid #a07840;
   cursor: pointer;
   z-index: 1001;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
@@ -330,10 +371,24 @@ a:hover {
   transform: translateY(-2px);
 }
 
+body.calendar-open .calendar-fab {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .calendar-fab img {
   width: 20px;
   height: 20px;
   filter: brightness(0) invert(1);
+}
+
+:root.light .calendar-fab {
+  border-color: var(--accent);
+}
+
+:root.light body.calendar-open .calendar-fab {
+  opacity: 0;
+  pointer-events: none;
 }
 
 :root.light .calendar-fab img {
@@ -367,19 +422,26 @@ a:hover {
 .calendar-modal-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+:root.light .calendar-modal-backdrop {
+  background: rgba(0, 0, 0, 0.15);
 }
 
 .calendar-modal-content {
   position: relative;
   width: 90%;
   max-width: 900px;
-  max-height: 90vh;
-  overflow: auto;
-  overflow-x: hidden;
   z-index: 1;
+}
+
+@media (min-width: 769px) {
+  .calendar-modal-content {
+    max-width: min(4000px, 95vw);
+  }
 }
 
 .calendar-modal-close {
@@ -727,12 +789,11 @@ a:hover {
 }
 
 :root.light {
-  --accent-color: #00c4d4;
   --calendar-gradient-start: #1a1a1a;
 }
 
 .calendar-section {
-  padding: 10px 60px;
+  padding: 0;
   min-height: 80vh;
   display: flex;
   align-items: center;
@@ -743,6 +804,7 @@ a:hover {
 .calendar-container {
   position: relative;
   width: 100%;
+  height: 100%;
   max-width: none;
   display: flex;
   justify-content: center;
@@ -751,15 +813,20 @@ a:hover {
 }
 
 .calendar-card {
-  width: 1000px;
+  position: relative;
+  width: min(2800px, 95vw);
+  height: 80vh;
+  margin: 10vh 0;
   background: var(--glass-bg);
   backdrop-filter: blur(15px);
   border: 1px solid var(--glass-border);
   border-radius: 20px;
-  padding: 100px;
+  padding: 30px 60px;
   box-shadow: 0 2px 16px rgba(0,0,0,0.3);
   transition: transform 0.3s;
   font-family: 'Rajdhani', sans-serif;
+  display: flex;
+  flex-direction: column;
 }
 
 .calendar-card.list-view .nav-btn {
@@ -770,8 +837,29 @@ a:hover {
   gap: 10px;
 }
 
+.calendar-card.list-view .calendar-body {
+  padding: 0;
+}
+
 .calendar-card.list-view .calendar-body .days {
-  display: block;
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-body {
+  margin-bottom: 20px;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-body .days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  min-height: 400px;
+  flex: 1;
 }
 
 .calendar-header {
@@ -823,26 +911,19 @@ a:hover {
   background: rgba(255, 255, 255, 0.1);
 }
 
-.calendar-body {
-  margin-bottom: 20px;
-}
-
-.calendar-body .days {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  text-align: center;
-  min-height: 400px;
-}
-
 .calendar-body .days div {
   padding: 10px 0;
-  cursor: pointer;
   border-radius: 8px;
   font-weight: 500;
   transition: all 0.2s;
   font-size: 0.95rem;
   color: var(--text-primary);
   position: relative;
+}
+
+.calendar-card:not(.list-view) .calendar-body .days div {
+  cursor: pointer;
+  border: 1px solid var(--glass-border);
 }
 
 .calendar-body .days div.day-label {
@@ -877,11 +958,13 @@ a:hover {
 
 .events-list {
   width: 100%;
-  max-height: 400px;
+  height: 100%;
+  max-height: none;
   overflow-y: auto;
   padding: 8px 16px;
   pointer-events: none;
   user-select: none;
+  box-sizing: border-box;
 }
 
 .events-list::-webkit-scrollbar {
@@ -900,13 +983,8 @@ a:hover {
   gap: 16px;
   padding: 12px;
   border-radius: 8px;
-  cursor: pointer;
   transition: background 0.2s;
   pointer-events: auto;
-}
-
-.list-event-item:hover {
-  background: var(--card-hover-bg);
 }
 
 .list-event-date {
@@ -993,16 +1071,6 @@ a:hover {
   }
 }
 
-.calendar-footer {
-  margin-top: 25px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.8rem;
-  border-top: 1px solid var(--glass-border);
-  padding-top: 15px;
-}
-
 .header-logo {
   width: 64px;
   height: 64px;
@@ -1034,8 +1102,9 @@ a:hover {
   }
 
   .calendar-card {
-    padding: 30px 20px;
+    padding: 10vh 20px;
     width: 100%;
+    height: 70vh;
     border: 1px solid var(--glass-border);
   }
 
@@ -1057,7 +1126,6 @@ a:hover {
     display: flex !important;
     flex-direction: row !important;
     overflow-x: auto !important;
-    scroll-snap-type: x mandatory !important;
     scroll-behavior: auto !important;
     -webkit-overflow-scrolling: touch !important;
     padding: 0 16px !important;
@@ -1070,7 +1138,6 @@ a:hover {
 
   .extension-card {
     flex: 0 0 calc(100vw - 32px) !important;
-    scroll-snap-align: center !important;
     margin: 0 !important;
     padding: 20px 16px !important;
   }
@@ -1197,12 +1264,12 @@ html {
 }
 
 #file::-webkit-progress-value {
-  background: linear-gradient(90deg, var(--gradient-1), var(--gradient-4));
+  background: var(--accent);
   border-radius: 3px;
 }
 
 #file::-moz-progress-bar {
-  background: linear-gradient(90deg, var(--gradient-1), var(--gradient-4));
+  background: var(--accent);
   border-radius: 3px;
 }
 
@@ -1293,11 +1360,11 @@ body.loading .terminal-card {
   right: 5px;
 }
 
-.toggle input:checked ~ .slider .icon-right {
+.toggle .slider.checked .icon-right {
   opacity: 1;
 }
 
-.toggle input:not(:checked) ~ .slider .icon-left {
+.toggle .slider:not(.checked) .icon-left {
   opacity: 1;
 }
 
@@ -1412,10 +1479,6 @@ body.loading .terminal-card {
 
   .calendar-container #monthDisplay {
     font-size: 0.75rem !important;
-  }
-
-  .calendar-body .days {
-    min-height: 0;
   }
 }
 
@@ -1699,7 +1762,6 @@ body.loading .terminal-card {
     display: flex !important;
     flex-direction: row !important;
     overflow-x: auto !important;
-    scroll-snap-type: x mandatory !important;
     scroll-behavior: auto !important;
     -webkit-overflow-scrolling: touch !important;
     padding: 0 16px !important;
@@ -1712,7 +1774,6 @@ body.loading .terminal-card {
 
   .stats-card {
     flex: 0 0 calc(100vw - 32px) !important;
-    scroll-snap-align: center !important;
     max-width: calc(100vw - 32px) !important;
   }
 
@@ -1756,7 +1817,7 @@ body.loading .terminal-card {
     border: 1px solid var(--card-border) !important;
     border-radius: 16px !important;
     text-align: center !important;
-    width: auto !important;
+    width: 100% !important;
     box-sizing: border-box !important;
     display: block !important;
     visibility: visible !important;
@@ -1772,7 +1833,7 @@ body.loading .terminal-card {
   .xavierites-card p {
     font-size: 14px !important;
     line-height: 1.6 !important;
-    color: var(--text-muted) !important;
+    color: var(--text) !important;
     padding: 0 !important;
     margin: 0 !important;
   }
@@ -1816,15 +1877,16 @@ body.loading .terminal-card {
   }
 
   .calendar-modal-close {
-    width: 22px !important;
-    height: 22px !important;
-    top: -11px !important;
-    right: -11px !important;
+    width: 21px !important;
+    height: 21px !important;
+    top: -10px !important;
+    right: -10px !important;
   }
 
-  .calendar-modal-close svg {
+  .calendar-modal-close img {
     width: 10px !important;
     height: 10px !important;
+    filter: var(--icon-filter);
   }
 }
 
