@@ -317,7 +317,17 @@ a:hover {
 .home-terminal.visible,
 .terminal-card.visible {
   opacity: 1;
-  pointer-events: auto;
+}
+
+/* read-only panel that floats above page content, so it must never intercept
+   clicks meant for the page underneath it */
+.terminal-card,
+.terminal-card.visible {
+  pointer-events: none;
+}
+
+body.calendar-open .terminal-card {
+  opacity: 0;
 }
 
 .scroll-top-btn {
@@ -357,11 +367,9 @@ a:hover {
   color: #d4a574;
 }
 
-/* Calendar FAB */
-.calendar-fab {
-  position: fixed;
-  right: 24px;
-  bottom: 24px;
+/* Calendar buttons - shared look for the FAB and the hero button */
+.calendar-fab,
+.hero-calendar-btn {
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -373,15 +381,40 @@ a:hover {
   background: var(--bg);
   border: 1px solid #a07840;
   cursor: pointer;
-  z-index: 1001;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease;
   text-decoration: none;
 }
 
-.calendar-fab:hover {
+.calendar-fab:hover,
+.hero-calendar-btn:hover {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 12px 24px rgba(0, 0, 0, 0.2);
   transform: translateY(-2px);
+}
+
+.calendar-fab img,
+.hero-calendar-btn img {
+  width: 20px;
+  height: 20px;
+  filter: brightness(0) invert(1);
+}
+
+:root.light .calendar-fab,
+:root.light .hero-calendar-btn {
+  border-color: var(--accent);
+}
+
+:root.light .calendar-fab img,
+:root.light .hero-calendar-btn img {
+  filter: none;
+}
+
+/* Calendar FAB - fixed, hidden while the modal is open */
+.calendar-fab {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1001;
 }
 
 body.calendar-open .calendar-fab {
@@ -389,28 +422,14 @@ body.calendar-open .calendar-fab {
   pointer-events: none;
 }
 
-.calendar-fab img {
-  width: 20px;
-  height: 20px;
-  filter: brightness(0) invert(1);
-}
-
-:root.light .calendar-fab {
-  border-color: var(--accent);
-}
-
-:root.light body.calendar-open .calendar-fab {
+/* FAB stays hidden until the user scrolls */
+.calendar-fab:not(.visible) {
   opacity: 0;
   pointer-events: none;
 }
 
-:root.light .calendar-fab img {
-  filter: none;
-}
-
-/* Hero calendar button - same as the FAB, no border, static in flow */
-.hero .calendar-fab {
-  position: static;
+/* Hero calendar button - static in flow, always visible, no border */
+.hero-calendar-btn {
   border: none;
 }
 
@@ -420,12 +439,6 @@ body.calendar-open .calendar-fab {
 
 .hero .discord-arrow {
   margin-top: 64px;
-}
-
-/* FAB stays hidden until the user scrolls */
-.calendar-fab:not(.hero-calendar):not(.visible) {
-  opacity: 0;
-  pointer-events: none;
 }
 
 /* Discord buttons - prevent black text on hover in light mode */
@@ -444,12 +457,19 @@ body.calendar-open .calendar-fab {
   justify-content: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  /* opacity alone still hit-tests, and descendants that declare
+     pointer-events: auto punch back through it and eat clicks on the page
+     underneath. visibility prunes the whole subtree, and keeps a closed modal
+     out of the tab order too. the delayed flip preserves the fade-out */
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0s linear 0.3s;
 }
 
 .calendar-modal.active {
   opacity: 1;
   pointer-events: auto;
+  visibility: visible;
+  transition: opacity 0.3s ease, visibility 0s;
 }
 
 .calendar-modal-backdrop {
@@ -474,6 +494,10 @@ body.calendar-open .calendar-fab {
 @media (min-width: 769px) {
   .calendar-modal-content {
     max-width: min(4000px, 95vw);
+  }
+
+  .calendar-card.list-view .calendar-body {
+    padding: 0 180px;
   }
 }
 
@@ -667,8 +691,7 @@ body.calendar-open .calendar-fab {
   border-radius: 20px;
   padding: 40px;
   text-align: center;
-  transition: all 0.3s ease;
-  cursor: pointer;
+  transition: background 0.3s ease, border-color 0.3s ease;
   position: relative;
   overflow: hidden;
 }
@@ -688,16 +711,11 @@ body.calendar-open .calendar-fab {
 .extension-card:hover {
   background: var(--card-hover-bg);
   border-color: var(--card-hover-border);
-  transform: translateY(-4px);
   --glow-opacity: 1;
 }
 
 .extension-card:hover::before {
   opacity: 1;
-}
-
-.extension-card:has(.icon) {
-  cursor: pointer;
 }
 
 .extension-card:focus-within {
@@ -1207,6 +1225,7 @@ body.calendar-open .calendar-fab {
 }
 
 .avatar-row {
+  --avatar-size: 140px;
   width: 100%;
   margin: 0 auto;
   padding: 24px 0;
@@ -1234,16 +1253,16 @@ body.calendar-open .calendar-fab {
 }
 
 .avatar-track img {
-  width: 180px;
-  height: 180px;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid rgba(92, 120, 226, 0.2);
 }
 
 .avatar-shape {
-  width: 180px;
-  height: 180px;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
   margin-top: -20px;
 }
 
@@ -1434,6 +1453,11 @@ body.loading .terminal-card {
   border-color: var(--accent);
 }
 
+/* layers: .background-gradient -2, .noise-overlay -1 < .carousel 100 desktop /
+   50 mobile (a stacking context, so nothing inside it can out-rank a sibling
+   outside it) < .footer and .stats-arrow-btn 150-200 < .page-indicator 400 /
+   1100 mobile < .terminal-card and .calendar-modal 1000 < .calendar-fab and
+   .shared-terminal 1001 < #loading-screen 99999 */
 .terminal-card {
   position: fixed;
   left: 50%;
@@ -1448,7 +1472,6 @@ body.loading .terminal-card {
 
 .terminal-card.visible {
   opacity: 1;
-  pointer-events: auto;
   transform: translateX(-50%) translateY(0);
 }
 
@@ -1637,17 +1660,19 @@ body.loading .terminal-card {
     z-index: 200;
   }
 
+  /* pages grow with their content, never shorter than one screen */
   .carousel-page {
     display: block;
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
+    height: auto;
     overflow: hidden;
     scroll-snap-align: start;
   }
 
   .carousel-page iframe {
     width: 100%;
-    height: 100%;
+    height: 100vh;
     display: block;
   }
 }
@@ -1756,7 +1781,7 @@ body.loading .terminal-card {
     overflow-x: hidden;
     overflow-y: scroll;
     z-index: 50;
-    scroll-snap-type: y mandatory;
+    scroll-snap-type: y proximity;
   }
 
   .carousel::-webkit-scrollbar {
@@ -1781,7 +1806,9 @@ body.loading .terminal-card {
   .carousel-page {
     width: 100vw;
     min-width: 100vw;
-    height: calc(100vh - 90px);
+    min-height: calc(100vh - 90px);
+    min-height: calc(100dvh - 90px);
+    height: auto;
     overflow: visible;
     box-sizing: border-box;
     flex-shrink: 0;
@@ -1792,7 +1819,8 @@ body.loading .terminal-card {
 
   .carousel-page iframe {
     width: 100%;
-    height: 100%;
+    height: calc(100vh - 90px);
+    height: calc(100dvh - 90px);
     display: block;
     touch-action: pan-x;
   }
@@ -1834,14 +1862,7 @@ body.loading .terminal-card {
     gap: 24px;
   }
 
-  .avatar-track img {
-    width: 90px;
-    height: 90px;
-  }
-
   .avatar-shape {
-    width: 90px;
-    height: 90px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1895,6 +1916,7 @@ body.loading .terminal-card {
   }
 
   .avatar-row {
+    --avatar-size: 90px;
     padding: 16px 0 !important;
     margin-bottom: 16px !important;
   }
@@ -1903,14 +1925,19 @@ body.loading .terminal-card {
     display: none;
   }
 
-  .calendar-fab {
+  .calendar-fab,
+  .hero-calendar-btn {
     padding: 10px 20px;
     font-size: 14px;
+  }
+
+  .calendar-fab {
     right: 16px;
     bottom: 16px;
   }
 
-  .calendar-fab img {
+  .calendar-fab img,
+  .hero-calendar-btn img {
     width: 18px;
     height: 18px;
   }

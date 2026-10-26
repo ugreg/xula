@@ -37,13 +37,17 @@ function getTerminal() {
   return document.getElementById('homeTerminal');
 }
 
+// fixed calendar FAB appears after this fraction of a viewport scrolled
+const CALENDAR_FAB_SCROLL_RATIO = 0.5;
+
 function getCalendarFab() {
-  return document.querySelector('.calendar-fab:not(.hero-calendar)');
+  return document.querySelector('.calendar-fab');
 }
 
 function updateCalendarFab(scrollPos) {
   const fab = getCalendarFab();
-  if (fab) fab.classList.toggle('visible', scrollPos > 0);
+  if (!fab) return;
+  fab.classList.toggle('visible', scrollPos > window.innerHeight * CALENDAR_FAB_SCROLL_RATIO);
 }
 
 let isMobile = window.matchMedia('(max-width: 768px)').matches;
@@ -85,50 +89,59 @@ async function loadAllPages() {
   await Promise.all(promises);
 }
 
+const getCalendarModal = () => document.getElementById('calendarModal');
+
+// single source of truth for calendar state: modal, body lock, and trigger aria
+// everything routes through here so the three signals can never disagree
+function setCalendarOpen(open) {
+  const calendarModal = getCalendarModal();
+  if (!calendarModal) return;
+
+  calendarModal.classList.toggle('active', open);
+  document.body.classList.toggle('calendar-open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+
+  for (const trigger of document.querySelectorAll('[data-calendar-open]')) {
+    trigger.setAttribute('aria-expanded', String(open));
+  }
+
+  if (open && window.initCalendar) window.initCalendar();
+}
+
+// delegated on document so re-injected pages and components can never orphan a listener
 function setupCalendarModal() {
-  const calendarFabs = document.querySelectorAll('.calendar-fab');
-  const calendarModal = document.getElementById('calendarModal');
-  const calendarModalClose = document.querySelector('.calendar-modal-close');
+  document.addEventListener('click', (e) => {
+    const calendarModal = getCalendarModal();
+    if (!calendarModal) return;
 
-  function openCalendar() {
-    if (calendarModal) {
-      calendarModal.classList.add('active');
-      document.body.classList.add('calendar-open');
-      document.body.style.overflow = 'hidden';
-      if (window.initCalendar) window.initCalendar();
+    if (e.target.closest('[data-calendar-open]')) {
+      setCalendarOpen(true);
+      return;
     }
-  }
 
-  function closeCalendar() {
-    if (calendarModal) {
-      calendarModal.classList.remove('active');
-      document.body.classList.remove('calendar-open');
-      document.body.style.overflow = '';
-    }
-  }
+    const outsideCard =
+      e.target === calendarModal ||
+      e.target.closest('.calendar-modal-backdrop') ||
+      e.target.closest('[data-calendar-close]');
 
-  for (const fab of calendarFabs) {
-    fab.addEventListener('click', openCalendar);
-  }
-
-  if (calendarModalClose) {
-    calendarModalClose.addEventListener('click', closeCalendar);
-  }
-
-  if (calendarModal) {
-    calendarModal.addEventListener('click', (e) => {
-      const calendarCard = calendarModal.querySelector('.calendar-card');
-      if (!calendarCard || !calendarCard.contains(e.target)) {
-        closeCalendar();
-      }
-    });
-  }
-
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && calendarModal?.classList.contains('active')) {
-      closeCalendar();
+    if (outsideCard && calendarModal.classList.contains('active')) {
+      setCalendarOpen(false);
     }
   });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && getCalendarModal()?.classList.contains('active')) {
+      setCalendarOpen(false);
+    }
+  });
+
+  window.__xula = {
+    setCalendarOpen,
+    calendarState: () => ({
+      open: getCalendarModal()?.classList.contains('active') ?? false,
+      triggers: document.querySelectorAll('[data-calendar-open]').length,
+    }),
+  };
 }
 
 window.addEventListener('load', async () => {
@@ -204,8 +217,9 @@ function goToPage(pageName) {
   const idx = pageOrder.indexOf(pageName);
   if (idx < 0) return;
   if (!carousel) return;
-  const pageH = isMobile ? window.innerHeight - 90 : window.innerHeight;
-  carousel.scrollTo({ top: idx * pageH, behavior: 'smooth' });
+  const target = carousel.querySelectorAll('.carousel-page')[idx];
+  if (!target) return;
+  carousel.scrollTo({ top: target.offsetTop, behavior: 'smooth' });
 }
 
 
@@ -228,8 +242,12 @@ if (carousel) {
   let isSwiping = false;
 
   function updatePageFromScroll() {
-    const pageHeight = isMobile ? window.innerHeight - 90 : window.innerHeight;
-    const idx = Math.round(carousel.scrollTop / pageHeight);
+    const pages = carousel.querySelectorAll('.carousel-page');
+    const probe = carousel.scrollTop + carousel.clientHeight / 2;
+    let idx = 0;
+    pages.forEach((page, i) => {
+      if (page.offsetTop <= probe) idx = i;
+    });
     if (idx >= 0 && idx < pageOrder.length) {
       const prevPage = currentPage;
       currentPage = pageOrder[idx];

@@ -10,3 +10,7 @@ rules for every svg in this folder
 - kebab-case filename, one icon per file
 - display size lives in css when it differs from 16, eg `.calendar-fab img { width: 20px; height: 20px; }`
 - reference icons as `img/icon/name.svg` from root pages and `../img/icon/name.svg` from `pages/`
+
+# source of truth 
+
+all svgs were made by https://zed.dev/

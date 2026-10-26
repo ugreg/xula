@@ -16,7 +16,7 @@ function createAvatarShape() {
   camera.position.z = 3;
 
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-  renderer.setSize(180, 180);
+  renderer.setSize(180, 180, false);
   renderer.setPixelRatio(window.devicePixelRatio);
 
   const types = ['cube', 'pyramid', 'sphere', 'octahedron'];
