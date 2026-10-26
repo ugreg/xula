@@ -21,9 +21,9 @@ const calendarState = {
   view: 'list'
 };
 
-const joinBtn = '<a href="https://discord.com/invite/eRzNTw6hFm" target="_blank" rel="noopener noreferrer" class="discord-btn-tiny"><img src="../img/icon/discord.svg" alt="Discord" style="width:12px;height:12px;">Join</a>';
+const joinBtn = '<a href="https://discord.com/channels/515975126597107743/515975127733633052" target="_blank" rel="noopener noreferrer" class="discord-btn-tiny"><img src="../img/icon/discord.svg" alt="Discord" style="width:12px;height:12px;">Join</a>';
 
-const discordIconBtn = '<a href="https://discord.com/invite/eRzNTw6hFm" target="_blank" rel="noopener noreferrer" class="discord-btn-icon" aria-label="Join Discord"><img src="../img/icon/discord.svg" alt="Discord"></a>';
+const discordIconBtn = '<a href="https://discord.com/channels/515975126597107743/515975127733633052" target="_blank" rel="noopener noreferrer" class="discord-btn-icon" aria-label="Join Discord"><img src="../img/icon/discord.svg" alt="Discord"></a>';
 
 const gregAvatar = '<img src="img/greg.jpg" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
 const gavinAvatar = '<img src="img/gavin.jpg" alt="Gavin" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
