@@ -1,5 +1,5 @@
-import { log } from './observability/log.js?v=202610262103.d0a599bc533426f17785217bdb2be3a801a613c4';
-import { stamp } from './build.js?v=202610262103.d0a599bc533426f17785217bdb2be3a801a613c4';
+import { log } from './observability/log.js?v=202610262318.169a08f7cdb84cedda643adbddd971ce1d28bd9c';
+import { stamp } from './build.js?v=202610262318.169a08f7cdb84cedda643adbddd971ce1d28bd9c';
 
 async function loadComponents() {
   const elements = document.querySelectorAll('[data-include]');
