@@ -277,6 +277,19 @@ a:hover {
   cursor: pointer;
 }
 
+/* discord logo is currentColor = black inside <img>, force white on the accent button */
+.discord-btn img,
+.discord-btn-tiny img {
+  filter: brightness(0) invert(1);
+}
+
+@media (min-width: 769px) {
+  .discord-btn:hover {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 12px 24px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+  }
+}
+
 .discord-arrow {
   width: 48px;
   height: 48px;
@@ -1375,6 +1388,7 @@ body.loading .terminal-card {
   transition: all 0.3s ease;
   z-index: 1;
   opacity: 0.5;
+  filter: var(--icon-filter);
 }
 
 .toggle .icon-left {

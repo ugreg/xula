@@ -20,11 +20,11 @@ const calendarState = {
   view: 'list'
 };
 
-const joinBtn = '<a href="https://discord.com/invite/eRzNTw6hFm" target="_blank" rel="noopener noreferrer" class="discord-btn-tiny"><img src="../img/discord.svg" alt="Discord" style="width:12px;height:12px;">Join</a>';
+const joinBtn = '<a href="https://discord.com/invite/eRzNTw6hFm" target="_blank" rel="noopener noreferrer" class="discord-btn-tiny"><img src="../img/icon/discord.svg" alt="Discord" style="width:12px;height:12px;">Join</a>';
 
 const gregAvatar = '<img src="img/greg.jpg" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
 const gavinAvatar = '<img src="img/gavin.jpg" alt="Gavin" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
-const wesAvatar = '<img src="img/user.svg" alt="Wes" class="event-avatar" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
+const wesAvatar = '<img src="../img/icon/user.svg" alt="Wes" class="event-avatar" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
 const gregAvatarSmall = '<img src="img/greg.jpg" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:2px;">';
 
 const events = [];
