@@ -23,6 +23,8 @@ const calendarState = {
 
 const joinBtn = '<a href="https://discord.com/invite/eRzNTw6hFm" target="_blank" rel="noopener noreferrer" class="discord-btn-tiny"><img src="../img/icon/discord.svg" alt="Discord" style="width:12px;height:12px;">Join</a>';
 
+const discordIconBtn = '<a href="https://discord.com/invite/eRzNTw6hFm" target="_blank" rel="noopener noreferrer" class="discord-btn-icon" aria-label="Join Discord"><img src="../img/icon/discord.svg" alt="Discord"></a>';
+
 const gregAvatar = '<img src="img/greg.jpg" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
 const gavinAvatar = '<img src="img/gavin.jpg" alt="Gavin" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
 const wesAvatar = '<img src="../img/icon/user.svg" alt="Wes" class="event-avatar" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
@@ -130,8 +132,7 @@ const renderCalendar = () => {
   for (let i = 0; i < firstDay; i++) cells.push('<div class="empty"></div>');
   for (let day = 1; day <= lastDay; day++) {
     const dayEvents = getEventsForDate(calendarState.current, day);
-    const hasEvents = dayEvents.length > 0;
-    cells.push(html`<div data-day="${day}" class="date-cell${hasEvents ? ' has-event' : ''}">${day}</div>`);
+    cells.push(html`<div data-day="${day}" class="date-cell">${day}${dayEvents.length ? discordIconBtn : ''}</div>`);
   }
 
   el.daysContainer && (el.daysContainer.innerHTML = cells.join(''));

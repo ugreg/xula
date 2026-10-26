@@ -989,21 +989,32 @@ body.calendar-open .calendar-fab {
   cursor: default;
 }
 
-.calendar-body .days div.has-event {
-  color: #fff;
+.calendar-body .days div.date-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
 }
 
-.calendar-body .days div.has-event::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 30px;
-  height: 30px;
-  background: var(--accent);
-  border-radius: 50%;
-  transform: translate(-50%, -90%);
-  z-index: -1;
+.discord-btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border-radius: 5px;
+  background: #5865F2;
+  text-decoration: none;
+  pointer-events: auto;
+  cursor: pointer;
+  flex: none;
+}
+
+.discord-btn-icon img {
+  width: 12px;
+  height: 12px;
+  filter: brightness(0) invert(1);
 }
 
 
