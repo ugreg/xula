@@ -210,14 +210,16 @@ if (carousel) {
 
 
 
-const pageOrder = ['home', 'xavierites', 'skills', 'stats'];
+const visiblePages = carousel
+  ? [...carousel.querySelectorAll('.carousel-page')].filter(p => getComputedStyle(p).display !== 'none')
+  : [];
+const pageOrder = visiblePages.map(p => p.dataset.page);
 let currentPage = pageOrder[0];
 
 function goToPage(pageName) {
   const idx = pageOrder.indexOf(pageName);
   if (idx < 0) return;
-  if (!carousel) return;
-  const target = carousel.querySelectorAll('.carousel-page')[idx];
+  const target = visiblePages[idx];
   if (!target) return;
   carousel.scrollTo({ top: target.offsetTop, behavior: 'smooth' });
 }
@@ -242,7 +244,7 @@ if (carousel) {
   let isSwiping = false;
 
   function updatePageFromScroll() {
-    const pages = carousel.querySelectorAll('.carousel-page');
+    const pages = visiblePages;
     const probe = carousel.scrollTop + carousel.clientHeight / 2;
     let idx = 0;
     pages.forEach((page, i) => {

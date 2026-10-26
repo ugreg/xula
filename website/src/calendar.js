@@ -9,14 +9,15 @@ const NOVEMBER = 2;
 const DECEMBER = 3;
 
 const calendarMonths = ['September', 'October', 'November', 'December'];
+const START_MONTH = 8;
 const now = new Date();
-let initialMonth = now.getMonth() - 8;
+let initialMonth = now.getMonth() - START_MONTH;
 if (initialMonth < 0 || initialMonth >= calendarMonths.length) initialMonth = 0;
 
 const calendarState = {
   months: calendarMonths,
   current: initialMonth,
-  year: now.getFullYear() + 1,
+  year: now.getFullYear(),
   view: 'list'
 };
 
@@ -27,6 +28,34 @@ const gavinAvatar = '<img src="img/gavin.jpg" alt="Gavin" style="width:20px;heig
 const wesAvatar = '<img src="../img/icon/user.svg" alt="Wes" class="event-avatar" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
 const gregAvatarSmall = '<img src="img/greg.jpg" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:2px;">';
 
+const TERM_CLOSED_DAYS = {
+  [OCTOBER]: [1, 20],
+  [NOVEMBER]: [30]
+};
+
+const nthWeekday = (year, monthIndex, weekday, n) => {
+  const first = new Date(year, monthIndex, 1);
+  const firstOccurrence = 1 + (weekday - first.getDay() + 7) % 7;
+  return new Date(year, monthIndex, firstOccurrence + (n - 1) * 7);
+};
+
+const buildClosedDays = () => {
+  const out = new Set();
+  Object.entries(TERM_CLOSED_DAYS).forEach(([monthIndex, days]) =>
+    days.forEach(day => out.add(`${monthIndex}:${day}`))
+  );
+  const thanksgiving = nthWeekday(calendarState.year, START_MONTH + NOVEMBER, 4, 4);
+  for (let back = 3; back >= 0; back--) {
+    const closed = new Date(thanksgiving);
+    closed.setDate(thanksgiving.getDate() - back);
+    out.add(`${NOVEMBER}:${closed.getDate()}`);
+  }
+  return out;
+};
+
+const CLOSED_DAYS = buildClosedDays();
+const isClosedDay = (monthIndex, day) => CLOSED_DAYS.has(`${monthIndex}:${day}`);
+
 const events = [];
 
 events.push({
@@ -36,13 +65,12 @@ events.push({
 });
 
 for (let month = OCTOBER; month <= NOVEMBER; month++) {
-  const daysInMonth = new Date(calendarState.year, 8 + month + 1, 0).getDate();
+  const daysInMonth = new Date(calendarState.year, START_MONTH + month + 1, 0).getDate();
   for (let day = 1; day <= daysInMonth; day++) {
-    const date = new Date(calendarState.year, 8 + month, day);
+    const date = new Date(calendarState.year, START_MONTH + month, day);
     const dayOfWeek = date.getDay();
 
-    if (month === OCTOBER && (day === 1 || day === 20)) continue;
-    if (month === NOVEMBER && (day === 18 || day === 23 || day === 24 || day === 25 || day === 26 || day === 30)) continue;
+    if (isClosedDay(month, day)) continue;
 
     if (dayOfWeek === 2) {
       events.push({
@@ -56,7 +84,7 @@ for (let month = OCTOBER; month <= NOVEMBER; month++) {
         day: day,
         title: 'Tutoring with ' + gregAvatar + ' Greg: 6-7 PM Central' + joinBtn
       });
-    } else if (dayOfWeek === 3 && (month === OCTOBER || day === 3 || day === 10 || day === 17)) {
+    } else if (dayOfWeek === 3) {
       events.push({
         monthIndex: month,
         day: day,
@@ -67,8 +95,8 @@ for (let month = OCTOBER; month <= NOVEMBER; month++) {
 }
 
 events.sort((a, b) => {
-  const dateA = new Date(calendarState.year, 8 + a.monthIndex, a.day);
-  const dateB = new Date(calendarState.year, 8 + b.monthIndex, b.day);
+  const dateA = new Date(calendarState.year, START_MONTH + a.monthIndex, a.day);
+  const dateB = new Date(calendarState.year, START_MONTH + b.monthIndex, b.day);
   return dateA - dateB;
 });
 
@@ -93,8 +121,8 @@ const renderCalendar = () => {
   if (prevBtn) prevBtn.style.display = calendarState.current === SEPTEMBER ? 'none' : '';
   if (nextBtn) nextBtn.style.display = calendarState.current === DECEMBER ? 'none' : '';
 
-  const firstDay = new Date(calendarState.year, 8 + calendarState.current, 1).getDay();
-  const lastDay = new Date(calendarState.year, 8 + calendarState.current + 1, 0).getDate();
+  const firstDay = new Date(calendarState.year, START_MONTH + calendarState.current, 1).getDay();
+  const lastDay = new Date(calendarState.year, START_MONTH + calendarState.current + 1, 0).getDate();
 
   const dayLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const cells = dayLabels.map(d => html`<div class="day-label">${d}</div>`);
@@ -114,7 +142,7 @@ const renderListView = () => {
   const today = new Date(calendarState.year, ref.getMonth(), ref.getDate());
   today.setHours(0, 0, 0, 0);
   const upcomingEvents = events
-    .map(e => ({ ...e, date: new Date(calendarState.year, 8 + e.monthIndex, e.day) }))
+    .map(e => ({ ...e, date: new Date(calendarState.year, START_MONTH + e.monthIndex, e.day) }))
     .filter(e => e.date >= today)
     .sort((a, b) => a.date - b.date);
 
@@ -170,6 +198,8 @@ const renderListView = () => {
 
 const renderView = () => {
   const el = getCalendarElements();
+  const yearEl = document.querySelector('.calendar-header .year');
+  if (yearEl) yearEl.textContent = calendarState.year;
   const isListView = calendarState.view === 'list';
   el.card?.classList.toggle('list-view', isListView);
 

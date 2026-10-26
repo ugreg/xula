@@ -1943,10 +1943,10 @@ body.loading .terminal-card {
   }
 
   .calendar-modal-close {
-    width: 21px !important;
-    height: 21px !important;
-    top: -10px !important;
-    right: -10px !important;
+    width: 30px !important;
+    height: 30px !important;
+    top: -15px !important;
+    right: -15px !important;
   }
 
   .calendar-modal-close img {
