@@ -395,6 +395,26 @@ body.calendar-open .calendar-fab {
   filter: none;
 }
 
+/* Hero calendar button - same as the FAB, no border, static in flow */
+.hero .calendar-fab {
+  position: static;
+  border: none;
+}
+
+.hero .discord-btn {
+  margin-top: 24px;
+}
+
+.hero .discord-arrow {
+  margin-top: 64px;
+}
+
+/* FAB stays hidden until the user scrolls */
+.calendar-fab:not(.hero-calendar):not(.visible) {
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* Discord buttons - prevent black text on hover in light mode */
 :root.light .discord-btn:hover,
 :root.light .discord-btn-tiny:hover {
@@ -1029,6 +1049,11 @@ body.calendar-open .calendar-fab {
   font-weight: 500;
   pointer-events: none;
   user-select: none;
+}
+
+/* Icon avatars (currentColor = black inside <img>) follow the theme */
+.event-avatar {
+  filter: var(--icon-filter);
 }
 
 @media (max-width: 767px) {

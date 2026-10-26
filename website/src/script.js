@@ -37,6 +37,15 @@ function getTerminal() {
   return document.getElementById('homeTerminal');
 }
 
+function getCalendarFab() {
+  return document.querySelector('.calendar-fab:not(.hero-calendar)');
+}
+
+function updateCalendarFab(scrollPos) {
+  const fab = getCalendarFab();
+  if (fab) fab.classList.toggle('visible', scrollPos > 0);
+}
+
 let isMobile = window.matchMedia('(max-width: 768px)').matches;
 window.addEventListener('resize', () => {
   isMobile = window.matchMedia('(max-width: 768px)').matches;
@@ -77,7 +86,7 @@ async function loadAllPages() {
 }
 
 function setupCalendarModal() {
-  const calendarFab = document.querySelector('.calendar-fab');
+  const calendarFabs = document.querySelectorAll('.calendar-fab');
   const calendarModal = document.getElementById('calendarModal');
   const calendarModalClose = document.querySelector('.calendar-modal-close');
 
@@ -98,8 +107,8 @@ function setupCalendarModal() {
     }
   }
 
-  if (calendarFab) {
-    calendarFab.addEventListener('click', openCalendar);
+  for (const fab of calendarFabs) {
+    fab.addEventListener('click', openCalendar);
   }
 
   if (calendarModalClose) {
@@ -149,6 +158,8 @@ window.addEventListener('load', async () => {
     const t = getTerminal();
     if (t && carousel.scrollTop === 0) t.classList.add('visible');
   }
+
+  updateCalendarFab(carousel ? carousel.scrollTop : window.scrollY);
 });
 
 window.addEventListener('scroll', () => {
@@ -159,10 +170,12 @@ window.addEventListener('scroll', () => {
   }
 
   const t = getTerminal();
+  const scrollPos = carousel ? carousel.scrollTop : window.scrollY;
   if (t && !isMobile) {
-    const scrollPos = carousel ? carousel.scrollTop : window.scrollY;
     t.classList.toggle('visible', scrollPos === 0);
   }
+
+  updateCalendarFab(scrollPos);
 });
 
 if (scrollTopButton) {
@@ -177,6 +190,8 @@ if (carousel) {
     if (t && !isMobile) {
       t.classList.toggle('visible', carousel.scrollTop === 0);
     }
+
+    updateCalendarFab(carousel.scrollTop);
   }, { passive: true });
 }
 

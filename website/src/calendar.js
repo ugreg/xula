@@ -24,6 +24,7 @@ const joinBtn = '<a href="https://discord.com/invite/eRzNTw6hFm" target="_blank"
 
 const gregAvatar = '<img src="img/greg.jpg" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
 const gavinAvatar = '<img src="img/gavin.jpg" alt="Gavin" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
+const wesAvatar = '<img src="img/user.svg" alt="Wes" class="event-avatar" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
 const gregAvatarSmall = '<img src="img/greg.jpg" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:2px;">';
 
 const events = [];
@@ -41,7 +42,7 @@ for (let month = OCTOBER; month <= NOVEMBER; month++) {
     const dayOfWeek = date.getDay();
 
     if (month === OCTOBER && (day === 1 || day === 20)) continue;
-    if (month === NOVEMBER && (day === 24 || day === 25 || day === 26)) continue;
+    if (month === NOVEMBER && (day === 18 || day === 23 || day === 24 || day === 25 || day === 26 || day === 30)) continue;
 
     if (dayOfWeek === 2) {
       events.push({
@@ -54,6 +55,12 @@ for (let month = OCTOBER; month <= NOVEMBER; month++) {
         monthIndex: month,
         day: day,
         title: 'Tutoring with ' + gregAvatar + ' Greg: 6-7 PM Central' + joinBtn
+      });
+    } else if (dayOfWeek === 3 && (month === OCTOBER || day === 3 || day === 10 || day === 17)) {
+      events.push({
+        monthIndex: month,
+        day: day,
+        title: 'Tutoring with ' + wesAvatar + ' Wes: 6-7 PM Central' + joinBtn
       });
     }
   }
