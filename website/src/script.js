@@ -1,10 +1,54 @@
+import { log } from './observability/log.js';
+
+async function loadComponents() {
+  const elements = document.querySelectorAll('[data-include]');
+
+  for (const el of elements) {
+    const path = el.getAttribute('data-include');
+    try {
+      const response = await fetch(path);
+      if (!response.ok) throw new Error(`failed to load ${path}`);
+      const html = await response.text();
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      el.innerHTML = doc.body.innerHTML;
+
+      const scripts = doc.querySelectorAll('script[type="module"]');
+      for (const script of scripts) {
+        const newScript = document.createElement('script');
+        newScript.type = 'module';
+        newScript.src = script.src;
+        el.appendChild(newScript);
+      }
+    } catch (err) {
+      console.error(err);
+      el.textContent = 'Error loading component.';
+    }
+  }
+}
+
 const scrollTopButton = document.querySelector('.scroll-top-btn');
-const themeToggle = document.getElementById('themeToggle');
-const homeTerminal = document.getElementById('homeTerminal');
 const carousel = document.getElementById('carousel');
 const statsArrowBtn = document.querySelector('.stats-arrow-btn:not(.back)');
 const backArrowBtn = document.querySelector('.stats-arrow-btn.back');
 const dots = document.querySelectorAll('.page-indicator .dot');
+
+function getTerminal() {
+  return document.getElementById('homeTerminal');
+}
+
+// fixed calendar FAB appears after this fraction of a viewport scrolled
+const CALENDAR_FAB_SCROLL_RATIO = 0.5;
+
+function getCalendarFab() {
+  return document.querySelector('.calendar-fab');
+}
+
+function updateCalendarFab(scrollPos) {
+  const fab = getCalendarFab();
+  if (!fab) return;
+  fab.classList.toggle('visible', scrollPos > window.innerHeight * CALENDAR_FAB_SCROLL_RATIO);
+}
 
 let isMobile = window.matchMedia('(max-width: 768px)').matches;
 window.addEventListener('resize', () => {
@@ -32,92 +76,166 @@ async function loadPage(pageName, container) {
 }
 
 async function loadAllPages() {
+  await loadComponents();
+
   const pages = carousel.querySelectorAll('.carousel-page');
+  const promises = [];
   for (const page of pages) {
     const pageName = page.getAttribute('data-page');
     if (pageName) {
-      loadPage(pageName, page);
+      promises.push(loadPage(pageName, page));
     }
   }
+  await Promise.all(promises);
 }
 
-const savedTheme = localStorage.getItem('theme');
-const isLight = savedTheme === 'light' || !savedTheme;
+const getCalendarModal = () => document.getElementById('calendarModal');
 
-if (isLight) {
-  document.documentElement.classList.add('light');
-  themeToggle.checked = true;
+// single source of truth for calendar state: modal, body lock, and trigger aria
+// everything routes through here so the three signals can never disagree
+function setCalendarOpen(open) {
+  const calendarModal = getCalendarModal();
+  if (!calendarModal) return;
+
+  calendarModal.classList.toggle('active', open);
+  document.body.classList.toggle('calendar-open', open);
+  document.body.style.overflow = open ? 'hidden' : '';
+
+  for (const trigger of document.querySelectorAll('[data-calendar-open]')) {
+    trigger.setAttribute('aria-expanded', String(open));
+  }
+
+  if (open && window.initCalendar) window.initCalendar();
 }
 
-themeToggle.addEventListener('change', () => {
-  const light = themeToggle.checked;
-  document.documentElement.classList.toggle('light', light);
-  localStorage.setItem('theme', light ? 'light' : 'dark');
-});
+// delegated on document so re-injected pages and components can never orphan a listener
+function setupCalendarModal() {
+  document.addEventListener('click', (e) => {
+    const calendarModal = getCalendarModal();
+    if (!calendarModal) return;
 
-window.addEventListener('load', () => {
+    if (e.target.closest('[data-calendar-open]')) {
+      setCalendarOpen(true);
+      return;
+    }
+
+    const outsideCard =
+      e.target === calendarModal ||
+      e.target.closest('.calendar-modal-backdrop') ||
+      e.target.closest('[data-calendar-close]');
+
+    if (outsideCard && calendarModal.classList.contains('active')) {
+      setCalendarOpen(false);
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && getCalendarModal()?.classList.contains('active')) {
+      setCalendarOpen(false);
+    }
+  });
+
+  window.__xula = {
+    setCalendarOpen,
+    calendarState: () => ({
+      open: getCalendarModal()?.classList.contains('active') ?? false,
+      triggers: document.querySelectorAll('[data-calendar-open]').length,
+    }),
+  };
+}
+
+window.addEventListener('load', async () => {
   document.body.classList.remove('loading');
-  loadAllPages();
+  await loadAllPages();
+  setupAutoScroll();
+  setupCalendarModal();
+
+  const themeToggle = document.getElementById('themeToggle');
+  document.documentElement.classList.add('light');
+  document.documentElement.classList.remove('dark');
+  if (themeToggle) themeToggle.checked = true;
+
+  if (themeToggle) {
+    themeToggle.addEventListener('change', () => {
+      const light = themeToggle.checked;
+      document.documentElement.classList.toggle('light', light);
+      document.documentElement.classList.toggle('dark', !light);
+    });
+  }
 
   if (isMobile) {
-    if (homeTerminal) homeTerminal.classList.remove('visible');
-    if (carousel) carousel.style.overflowX = 'auto';
+    const t = getTerminal();
+    if (t) t.classList.remove('visible');
+    if (carousel) carousel.style.overflowY = 'auto';
   } else {
-    homeTerminal?.classList.add('visible');
+    const t = getTerminal();
+    if (t && carousel.scrollTop === 0) t.classList.add('visible');
   }
+
+  updateCalendarFab(carousel ? carousel.scrollTop : window.scrollY);
 });
 
 window.addEventListener('scroll', () => {
   const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
   const showScrollTop = window.scrollY > totalScroll * 0.5;
-  scrollTopButton?.classList.toggle('visible', showScrollTop);
-
-  if (homeTerminal && !isMobile) {
-    const scrollPos = carousel ? carousel.scrollTop : window.scrollY;
-    homeTerminal.classList.toggle('visible', scrollPos <= 50);
+  if (scrollTopButton) {
+    scrollTopButton.classList.toggle('visible', showScrollTop);
   }
+
+  const t = getTerminal();
+  const scrollPos = carousel ? carousel.scrollTop : window.scrollY;
+  if (t && !isMobile) {
+    t.classList.toggle('visible', scrollPos === 0);
+  }
+
+  updateCalendarFab(scrollPos);
 });
 
-scrollTopButton?.addEventListener('click', () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-});
+if (scrollTopButton) {
+  scrollTopButton.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
 
-carousel?.addEventListener('scroll', () => {
-  if (homeTerminal && !isMobile) {
-    homeTerminal.classList.toggle('visible', carousel.scrollTop <= 50);
-  }
-}, { passive: true });
+if (carousel) {
+  carousel.addEventListener('scroll', () => {
+    const t = getTerminal();
+    if (t && !isMobile) {
+      t.classList.toggle('visible', carousel.scrollTop === 0);
+    }
 
-
-
-let currentPage = 0;
-const totalPages = 5;
-
-function goToPage(page) {
-  if (page < 0 || page >= totalPages) return;
-  if (!carousel) return;
-  carousel.scrollTo({ left: page * window.innerWidth, behavior: 'smooth' });
+    updateCalendarFab(carousel.scrollTop);
+  }, { passive: true });
 }
 
 
 
-dots.forEach(dot => {
-  dot.addEventListener('click', () => {
-    const page = parseInt(dot.getAttribute('data-page'), 10);
-    goToPage(page);
+const visiblePages = carousel
+  ? [...carousel.querySelectorAll('.carousel-page')].filter(p => getComputedStyle(p).display !== 'none')
+  : [];
+const pageOrder = visiblePages.map(p => p.dataset.page);
+let currentPage = pageOrder[0];
+
+function goToPage(pageName) {
+  const idx = pageOrder.indexOf(pageName);
+  if (idx < 0) return;
+  const target = visiblePages[idx];
+  if (!target) return;
+  carousel.scrollTo({ top: target.offsetTop, behavior: 'smooth' });
+}
+
+
+
+if (dots) {
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const pageName = dot.getAttribute('data-page');
+      goToPage(pageName);
+    });
   });
-});
+}
 
 
-
-window.addEventListener('resize', () => {
-  if (!window.matchMedia('(max-width: 768px)').matches) {
-    carousel.style.transition = 'none';
-    carousel.style.transform = '';
-    carousel.style.overflowX = '';
-    return;
-  }
-});
 
 if (carousel) {
   let touchStartX = 0;
@@ -126,12 +244,32 @@ if (carousel) {
   let isSwiping = false;
 
   function updatePageFromScroll() {
-    const pageWidth = window.innerWidth;
-    const idx = Math.round(carousel.scrollLeft / pageWidth);
-    if (idx >= 0 && idx < totalPages) {
-      currentPage = idx;
-      dots.forEach((dot, i) => dot.classList.toggle('active', i === idx));
-      statsArrowBtn.classList.toggle('hidden', idx === totalPages - 1);
+    const pages = visiblePages;
+    const probe = carousel.scrollTop + carousel.clientHeight / 2;
+    let idx = 0;
+    pages.forEach((page, i) => {
+      if (page.offsetTop <= probe) idx = i;
+    });
+    if (idx >= 0 && idx < pageOrder.length) {
+      const prevPage = currentPage;
+      currentPage = pageOrder[idx];
+      if (dots) {
+        dots.forEach(dot => {
+          const name = dot.getAttribute('data-page');
+          dot.classList.toggle('active', name === currentPage);
+        });
+      }
+      if (idx !== pageOrder.indexOf(prevPage) && isMobile) {
+        if (window.sceneRegistry?.[prevPage]) {
+          window.sceneRegistry[prevPage].cleanup();
+          log.info(`${prevPage}.html`, 'cleanup triggered');
+        }
+        if (window.sceneRegistry?.[currentPage]) {
+          window.sceneRegistry[currentPage].restart();
+          log.info(`${currentPage}.html`, 'restart triggered');
+        }
+      }
+      statsArrowBtn.classList.toggle('hidden', idx === pageOrder.length - 1);
       backArrowBtn.classList.toggle('hidden', idx === 0);
     }
   }
@@ -154,27 +292,68 @@ if (carousel) {
     const touchEndY = e.changedTouches[0].clientY;
     const deltaX = touchEndX - touchStartX;
     const deltaY = touchEndY - touchStartY;
-    const elapsed = Date.now() - touchStartTime;
 
-    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
-      if (deltaX < 0 && currentPage < totalPages - 1) {
-        goToPage(currentPage + 1);
-      } else if (deltaX > 0 && currentPage > 0) {
-        goToPage(currentPage - 1);
+    if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 50) {
+      const idx = pageOrder.indexOf(currentPage);
+      if (deltaY < 0 && idx < pageOrder.length - 1) {
+        goToPage(pageOrder[idx + 1]);
+      } else if (deltaY > 0 && idx > 0) {
+        goToPage(pageOrder[idx - 1]);
       }
     }
   }, { passive: true });
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight' && currentPage < totalPages - 1) goToPage(currentPage + 1);
-    if (e.key === 'ArrowLeft' && currentPage > 0) goToPage(currentPage - 1);
+    const idx = pageOrder.indexOf(currentPage);
+    if (e.key === 'ArrowUp' && idx > 0) {
+      e.preventDefault();
+      goToPage(pageOrder[idx - 1]);
+    }
+    if (e.key === 'ArrowDown' && idx < pageOrder.length - 1) {
+      e.preventDefault();
+      goToPage(pageOrder[idx + 1]);
+    }
   });
 
   statsArrowBtn?.addEventListener('click', () => {
-    if (currentPage < totalPages - 1) goToPage(currentPage + 1);
+    const idx = pageOrder.indexOf(currentPage);
+    if (idx < pageOrder.length - 1) goToPage(pageOrder[idx + 1]);
   });
 
   backArrowBtn?.addEventListener('click', () => {
-    if (currentPage > 0) goToPage(currentPage - 1);
+    const idx = pageOrder.indexOf(currentPage);
+    if (idx > 0) goToPage(pageOrder[idx - 1]);
   });
 }
+
+function setupAutoScroll() {
+  const grids = document.querySelectorAll('.extensions-grid, .stats-grid');
+  grids.forEach((grid) => {
+    let scrollInterval;
+    let isHovering = false;
+    let isTouching = false;
+
+    const startScroll = () => {
+      if (scrollInterval) return;
+      scrollInterval = setInterval(() => {
+        if (isHovering || isTouching) return;
+        const maxScroll = grid.scrollWidth - grid.clientWidth;
+        if (maxScroll <= 0) return;
+        if (grid.scrollLeft >= maxScroll - 1) {
+          grid.scrollLeft = 0;
+        } else {
+          grid.scrollLeft += 1;
+        }
+      }, 50);
+    };
+
+    grid.addEventListener('mouseenter', () => { isHovering = true; });
+    grid.addEventListener('mouseleave', () => { isHovering = false; });
+    grid.addEventListener('touchstart', () => { isTouching = true; });
+    grid.addEventListener('touchend', () => { isTouching = false; });
+
+    startScroll();
+  });
+}
+
+

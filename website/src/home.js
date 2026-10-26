@@ -59,12 +59,10 @@ function initArrow() {
   }
 }
 
-let animationFrameId = null;
-let isAnimating = true;
+import { createSceneLoop, stopAnimation } from './scene-loop.js';
+import { log } from './observability/log.js';
 
 function animateAll() {
-  if (!isAnimating) return;
-  animationFrameId = requestAnimationFrame(animateAll);
   const t = Date.now() * 0.001;
 
   for (const item of voxelMeshes) {
@@ -83,45 +81,35 @@ function animateAll() {
   }
 }
 
-function stopAnimation() {
-  isAnimating = false;
-  if (animationFrameId !== null) {
-    cancelAnimationFrame(animationFrameId);
-    animationFrameId = null;
-  }
-}
-
 function cleanupMeshes() {
   voxelMeshes.forEach(item => {
     item.mesh.geometry.dispose();
+    log.info('home.html', 'disposed geometry:', item.mesh.geometry.type);
     if (Array.isArray(item.mesh.material)) {
-      item.mesh.material.forEach(m => m.dispose());
+      item.mesh.material.forEach(m => { m.dispose(); log.info('home.html', 'disposed material:', m.type); });
     } else {
       item.mesh.material.dispose();
+      log.info('home.html', 'disposed material:', item.mesh.material.type);
     }
     item.renderer.dispose();
+    log.info('home.html', 'disposed renderer');
   });
   voxelMeshes.length = 0;
+  log.info('home.html', 'cleanup complete:', voxelMeshes.length, 'meshes remaining');
 }
 
-setTimeout(() => {
+function initHome() {
   initArrow();
-  animateAll();
-
+  const spinner = document.getElementById('arrowSpinner');
   const canvas = document.getElementById('arrowCanvas');
-  if (canvas) {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          if (!isAnimating) {
-            isAnimating = true;
-            animateAll();
-          }
-        } else {
-          stopAnimation();
-        }
-      });
-    }, { threshold: 0.1 });
-    observer.observe(canvas);
-  }
-}, 500);
+  if (spinner) spinner.style.display = 'none';
+  if (canvas) canvas.style.display = 'block';
+  createSceneLoop(animateAll);
+}
+
+initHome();
+window.sceneRegistry = window.sceneRegistry || {};
+window.sceneRegistry['home'] = {
+  cleanup: () => { cleanupMeshes(); stopAnimation(); },
+  restart: () => { initHome(); }
+};

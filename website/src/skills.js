@@ -1,4 +1,3 @@
-import './theme.js';
 import * as THREE from 'three';
 
 const voxelMeshes = [];
@@ -116,12 +115,10 @@ function createIconScene(iconType) {
   }
 }
 
-let animationFrameId = null;
-let isAnimating = true;
+import { createSceneLoop, stopAnimation } from './scene-loop.js';
+import { log } from './observability/log.js';
 
 function animateAll() {
-  if (!isAnimating) return;
-  animationFrameId = requestAnimationFrame(animateAll);
   const t = Date.now() * 0.001;
 
   for (const item of voxelMeshes) {
@@ -133,32 +130,30 @@ function animateAll() {
   }
 }
 
-function stopAnimation() {
-  isAnimating = false;
-  if (animationFrameId !== null) {
-    cancelAnimationFrame(animationFrameId);
-    animationFrameId = null;
-  }
-}
-
 function cleanupMeshes() {
   voxelMeshes.forEach(item => {
     item.mesh.traverse(child => {
-      if (child.geometry) child.geometry.dispose();
+      if (child.geometry) {
+        child.geometry.dispose();
+        log.info('skills.html', 'disposed geometry:', child.geometry.type);
+      }
       if (child.material) {
         if (Array.isArray(child.material)) {
-          child.material.forEach(m => m.dispose());
+          child.material.forEach(m => { m.dispose(); log.info('skills.html', 'disposed material:', m.type); });
         } else {
           child.material.dispose();
+          log.info('skills.html', 'disposed material:', child.material.type);
         }
       }
     });
     item.renderer.dispose();
+    log.info('skills.html', 'disposed renderer');
   });
   voxelMeshes.length = 0;
+  log.info('skills.html', 'cleanup complete:', voxelMeshes.length, 'meshes remaining');
 }
 
-setTimeout(() => {
+function initSkills() {
   createIconScene('crane');
   createIconScene('wrench');
   createIconScene('robot');
@@ -166,25 +161,15 @@ setTimeout(() => {
   createIconScene('grad');
   createIconScene('briefcase');
   createIconScene('money');
-  animateAll();
+  createSceneLoop(animateAll);
+}
 
-  const content = document.querySelector('.stats-content');
-  if (content) {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          if (!isAnimating) {
-            isAnimating = true;
-            animateAll();
-          }
-        } else {
-          stopAnimation();
-        }
-      });
-    }, { threshold: 0.1 });
-    observer.observe(content);
-  }
-}, 500);
+initSkills();
+window.sceneRegistry = window.sceneRegistry || {};
+window.sceneRegistry['skills'] = {
+  cleanup: () => { cleanupMeshes(); stopAnimation(); },
+  restart: () => { initSkills(); }
+};
 
 document.addEventListener('dblclick', (e) => {
   const clickedCard = e.target.closest('.extension-card');

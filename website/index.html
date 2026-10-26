@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="xu.png">
+    <link rel="icon" href="img/xu.png">
     <meta name="description" content="XULA CPSC - Xavier University of Louisiana Computer Science, Coding, Programming & AI">
-    <meta name="theme-color" content="#0a0a0a">
-    <link rel="preload" href="xu.png" as="image">
+    <meta name="theme-color" content="#1a1a1a">
+    <link rel="preload" href="img/xu.png" as="image">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://images.unsplash.com">
@@ -25,118 +25,50 @@
     <div class="background-gradient"></div>
     <div class="noise-overlay"></div>
 
-    <header style="position: fixed; top: 0; left: 0; right: 0; z-index: 200; padding: 20px; backdrop-filter: blur(20px); background: var(--glass-bg); border-bottom: 1px solid var(--glass-border);">
-      <nav style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: center; align-items: center; position: relative;">
-        <img src="xu.png" alt="XULA" style="width: 64px; height: 64px; object-fit: contain;">
+    <div data-include="/pages/components/header.html"></div>
 
-        <label class="theme-toggle" style="position: absolute; right: 0;" aria-label="Toggle dark/light mode">
-          <input type="checkbox" id="themeToggle">
-
-          <span class="slider">
-            <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-            </svg>
-
-            <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="5"/>
-              <line x1="12" y1="1" x2="12" y2="3"/>
-              <line x1="12" y1="21" x2="12" y2="23"/>
-              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-              <line x1="1" y1="12" x2="3" y2="12"/>
-              <line x1="21" y1="12" x2="23" y2="12"/>
-              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-            </svg>
-          </span>
-        </label>
-      </nav>
-    </header>
-
-    <div class="page-indicator">
-      <span class="dot active" data-page="0"></span>
-      <span class="dot" data-page="1"></span>
-      <span class="dot" data-page="2" style="display: none;"></span>
-      <span class="dot" data-page="3" style="display: none;"></span>
-      <span class="dot" data-page="4" style="display: none;"></span>
-    </div>
-
-    <button class="stats-arrow-btn" aria-label="View stats">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M9 18l6-6-6-6"/>
-      </svg>
-    </button>
-
-    <button class="stats-arrow-btn back hidden" aria-label="Back to home">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M15 18l-6-6 6-6"/>
-      </svg>
-    </button>
-
-    <div id="homeTerminal" class="terminal-card">
-      <div class="window">
-        <div class="header">
-          <div>
-            <svg width="10" height="10" viewBox="0 0 10 10" style="display: inline-block;"><circle cx="5" cy="5" r="5" fill="#ff5f56"/></svg>
-            <svg width="10" height="10" viewBox="0 0 10 10" style="display: inline-block;"><circle cx="5" cy="5" r="5" fill="#ffbd2e"/></svg>
-            <svg width="10" height="10" viewBox="0 0 10 10" style="display: inline-block;"><circle cx="5" cy="5" r="5" fill="#27c93f"/></svg>
-          </div>
-          <span style="font-size: 12px; color: #a0a0a0; font-family: monospace; margin-left: 10px;">~</span>
-          <div style="width: 14px;"></div>
-        </div>
-
-        <div class="body" style="padding: 15px; font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Mono', monospace; font-size: 14px; line-height: 1.6; height: calc(100% - 40px); overflow-y: auto; text-align: left;">
-          <div style="color: #888; font-size: 12px; margin-bottom: 10px;">
-            <span style="color: #27c93f;">$</span> ls -la
-          </div>
-
-          <div class="output">
-            <span style="color: #86efac;">drwxr-xr-x</span> 2 chat uncs  4096 Oct 10 14:30 .
-          </div>
-
-          <div class="output">
-            <span style="color: #86efac;">drwxr-xr-x</span> 2 chat uncs  4096 Oct 10 14:30 ..
-          </div>
-
-          <div class="output">
-            <span style="color: #d4a574;">-rw-r--r--</span> 1 chat uncs  1024 Oct 10 14:30 subathon.txt
-          </div>
-
-          <div class="output">
-            <span style="color: #d4a574;">-rw-r--r--</span> 1 chat uncs  2048 Oct 10 14:30 AGENTS.md
-          </div>
-
-          <div style="margin-top: 15px; color: #888;">
-            <span style="color: #27c93f;">$</span> echo "Scroll down to see schedule"
-          </div>
-
-          <div class="output">
-            Scroll down to see schedule
-          </div>
-
-          <div style="margin-top: 15px; color: #888;">
-            <span style="color: #27c93f;">$</span> <span class="cursor"></span>
-          </div>
-        </div>
+    <main>
+      <div class="page-indicator">
+        <span class="dot active" data-page="home"></span>
+        <span class="dot" data-page="skills"></span>
+        <span class="dot" data-page="stats"></span>
       </div>
-    </div>
 
-    <div id="carousel" class="carousel">
-      <div class="carousel-page" id="page-hero" data-page="home"></div>
-      <div class="carousel-page" id="page-calendar" data-page="calendar"></div>
-      <div class="carousel-page" id="page-xavierites" data-page="xavierites" style="display: none;></div>
-      <div class="carousel-page" id="page-skills" data-page="skills" style="display: none;"></div>
-      <div class="carousel-page" id="page-stats" data-page="stats" style="display: none;"></div>
-    </div>
+      <button class="stats-arrow-btn" aria-label="View stats">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </button>
 
-    <footer class="footer">
-      <p style="font-family: monospace;">Xavier University of Louisiana</p>
-    </footer>
+      <button class="stats-arrow-btn back hidden" aria-label="Back to home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </button>
+
+      <div data-include="/pages/components/terminal.html"></div>
+
+      <div id="carousel" class="carousel">
+        <div class="carousel-page" id="page-hero" data-page="home"></div>
+        <div style="display: none" class="carousel-page" id="page-xavierites" data-page="xavierites"></div>
+        <div class="carousel-page" id="page-skills" data-page="skills"></div>
+        <div class="carousel-page" id="page-stats" data-page="stats"></div>
+      </div>
+    </main>
+
+    <div data-include="/pages/components/footer.html"></div>
+
+    <div data-include="/pages/components/calendar.html"></div>
 
     <button class="scroll-top-btn" aria-label="Scroll to top">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M18 15l-6-6-6 6"/>
       </svg>
+    </button>
+
+    <button class="calendar-fab" data-calendar-open aria-expanded="false" aria-label="Open calendar">
+      <img src="img/icon/calendar.svg" alt="Calendar">
+      <span>Calendar</span>
     </button>
 
     <script type="module" src="src/script.js"></script>

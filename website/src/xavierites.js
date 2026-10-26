@@ -8,13 +8,15 @@ const avatarShapeIndex = { current: 0 };
 function createAvatarShape() {
   const canvas = document.createElement('canvas');
   canvas.setAttribute('data-avatar-shape', 'true');
+  canvas.width = 180;
+  canvas.height = 180;
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
   camera.position.z = 3;
 
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-  renderer.setSize(256, 256);
+  renderer.setSize(180, 180, false);
   renderer.setPixelRatio(window.devicePixelRatio);
 
   const types = ['cube', 'pyramid', 'sphere', 'octahedron'];
@@ -49,12 +51,10 @@ function createAvatarShape() {
   return canvas;
 }
 
-let animationFrameId = null;
-let isAnimating = true;
+import { createSceneLoop, stopAnimation } from './scene-loop.js';
+import { log } from './observability/log.js';
 
 function animateAll() {
-  if (!isAnimating) return;
-  animationFrameId = requestAnimationFrame(animateAll);
   const t = Date.now() * 0.001;
 
   for (const item of voxelMeshes) {
@@ -66,52 +66,55 @@ function animateAll() {
   }
 }
 
-function stopAnimation() {
-  isAnimating = false;
-  if (animationFrameId !== null) {
-    cancelAnimationFrame(animationFrameId);
-    animationFrameId = null;
-  }
-}
-
 function cleanupMeshes() {
   voxelMeshes.forEach(item => {
     item.mesh.geometry.dispose();
+    log.info('xavierites.html', 'disposed geometry:', item.mesh.geometry.type);
     item.mesh.material.dispose();
+    log.info('xavierites.html', 'disposed material:', item.mesh.material.type);
     item.renderer.dispose();
+    log.info('xavierites.html', 'disposed renderer');
   });
   voxelMeshes.length = 0;
+  log.info('xavierites.html', 'cleanup complete:', voxelMeshes.length, 'meshes remaining');
 }
 
-const track = document.querySelector('.avatar-track');
-if (track) {
-  const items = Array.from(track.children);
-  for (let i = items.length - 1; i > 0; i--) {
-    const shapeCanvas = createAvatarShape();
-    const wrapper = document.createElement('div');
-    wrapper.className = 'avatar-shape';
-    wrapper.style.flexShrink = '0';
-    wrapper.appendChild(shapeCanvas);
-    items[i].before(wrapper);
-  }
-  animateAll();
+const avatars = [
+  { src: '../img/gavin.jpg', alt: 'Gavin' },
+  { src: '../img/greg.jpg', alt: 'Greg' },
+  { src: '../img/josh.jpg', alt: 'Josh' },
+  { src: '../img/nam.jpg', alt: 'Nam' }
+];
 
-  const header = document.querySelector('.section-header');
-  if (header) {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          if (!isAnimating) {
-            isAnimating = true;
-            animateAll();
-          }
-        } else {
-          stopAnimation();
-        }
-      });
-    }, { threshold: 0.1 });
-    observer.observe(header);
+function initXavierites() {
+  const track = document.getElementById('avatarTrack');
+  if (!track) return;
+  track.innerHTML = '';
+  const fragment = document.createDocumentFragment();
+  for (let repeat = 0; repeat < 3; repeat++) {
+    for (const avatar of avatars) {
+      const img = document.createElement('img');
+      img.loading = 'lazy';
+      img.src = avatar.src;
+      img.alt = avatar.alt;
+      fragment.appendChild(img);
+      const shapeCanvas = createAvatarShape();
+      const wrapper = document.createElement('div');
+      wrapper.className = 'avatar-shape';
+      wrapper.style.flexShrink = '0';
+      wrapper.appendChild(shapeCanvas);
+      fragment.appendChild(wrapper);
+    }
   }
+  track.appendChild(fragment);
+  createSceneLoop(animateAll);
 }
+
+initXavierites();
+window.sceneRegistry = window.sceneRegistry || {};
+window.sceneRegistry['xavierites'] = {
+  cleanup: () => { cleanupMeshes(); stopAnimation(); },
+  restart: () => { initXavierites(); }
+};
 
 

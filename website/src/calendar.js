@@ -9,41 +9,78 @@ const NOVEMBER = 2;
 const DECEMBER = 3;
 
 const calendarMonths = ['September', 'October', 'November', 'December'];
+const START_MONTH = 8;
 const now = new Date();
-let initialMonth = now.getMonth() - 8;
+let initialMonth = now.getMonth() - START_MONTH;
 if (initialMonth < 0 || initialMonth >= calendarMonths.length) initialMonth = 0;
 
 const calendarState = {
   months: calendarMonths,
   current: initialMonth,
-  year: 2026,
+  year: now.getFullYear(),
   view: 'list'
 };
 
-const joinBtn = '<a href="https://discord.com/invite/eRzNTw6hFm" target="_blank" rel="noopener noreferrer" class="discord-btn-tiny"><svg viewBox="0 0 24 24" fill="currentColor" style="width:12px;height:12px;"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037 13.46 13.46 0 0 0-.586 1.212 18.26 18.26 0 0 0-5.537 0 13.544 13.544 0 0 0-.585-1.212.077.077 0 0 0-.079-.037 19.736 19.736 0 0 0-4.885 1.515.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.104 1.793 12.064 0a.074.074 0 0 1 .078.01c.118.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>Join</a>';
+const joinBtn = '<a href="https://discord.com/invite/eRzNTw6hFm" target="_blank" rel="noopener noreferrer" class="discord-btn-tiny"><img src="../img/icon/discord.svg" alt="Discord" style="width:12px;height:12px;">Join</a>';
 
-const gregAvatar = '<img src="greg.jpg" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
-const gavinAvatar = '<img src="gavin.jpg" alt="Gavin" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
-const gregAvatarSmall = '<img src="greg.jpg" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:2px;">';
+const discordIconBtn = '<a href="https://discord.com/invite/eRzNTw6hFm" target="_blank" rel="noopener noreferrer" class="discord-btn-icon" aria-label="Join Discord"><img src="../img/icon/discord.svg" alt="Discord"></a>';
+
+const gregAvatar = '<img src="img/greg.jpg" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
+const gavinAvatar = '<img src="img/gavin.jpg" alt="Gavin" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
+const wesAvatar = '<img src="../img/icon/user.svg" alt="Wes" class="event-avatar" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
+const gregAvatarSmall = '<img src="img/greg.jpg" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:2px;">';
+
+const TERM_CLOSED_DAYS = {
+  [OCTOBER]: [1, 20],
+  [NOVEMBER]: [30]
+};
+
+const nthWeekday = (year, monthIndex, weekday, n) => {
+  const first = new Date(year, monthIndex, 1);
+  const firstOccurrence = 1 + (weekday - first.getDay() + 7) % 7;
+  return new Date(year, monthIndex, firstOccurrence + (n - 1) * 7);
+};
+
+const buildClosedDays = () => {
+  const out = new Set();
+  Object.entries(TERM_CLOSED_DAYS).forEach(([monthIndex, days]) =>
+    days.forEach(day => out.add(`${monthIndex}:${day}`))
+  );
+  const thanksgiving = nthWeekday(calendarState.year, START_MONTH + NOVEMBER, 4, 4);
+  for (let back = 3; back >= 0; back--) {
+    const closed = new Date(thanksgiving);
+    closed.setDate(thanksgiving.getDate() - back);
+    out.add(`${NOVEMBER}:${closed.getDate()}`);
+  }
+  return out;
+};
+
+const CLOSED_DAYS = buildClosedDays();
+const isClosedDay = (monthIndex, day) => CLOSED_DAYS.has(`${monthIndex}:${day}`);
 
 const events = [];
 
 events.push({
-  monthIndex: OCTOBER,
-  day: 20,
-  title: gregAvatarSmall + gavinAvatar + ' G & G Free AI Tools Talk'
+  monthIndex: DECEMBER,
+  day: 14,
+  title: gregAvatarSmall + gavinAvatar + ' G & G Landing the Internship'
 });
 
 for (let month = OCTOBER; month <= NOVEMBER; month++) {
-  const daysInMonth = new Date(2026, 8 + month + 1, 0).getDate();
+  const daysInMonth = new Date(calendarState.year, START_MONTH + month + 1, 0).getDate();
   for (let day = 1; day <= daysInMonth; day++) {
-    const date = new Date(2026, 8 + month, day);
+    const date = new Date(calendarState.year, START_MONTH + month, day);
     const dayOfWeek = date.getDay();
 
-    if (month === OCTOBER && (day === 1 || day === 20)) continue;
-    if (month === NOVEMBER && (day === 24 || day === 25 || day === 26)) continue;
+    if (isClosedDay(month, day)) continue;
 
     if (dayOfWeek === 2) {
+      events.push({
+        monthIndex: month,
+        day: day,
+        title: 'Tutoring with ' + gregAvatar + ' Greg: 6-7 PM Central' + joinBtn
+      });
+    } else if (dayOfWeek === 4) {
       events.push({
         monthIndex: month,
         day: day,
@@ -53,37 +90,41 @@ for (let month = OCTOBER; month <= NOVEMBER; month++) {
       events.push({
         monthIndex: month,
         day: day,
-        title: 'Tutoring with ' + gavinAvatar + ' Gavin: 6-7 PM Central' + joinBtn
-      });
-    } else if (dayOfWeek === 4) {
-      events.push({
-        monthIndex: month,
-        day: day,
-        title: 'Tutoring with ' + gregAvatar + ' Greg: 6-7 PM Central' + joinBtn
+        title: 'Tutoring with ' + wesAvatar + ' Wes: 6-7 PM Central' + joinBtn
       });
     }
   }
 }
 
 events.sort((a, b) => {
-  const dateA = new Date(2026, 8 + a.monthIndex, a.day);
-  const dateB = new Date(2026, 8 + b.monthIndex, b.day);
+  const dateA = new Date(calendarState.year, START_MONTH + a.monthIndex, a.day);
+  const dateB = new Date(calendarState.year, START_MONTH + b.monthIndex, b.day);
   return dateA - dateB;
 });
 
 const getEventsForDate = (monthIndex, day) =>
   events.filter(e => e.monthIndex === monthIndex && e.day === day);
 
-const calendarMonthDisplay = document.querySelector('#monthDisplay');
-const calendarDaysContainer = document.querySelector('#calendarDays');
-const calendarCard = document.querySelector('.calendar-card');
+function getCalendarElements() {
+  return {
+    monthDisplay: document.querySelector('#monthDisplay'),
+    daysContainer: document.querySelector('#calendarDays'),
+    card: document.querySelector('.calendar-card')
+  };
+}
 
 const renderCalendar = () => {
+  const el = getCalendarElements();
   const month = calendarState.months[calendarState.current];
-  calendarMonthDisplay && (calendarMonthDisplay.textContent = month);
+  el.monthDisplay && (el.monthDisplay.textContent = month);
 
-  const firstDay = new Date(calendarState.year, 8 + calendarState.current, 1).getDay();
-  const lastDay = new Date(calendarState.year, 8 + calendarState.current + 1, 0).getDate();
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  if (prevBtn) prevBtn.style.display = calendarState.current === SEPTEMBER ? 'none' : '';
+  if (nextBtn) nextBtn.style.display = calendarState.current === DECEMBER ? 'none' : '';
+
+  const firstDay = new Date(calendarState.year, START_MONTH + calendarState.current, 1).getDay();
+  const lastDay = new Date(calendarState.year, START_MONTH + calendarState.current + 1, 0).getDate();
 
   const dayLabels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const cells = dayLabels.map(d => html`<div class="day-label">${d}</div>`);
@@ -91,17 +132,19 @@ const renderCalendar = () => {
   for (let i = 0; i < firstDay; i++) cells.push('<div class="empty"></div>');
   for (let day = 1; day <= lastDay; day++) {
     const dayEvents = getEventsForDate(calendarState.current, day);
-    const hasEvents = dayEvents.length > 0;
-    cells.push(html`<div data-day="${day}" class="date-cell${hasEvents ? ' has-event' : ''}">${day}</div>`);
+    cells.push(html`<div data-day="${day}" class="date-cell">${day}${dayEvents.length ? discordIconBtn : ''}</div>`);
   }
 
-  calendarDaysContainer && (calendarDaysContainer.innerHTML = cells.join(''));
+  el.daysContainer && (el.daysContainer.innerHTML = cells.join(''));
 };
 
 const renderListView = () => {
+  const ref = new Date();
+  const today = new Date(calendarState.year, ref.getMonth(), ref.getDate());
+  today.setHours(0, 0, 0, 0);
   const upcomingEvents = events
-    .map(e => ({ ...e, date: new Date(calendarState.year, 8 + e.monthIndex, e.day) }))
-    .filter(e => e.date >= new Date(new Date().setHours(0,0,0,0)))
+    .map(e => ({ ...e, date: new Date(calendarState.year, START_MONTH + e.monthIndex, e.day) }))
+    .filter(e => e.date >= today)
     .sort((a, b) => a.date - b.date);
 
   const isMobile = window.innerWidth < 768;
@@ -119,16 +162,17 @@ const renderListView = () => {
       btnHtml = e.title.substring(btnStart);
     }
 
+    const fs = isMobile ? 'font-size:0.70rem' : '';
     if (isMobile) {
       return html`
         <div class="list-event-item" data-month="${e.monthIndex}" data-day="${e.day}">
           <div class="list-event-date">
-            <span class="list-event-day">${dayName}</span>
-            <span class="list-event-num">${e.day}</span>
-            <span class="list-event-month">${monthName}</span>
+            <span class="list-event-day" style="${fs}">${dayName}</span>
+            <span class="list-event-num" style="${fs}">${e.day}</span>
+            <span class="list-event-month" style="${fs}">${monthName}</span>
           </div>
           <div class="list-event-info">
-            <span class="list-event-title">${titleText}</span>
+            <span class="list-event-title" style="${fs}">${titleText}</span>
             ${btnHtml}
           </div>
         </div>
@@ -149,22 +193,26 @@ const renderListView = () => {
     `;
   }).join('');
 
-  calendarDaysContainer.innerHTML = html`<div class="events-list" style="width: 100%;">${listHtml}</div>`;
+  const el = getCalendarElements();
+  el.daysContainer.innerHTML = html`<div class="events-list" style="width: 100%;">${listHtml}</div>`;
 };
 
 const renderView = () => {
+  const el = getCalendarElements();
+  const yearEl = document.querySelector('.calendar-header .year');
+  if (yearEl) yearEl.textContent = calendarState.year;
   const isListView = calendarState.view === 'list';
-  calendarCard?.classList.toggle('list-view', isListView);
+  el.card?.classList.toggle('list-view', isListView);
 
   if (isListView) {
-    calendarMonthDisplay.textContent = 'Upcoming Events';
+    el.monthDisplay.textContent = 'Upcoming Events';
     renderListView();
   } else {
     renderCalendar();
   }
 };
 
-renderView();
+let initialized = false;
 
 document.addEventListener('click', (e) => {
   if (calendarState.view !== 'calendar') return;
@@ -181,12 +229,18 @@ document.addEventListener('click', (e) => {
   }
 });
 
-const viewToggle = document.getElementById('viewToggle');
-viewToggle.checked = calendarState.view === 'list';
-
-viewToggle?.addEventListener('change', () => {
-  calendarState.view = viewToggle.checked ? 'list' : 'calendar';
+function initCalendar() {
+  if (initialized) return;
+  initialized = true;
   renderView();
-});
 
+  const viewToggle = document.getElementById('viewToggle');
+  const slider = viewToggle?.closest('.toggle').querySelector('.slider');
+  viewToggle?.addEventListener('change', () => {
+    calendarState.view = viewToggle.checked ? 'list' : 'calendar';
+    slider?.classList.toggle('checked', viewToggle.checked);
+    renderView();
+  });
+}
 
+window.initCalendar = initCalendar;
