@@ -1,4 +1,5 @@
-import { log } from './observability/log.js';
+import { log } from './observability/log.js?v=202610262103.d0a599bc533426f17785217bdb2be3a801a613c4';
+import { stamp } from './build.js?v=202610262103.d0a599bc533426f17785217bdb2be3a801a613c4';
 
 async function loadComponents() {
   const elements = document.querySelectorAll('[data-include]');
@@ -6,7 +7,7 @@ async function loadComponents() {
   for (const el of elements) {
     const path = el.getAttribute('data-include');
     try {
-      const response = await fetch(path);
+      const response = await fetch(stamp(path));
       if (!response.ok) throw new Error(`failed to load ${path}`);
       const html = await response.text();
       const parser = new DOMParser();
@@ -17,7 +18,7 @@ async function loadComponents() {
       for (const script of scripts) {
         const newScript = document.createElement('script');
         newScript.type = 'module';
-        newScript.src = script.src;
+        newScript.src = stamp(script.src);
         el.appendChild(newScript);
       }
     } catch (err) {
@@ -57,7 +58,7 @@ window.addEventListener('resize', () => {
 
 async function loadPage(pageName, container) {
   try {
-    const response = await fetch(`pages/${pageName}.html`);
+    const response = await fetch(stamp(`pages/${pageName}.html`));
     const html = await response.text();
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
@@ -67,7 +68,7 @@ async function loadPage(pageName, container) {
     for (const script of scripts) {
       const newScript = document.createElement('script');
       newScript.type = 'module';
-      newScript.src = script.src;
+      newScript.src = stamp(script.src);
       container.appendChild(newScript);
     }
   } catch (e) {
