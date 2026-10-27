@@ -1,106 +1,41 @@
-import '../../src/theme.js?v=202610270611.d0f43b5913dbc02a06dff8f3ed08ca9b4e159d82';
+import '../../../src/theme.js?v=202610270616.4a1d225519a7862b952213b35e3667d252638efa';
+import { MONTHS, START_MONTH, SEPTEMBER, DECEMBER, buildSchedule, eventDate } from './schedule.js?v=202610270616.4a1d225519a7862b952213b35e3667d252638efa';
 
 const html = (strings, ...vals) =>
   strings.reduce((acc, s, i) => acc + s + (vals[i] ?? ''), '');
 
-const SEPTEMBER = 0;
-const OCTOBER = 1;
-const NOVEMBER = 2;
-const DECEMBER = 3;
-
-const calendarMonths = ['September', 'October', 'November', 'December'];
-const START_MONTH = 8;
 const now = new Date();
 let initialMonth = now.getMonth() - START_MONTH;
-if (initialMonth < 0 || initialMonth >= calendarMonths.length) initialMonth = 0;
+if (initialMonth < 0 || initialMonth >= MONTHS.length) initialMonth = 0;
 
 const calendarState = {
-  months: calendarMonths,
+  months: MONTHS,
   current: initialMonth,
   year: now.getFullYear(),
   view: 'list'
 };
 
-const joinBtn = '<a href="https://discord.com/invite/eRzNTw6hFm" target="_blank" rel="noopener noreferrer" class="discord-btn-tiny"><img src="../img/icon/discord.svg?v=202610270611.d0f43b5913dbc02a06dff8f3ed08ca9b4e159d82" alt="Discord" style="width:12px;height:12px;">Join</a>';
+const joinBtn = '<a href="https://discord.com/invite/eRzNTw6hFm" target="_blank" rel="noopener noreferrer" class="discord-btn-tiny"><img src="../img/icon/discord.svg?v=202610270616.4a1d225519a7862b952213b35e3667d252638efa" alt="Discord" style="width:12px;height:12px;">Join</a>';
 
-const discordIconBtn = '<a href="https://discord.com/invite/eRzNTw6hFm" target="_blank" rel="noopener noreferrer" class="discord-btn-icon" aria-label="Join Discord"><img src="../img/icon/discord.svg?v=202610270611.d0f43b5913dbc02a06dff8f3ed08ca9b4e159d82" alt="Discord"></a>';
+const discordIconBtn = '<a href="https://discord.com/invite/eRzNTw6hFm" target="_blank" rel="noopener noreferrer" class="discord-btn-icon" aria-label="Join Discord"><img src="../img/icon/discord.svg?v=202610270616.4a1d225519a7862b952213b35e3667d252638efa" alt="Discord"></a>';
 
-const gregAvatar = '<img src="img/greg.jpg?v=202610270611.d0f43b5913dbc02a06dff8f3ed08ca9b4e159d82" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
-const gavinAvatar = '<img src="img/gavin.jpg?v=202610270611.d0f43b5913dbc02a06dff8f3ed08ca9b4e159d82" alt="Gavin" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
-const wesAvatar = '<img src="../img/icon/user.svg?v=202610270611.d0f43b5913dbc02a06dff8f3ed08ca9b4e159d82" alt="Wes" class="event-avatar" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
-const gregAvatarSmall = '<img src="img/greg.jpg?v=202610270611.d0f43b5913dbc02a06dff8f3ed08ca9b4e159d82" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:2px;">';
+const gregAvatar = '<img src="img/greg.jpg?v=202610270616.4a1d225519a7862b952213b35e3667d252638efa" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
+const gavinAvatar = '<img src="img/gavin.jpg?v=202610270616.4a1d225519a7862b952213b35e3667d252638efa" alt="Gavin" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
+const wesAvatar = '<img src="../img/icon/user.svg?v=202610270616.4a1d225519a7862b952213b35e3667d252638efa" alt="Wes" class="event-avatar" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
+const gregAvatarSmall = '<img src="img/greg.jpg?v=202610270616.4a1d225519a7862b952213b35e3667d252638efa" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:2px;">';
 
-const TERM_CLOSED_DAYS = {
-  [OCTOBER]: [1, 20],
-  [NOVEMBER]: [30]
-};
+const AVATAR = { Greg: gregAvatar, Wes: wesAvatar };
 
-const nthWeekday = (year, monthIndex, weekday, n) => {
-  const first = new Date(year, monthIndex, 1);
-  const firstOccurrence = 1 + (weekday - first.getDay() + 7) % 7;
-  return new Date(year, monthIndex, firstOccurrence + (n - 1) * 7);
-};
+const titleFor = (event) =>
+  event.kind === 'special'
+    ? gregAvatarSmall + gavinAvatar + ' ' + event.title
+    : `Tutoring with ${AVATAR[event.host]} ${event.host}: 6-7 PM Central${joinBtn}`;
 
-const buildClosedDays = () => {
-  const out = new Set();
-  Object.entries(TERM_CLOSED_DAYS).forEach(([monthIndex, days]) =>
-    days.forEach(day => out.add(`${monthIndex}:${day}`))
-  );
-  const thanksgiving = nthWeekday(calendarState.year, START_MONTH + NOVEMBER, 4, 4);
-  for (let back = 3; back >= 0; back--) {
-    const closed = new Date(thanksgiving);
-    closed.setDate(thanksgiving.getDate() - back);
-    out.add(`${NOVEMBER}:${closed.getDate()}`);
-  }
-  return out;
-};
-
-const CLOSED_DAYS = buildClosedDays();
-const isClosedDay = (monthIndex, day) => CLOSED_DAYS.has(`${monthIndex}:${day}`);
-
-const events = [];
-
-events.push({
-  monthIndex: DECEMBER,
-  day: 14,
-  title: gregAvatarSmall + gavinAvatar + ' G & G Landing the Internship'
-});
-
-for (let month = OCTOBER; month <= NOVEMBER; month++) {
-  const daysInMonth = new Date(calendarState.year, START_MONTH + month + 1, 0).getDate();
-  for (let day = 1; day <= daysInMonth; day++) {
-    const date = new Date(calendarState.year, START_MONTH + month, day);
-    const dayOfWeek = date.getDay();
-
-    if (isClosedDay(month, day)) continue;
-
-    if (dayOfWeek === 2) {
-      events.push({
-        monthIndex: month,
-        day: day,
-        title: 'Tutoring with ' + gregAvatar + ' Greg: 6-7 PM Central' + joinBtn
-      });
-    } else if (dayOfWeek === 4) {
-      events.push({
-        monthIndex: month,
-        day: day,
-        title: 'Tutoring with ' + gregAvatar + ' Greg: 6-7 PM Central' + joinBtn
-      });
-    } else if (dayOfWeek === 3) {
-      events.push({
-        monthIndex: month,
-        day: day,
-        title: 'Tutoring with ' + wesAvatar + ' Wes: 6-7 PM Central' + joinBtn
-      });
-    }
-  }
-}
-
-events.sort((a, b) => {
-  const dateA = new Date(calendarState.year, START_MONTH + a.monthIndex, a.day);
-  const dateB = new Date(calendarState.year, START_MONTH + b.monthIndex, b.day);
-  return dateA - dateB;
-});
+const events = buildSchedule(calendarState.year).map(event => ({
+  monthIndex: event.monthIndex,
+  day: event.day,
+  title: titleFor(event)
+}));
 
 const getEventsForDate = (monthIndex, day) =>
   events.filter(e => e.monthIndex === monthIndex && e.day === day);
@@ -143,7 +78,7 @@ const renderListView = () => {
   const today = new Date(calendarState.year, ref.getMonth(), ref.getDate());
   today.setHours(0, 0, 0, 0);
   const upcomingEvents = events
-    .map(e => ({ ...e, date: new Date(calendarState.year, START_MONTH + e.monthIndex, e.day) }))
+    .map(e => ({ ...e, date: eventDate(calendarState.year, e) }))
     .filter(e => e.date >= today)
     .sort((a, b) => a.date - b.date);
 

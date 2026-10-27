@@ -1,8 +1,18 @@
+import { buildSchedule, eventDate } from './schedule.js?v=202610270616.4a1d225519a7862b952213b35e3667d252638efa';
+
 const COMMANDS = [
-  ['ls', 'list the current directory'],
-  ['echo', 'print text back to the terminal'],
-  ['cat', 'print the contents of a file'],
+  ['events', 'print upcoming events'],
+  ['refresh', 'clear the terminal'],
 ];
+
+const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+const dayLabel = (date) =>
+  `${DAY_NAMES[date.getDay()]} ${MONTH_NAMES[date.getMonth()]} ${date.getDate()}`;
+
+const plainTitle = (event) =>
+  event.kind === 'special' ? event.title : `Tutoring with ${event.host}: 6-7 PM Central`;
 
 function initTerminal() {
   const body = document.querySelector('[data-terminal-body]');
@@ -27,19 +37,64 @@ function initTerminal() {
     return el;
   };
 
-  const run = (raw) => {
-    const [name] = raw.split(/\s+/);
-    if (name === 'help') {
-      COMMANDS.forEach(([cmd, desc]) => {
-        const line = row('term-line');
-        part(line, cmd, 'term-name');
-        part(line, desc);
-        part(line, 'under development...', 'term-wip');
-      });
+  const printHelp = () => {
+    COMMANDS.forEach(([cmd, desc]) => {
+      const line = row('term-line');
+      part(line, cmd, 'term-name');
+      part(line, desc);
+    });
+  };
+
+  const printEvents = () => {
+    const year = new Date().getFullYear();
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const upcoming = buildSchedule(year).filter((e) => eventDate(year, e) >= today);
+    if (!upcoming.length) {
+      part(row('term-line'), 'no upcoming events');
       return;
     }
-    if (COMMANDS.some(([cmd]) => cmd === name)) return;
-    part(row('term-line term-err'), `command not found: ${raw}`);
+
+    upcoming.forEach((e) => {
+      const line = row('term-line');
+      part(line, dayLabel(eventDate(year, e)), 'term-name');
+      part(line, plainTitle(e));
+    });
+  };
+
+  const icon = reset.querySelector('img');
+
+  icon?.addEventListener('animationend', () => icon.classList.remove('spinning'));
+
+  const refresh = () => {
+    if (icon) {
+      icon.classList.remove('spinning');
+      void icon.offsetWidth;
+      icon.classList.add('spinning');
+    }
+    out.textContent = '';
+    input.value = '';
+    body.scrollTop = 0;
+  };
+
+  reset.addEventListener('click', refresh);
+
+  const run = (raw) => {
+    const [name] = raw.split(/\s+/);
+    switch (name) {
+      case 'help':
+        printHelp();
+        return;
+      case 'events':
+        printEvents();
+        return;
+      case 'refresh':
+        refresh();
+        return;
+      default:
+        part(row('term-line term-err'), `command not found: ${raw}`);
+    }
   };
 
   input.addEventListener('keydown', (e) => {
@@ -53,11 +108,6 @@ function initTerminal() {
     run(raw);
   });
 
-  reset.addEventListener('click', () => {
-    out.textContent = '';
-    input.value = '';
-    body.scrollTop = 0;
-  });
 }
 
 initTerminal();
