@@ -1,4 +1,4 @@
-import { buildSchedule, eventDate } from './schedule.js?v=202610270716.edc24ac493b81a28a167e4324b0fd74cb5c3abb1';
+import { buildSchedule, eventDate } from './schedule.js?v=202610270717.fc7541fee80632fb33becc9e221f0e74ac9f8c04';
 
 const COMMANDS = [
   ['events', 'print upcoming events'],
