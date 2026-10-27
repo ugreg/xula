@@ -1,4 +1,4 @@
-import './theme.js?v=202610262318.169a08f7cdb84cedda643adbddd971ce1d28bd9c';
+import './theme.js?v=202610262318.a842a95956f15759d945a225e3348d883132d29c';
 
 const html = (strings, ...vals) =>
   strings.reduce((acc, s, i) => acc + s + (vals[i] ?? ''), '');
@@ -21,14 +21,14 @@ const calendarState = {
   view: 'list'
 };
 
-const joinBtn = '<a href="https://discord.com/invite/eRzNTw6hFm" target="_blank" rel="noopener noreferrer" class="discord-btn-tiny"><img src="../img/icon/discord.svg?v=202610262318.169a08f7cdb84cedda643adbddd971ce1d28bd9c" alt="Discord" style="width:12px;height:12px;">Join</a>';
+const joinBtn = '<a href="https://discord.com/invite/eRzNTw6hFm" target="_blank" rel="noopener noreferrer" class="discord-btn-tiny"><img src="../img/icon/discord.svg?v=202610262318.a842a95956f15759d945a225e3348d883132d29c" alt="Discord" style="width:12px;height:12px;">Join</a>';
 
-const discordIconBtn = '<a href="https://discord.com/invite/eRzNTw6hFm" target="_blank" rel="noopener noreferrer" class="discord-btn-icon" aria-label="Join Discord"><img src="../img/icon/discord.svg?v=202610262318.169a08f7cdb84cedda643adbddd971ce1d28bd9c" alt="Discord"></a>';
+const discordIconBtn = '<a href="https://discord.com/invite/eRzNTw6hFm" target="_blank" rel="noopener noreferrer" class="discord-btn-icon" aria-label="Join Discord"><img src="../img/icon/discord.svg?v=202610262318.a842a95956f15759d945a225e3348d883132d29c" alt="Discord"></a>';
 
-const gregAvatar = '<img src="img/greg.jpg?v=202610262318.169a08f7cdb84cedda643adbddd971ce1d28bd9c" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
-const gavinAvatar = '<img src="img/gavin.jpg?v=202610262318.169a08f7cdb84cedda643adbddd971ce1d28bd9c" alt="Gavin" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
-const wesAvatar = '<img src="../img/icon/user.svg?v=202610262318.169a08f7cdb84cedda643adbddd971ce1d28bd9c" alt="Wes" class="event-avatar" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
-const gregAvatarSmall = '<img src="img/greg.jpg?v=202610262318.169a08f7cdb84cedda643adbddd971ce1d28bd9c" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:2px;">';
+const gregAvatar = '<img src="img/greg.jpg?v=202610262318.a842a95956f15759d945a225e3348d883132d29c" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
+const gavinAvatar = '<img src="img/gavin.jpg?v=202610262318.a842a95956f15759d945a225e3348d883132d29c" alt="Gavin" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
+const wesAvatar = '<img src="../img/icon/user.svg?v=202610262318.a842a95956f15759d945a225e3348d883132d29c" alt="Wes" class="event-avatar" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
+const gregAvatarSmall = '<img src="img/greg.jpg?v=202610262318.a842a95956f15759d945a225e3348d883132d29c" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:2px;">';
 
 const TERM_CLOSED_DAYS = {
   [OCTOBER]: [1, 20],

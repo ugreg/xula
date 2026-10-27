@@ -2,7 +2,7 @@
 set -eu
 
 DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-IMG='png|jpe?g|gif|webp|avif|ico|svg'
+IMG='png|jpe?g|gif|webp|avif|ico|svg|woff2|woff|ttf|otf'
 
 if [ -n "${1:-}" ]; then
   BUILD_VERSION=$1
@@ -42,7 +42,7 @@ done
 
 for f in $FILES; do
   rewrite "$f" \
-    -e "s#([\"'(])((\.\./|\./|/)?img/[A-Za-z0-9._/-]*\.($IMG))([\"')])#\1\2?v=$BUILD_VERSION\5#g"
+    -e "s#([\"'(])((\.\./|\./|/)?(img|font)/[A-Za-z0-9._/-]*\.($IMG))([\"')])#\1\2?v=$BUILD_VERSION\6#g"
 done
 
 rewrite "$DIR/index.html" \

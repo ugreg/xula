@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'CaskaydiaMono NFM';
+  src: url('font/CaskaydiaMonoNerdFontMono-Regular.woff2?v=202610262318.a842a95956f15759d945a225e3348d883132d29c') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @property --accent-hue {
   syntax: "<angle>";
   initial-value: 25deg;
@@ -42,6 +50,7 @@
   --scroll-btn-hover-bg: rgba(212, 165, 116, 0.2);
   --scroll-btn-hover-border: rgba(212, 165, 116, 0.4);
   --icon-filter: invert(1);
+  --font-term: 'CaskaydiaMono NFM', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 }
 
 :root.dark {
@@ -814,6 +823,7 @@ body.calendar-open .calendar-fab {
 }
 
 .footer p {
+  font-family: var(--font-term);
   font-size: 13px;
   color: var(--text-muted);
   opacity: 0.6;
@@ -830,7 +840,6 @@ body.calendar-open .calendar-fab {
   transform: translateY(0);
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;500;700&display=swap');
 
 :root {
   --accent-color: #00f2ff;
@@ -875,7 +884,6 @@ body.calendar-open .calendar-fab {
   padding: 30px 60px;
   box-shadow: 0 2px 16px rgba(0,0,0,0.3);
   transition: transform 0.3s;
-  font-family: 'Rajdhani', sans-serif;
   display: flex;
   flex-direction: column;
 }
@@ -1470,6 +1478,7 @@ body.loading .terminal-card {
    1100 mobile < .terminal-card and .calendar-modal 1000 < .calendar-fab and
    .shared-terminal 1001 < #loading-screen 99999 */
 .terminal-card {
+  font-family: var(--font-term);
   position: fixed;
   left: 50%;
   bottom: 15px;
@@ -1517,7 +1526,6 @@ body.loading .terminal-card {
 
 .terminal-card .body {
   padding: 15px;
-  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Mono', monospace;
   font-size: 14px;
   line-height: 1.6;
   height: calc(100% - 40px);
