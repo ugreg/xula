@@ -43,7 +43,7 @@ Each url has a version query, nothing served warm, like `?v=206910264200.d0a599b
 
 ```sh
 curl -sS -D- -o /dev/null "https://xudev.greg.uno/style.css?v=$(date +%s)" | grep -i 'cache-control\|x-cache'
-curl -sS https://xudev.greg.uno/pages/src/calendar.js | grep -o 'img/[a-z/.]*discord[a-z.]*' | sort -u
+curl -sS https://xudev.greg.uno/pages/components/src/calendar.js | grep -o 'img/[a-z/.]*discord[a-z.]*' | sort -u
 ```
 
 then hard reload: stamped requests carry `?v=`, no 404s, calendar Discord buttons point at `https://discord.com/invite/eRzNTw6hFm`.
