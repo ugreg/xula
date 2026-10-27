@@ -1,5 +1,3 @@
-const card = document.getElementById('sharedTerminal');
-const close = document.getElementById('closeTerminal');
+import { loadComponents } from '../../src/components.js?v=202610270702.d9e88ae6991e7eb98fc04e671e1116770de2f4a9';
 
-// nothing adds .visible yet, so the card stays hidden until a trigger exists
-close?.addEventListener('click', () => card?.classList.remove('visible'));
+loadComponents();

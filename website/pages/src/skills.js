@@ -115,8 +115,8 @@ function createIconScene(iconType) {
   }
 }
 
-import { createSceneLoop, stopAnimation } from '../../src/scene-loop.js?v=202610270651.ab10a07c930e4a52aa8a48ceef753a740fc9e91d';
-import { log } from '../../src/observability/log.js?v=202610270651.ab10a07c930e4a52aa8a48ceef753a740fc9e91d';
+import { createSceneLoop, stopAnimation } from '../../src/scene-loop.js?v=202610270702.d9e88ae6991e7eb98fc04e671e1116770de2f4a9';
+import { log } from '../../src/observability/log.js?v=202610270702.d9e88ae6991e7eb98fc04e671e1116770de2f4a9';
 
 function animateAll() {
   const t = Date.now() * 0.001;
