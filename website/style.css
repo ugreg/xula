@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'CaskaydiaMono NFM';
+  src: url('font/CaskaydiaMonoNerdFontMono-Regular.woff2?v=202610270717.fc7541fee80632fb33becc9e221f0e74ac9f8c04') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @property --accent-hue {
   syntax: "<angle>";
   initial-value: 25deg;
@@ -42,6 +50,7 @@
   --scroll-btn-hover-bg: rgba(212, 165, 116, 0.2);
   --scroll-btn-hover-border: rgba(212, 165, 116, 0.4);
   --icon-filter: invert(1);
+  --font-term: 'CaskaydiaMono NFM', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 }
 
 :root.dark {
@@ -319,15 +328,15 @@ a:hover {
   opacity: 1;
 }
 
-/* read-only panel that floats above page content, so it must never intercept
-   clicks meant for the page underneath it */
-.terminal-card,
+/* click-through while hidden; the input and reset button need real pointer
+   events once the card is on screen */
 .terminal-card.visible {
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 body.calendar-open .terminal-card {
   opacity: 0;
+  pointer-events: none;
 }
 
 .scroll-top-btn {
@@ -508,8 +517,9 @@ body.calendar-open .calendar-fab {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: var(--bg);
+  background: var(--glass-bg);
   border: 2px solid var(--accent);
+  color: var(--text-secondary);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -517,10 +527,10 @@ body.calendar-open .calendar-fab {
   z-index: 2;
 }
 
-.calendar-modal-close svg {
+.calendar-modal-close img {
   width: 20px;
   height: 20px;
-  color: var(--accent);
+  filter: var(--icon-filter);
 }
 
 .cursor {
@@ -814,6 +824,7 @@ body.calendar-open .calendar-fab {
 }
 
 .footer p {
+  font-family: var(--font-term);
   font-size: 13px;
   color: var(--text-muted);
   opacity: 0.6;
@@ -830,7 +841,6 @@ body.calendar-open .calendar-fab {
   transform: translateY(0);
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;500;700&display=swap');
 
 :root {
   --accent-color: #00f2ff;
@@ -875,7 +885,6 @@ body.calendar-open .calendar-fab {
   padding: 30px 60px;
   box-shadow: 0 2px 16px rgba(0,0,0,0.3);
   transition: transform 0.3s;
-  font-family: 'Rajdhani', sans-serif;
   display: flex;
   flex-direction: column;
 }
@@ -1015,6 +1024,16 @@ body.calendar-open .calendar-fab {
   width: 12px;
   height: 12px;
   filter: brightness(0) invert(1);
+}
+
+.discord-btn-icon::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.calendar-body .days div.date-cell:has(.discord-btn-icon):hover {
+  background: var(--card-hover-bg);
 }
 
 
@@ -1467,9 +1486,10 @@ body.loading .terminal-card {
 /* layers: .background-gradient -2, .noise-overlay -1 < .carousel 100 desktop /
    50 mobile (a stacking context, so nothing inside it can out-rank a sibling
    outside it) < .footer and .stats-arrow-btn 150-200 < .page-indicator 400 /
-   1100 mobile < .terminal-card and .calendar-modal 1000 < .calendar-fab and
-   .shared-terminal 1001 < #loading-screen 99999 */
+   1100 mobile < .terminal-card and .calendar-modal 1000 < .calendar-fab 1001 <
+   #loading-screen 99999 */
 .terminal-card {
+  font-family: var(--font-term);
   position: fixed;
   left: 50%;
   bottom: 15px;
@@ -1487,6 +1507,9 @@ body.loading .terminal-card {
 }
 
 .terminal-card .window {
+  display: flex;
+  flex-direction: column;
+  max-height: min(50vh, 360px);
   background: var(--terminal-bg);
   border: 1px solid var(--terminal-border);
   border-radius: 8px;
@@ -1494,6 +1517,7 @@ body.loading .terminal-card {
 }
 
 .terminal-card .header {
+  position: relative;
   background: var(--terminal-header-bg);
   padding: 5px 15px;
   border-bottom: 1px solid var(--terminal-border);
@@ -1504,37 +1528,160 @@ body.loading .terminal-card {
   justify-content: space-between;
 }
 
-.terminal-card .close-btn {
-  cursor: pointer;
-  opacity: 0.7;
-  transition: opacity 0.2s;
-  padding: 2px;
-}
-
-.terminal-card .close-btn:hover {
-  opacity: 1;
-}
-
 .terminal-card .body {
   padding: 15px;
-  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Mono', monospace;
   font-size: 14px;
   line-height: 1.6;
-  height: calc(100% - 40px);
+  flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
   color: var(--accent);
 }
 
-.shared-terminal {
-  z-index: 1001;
+.terminal-card .refresh-btn {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 2px;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+
+.terminal-card .refresh-btn:hover {
+  opacity: 1;
+}
+
+.terminal-card .refresh-btn img {
+  width: 14px;
+  height: 14px;
+  filter: var(--icon-filter);
+}
+
+.terminal-card .refresh-btn img.spinning {
+  animation: refresh-spin 0.45s ease-in-out;
+}
+
+@keyframes refresh-spin {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.terminal-card .prompt-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 15px;
+  color: #888;
+}
+
+.terminal-card .prompt-sign {
+  color: #27c93f;
+}
+
+.terminal-card .terminal-input {
+  flex: 0 1 auto;
+  min-width: 0;
+  width: auto;
+  field-sizing: content;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  outline: none;
+}
+
+.terminal-card .terminal-input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.4;
+}
+
+.terminal-card .term-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.terminal-card .term-line .term-name {
+  min-width: 42px;
+  color: #27c93f;
+}
+
+.terminal-card .term-line.term-err {
+  color: #ff6b6b;
+}
+
+.footer .build-stamp {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.footer .build-tag {
+  font-size: 9px;
+  line-height: 1.2;
+  color: var(--text-muted);
+  opacity: 0.4;
+  white-space: nowrap;
+  user-select: all;
+}
+
+.footer .copy-build-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  padding: 0;
+  border: 0;
+  border-radius: 3px;
+  background: none;
+  color: var(--text-muted);
+  opacity: 0.35;
+  cursor: pointer;
+}
+
+.footer .copy-build-btn:hover {
+  opacity: 0.9;
+}
+
+.footer .copy-build-btn img {
+  width: 11px;
+  height: 11px;
+  filter: var(--icon-filter);
+}
+
+.footer .copy-build-btn .icon-check {
+  display: none;
+}
+
+.footer .copy-build-btn.copied .icon-check {
+  display: block;
+}
+
+.footer .copy-build-btn.copied .icon-copy {
+  display: none;
 }
 
 @media (max-width: 768px) {
 
-  .shared-terminal {
-    left: 12px;
-    right: 12px;
-    bottom: 10px;
+  .terminal-embed {
+    display: none;
   }
 
   .calendar-card {
@@ -1963,7 +2110,6 @@ body.loading .terminal-card {
   .calendar-modal-close img {
     width: 10px !important;
     height: 10px !important;
-    filter: var(--icon-filter);
   }
 }
 

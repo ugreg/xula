@@ -1,30 +1,40 @@
-import { log } from './observability/log.js';
+import { log } from './observability/log.js?v=202610270717.fc7541fee80632fb33becc9e221f0e74ac9f8c04';
+import { stamp, V } from './build.js?v=202610270717.fc7541fee80632fb33becc9e221f0e74ac9f8c04';
+import { loadComponents, mobileQuery } from './components.js?v=202610270717.fc7541fee80632fb33becc9e221f0e74ac9f8c04';
 
-async function loadComponents() {
-  const elements = document.querySelectorAll('[data-include]');
+function copyFallback(text) {
+  const area = document.createElement('textarea');
+  area.value = text;
+  area.style.position = 'fixed';
+  area.style.opacity = '0';
+  document.body.appendChild(area);
+  area.select();
+  document.execCommand('copy');
+  area.remove();
+}
 
-  for (const el of elements) {
-    const path = el.getAttribute('data-include');
-    try {
-      const response = await fetch(path);
-      if (!response.ok) throw new Error(`failed to load ${path}`);
-      const html = await response.text();
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, 'text/html');
-      el.innerHTML = doc.body.innerHTML;
+function setupBuildVersion() {
+  document.querySelectorAll('[data-build-version]').forEach((el) => {
+    el.textContent = V;
+  });
 
-      const scripts = doc.querySelectorAll('script[type="module"]');
-      for (const script of scripts) {
-        const newScript = document.createElement('script');
-        newScript.type = 'module';
-        newScript.src = script.src;
-        el.appendChild(newScript);
+  document.querySelectorAll('[data-copy-build]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const flash = () => {
+        btn.classList.add('copied');
+        setTimeout(() => btn.classList.remove('copied'), 1200);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(V).then(flash, () => {
+          copyFallback(V);
+          flash();
+        });
+      } else {
+        copyFallback(V);
+        flash();
       }
-    } catch (err) {
-      console.error(err);
-      el.textContent = 'Error loading component.';
-    }
-  }
+    });
+  });
 }
 
 const scrollTopButton = document.querySelector('.scroll-top-btn');
@@ -50,14 +60,14 @@ function updateCalendarFab(scrollPos) {
   fab.classList.toggle('visible', scrollPos > window.innerHeight * CALENDAR_FAB_SCROLL_RATIO);
 }
 
-let isMobile = window.matchMedia('(max-width: 768px)').matches;
+let isMobile = mobileQuery.matches;
 window.addEventListener('resize', () => {
-  isMobile = window.matchMedia('(max-width: 768px)').matches;
+  isMobile = mobileQuery.matches;
 });
 
 async function loadPage(pageName, container) {
   try {
-    const response = await fetch(`pages/${pageName}.html`);
+    const response = await fetch(stamp(`pages/${pageName}.html`));
     const html = await response.text();
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
@@ -67,7 +77,7 @@ async function loadPage(pageName, container) {
     for (const script of scripts) {
       const newScript = document.createElement('script');
       newScript.type = 'module';
-      newScript.src = script.src;
+      newScript.src = stamp(script.src);
       container.appendChild(newScript);
     }
   } catch (e) {
@@ -77,6 +87,7 @@ async function loadPage(pageName, container) {
 
 async function loadAllPages() {
   await loadComponents();
+  setupBuildVersion();
 
   const pages = carousel.querySelectorAll('.carousel-page');
   const promises = [];
