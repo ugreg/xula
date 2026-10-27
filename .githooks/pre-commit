@@ -3,9 +3,8 @@ set -eu
 
 cd "$(git rev-parse --show-toplevel)"
 
-if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^website/.*\.(js|html|css)$'; then
+if git diff --cached --name-only --diff-filter=ACMR | grep -qE '^website/.*\.(js|html|css|svg|png|jpg|ico|woff2)$'; then
   ./website/bump.sh
-  git add -u website/
 fi
 
 exit 0

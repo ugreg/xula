@@ -2,7 +2,7 @@
 set -eu
 
 DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-IMG='png|jpe?g|gif|webp|avif|ico|svg|woff2|woff|ttf|otf'
+IMG='png|jpg|svg|woff2|ico'
 
 if [ -n "${1:-}" ]; then
   BUILD_VERSION=$1
