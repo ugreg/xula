@@ -1,4 +1,4 @@
-import '../../src/theme.js?v=202610270610.3298633fee8e60d806715456a611a2737b9f17b9';
+import '../../src/theme.js?v=202610270611.d0f43b5913dbc02a06dff8f3ed08ca9b4e159d82';
 import * as THREE from 'three';
 
 const voxelMeshes = [];
@@ -51,8 +51,8 @@ function createAvatarShape() {
   return canvas;
 }
 
-import { createSceneLoop, stopAnimation } from '../../src/scene-loop.js?v=202610270610.3298633fee8e60d806715456a611a2737b9f17b9';
-import { log } from '../../src/observability/log.js?v=202610270610.3298633fee8e60d806715456a611a2737b9f17b9';
+import { createSceneLoop, stopAnimation } from '../../src/scene-loop.js?v=202610270611.d0f43b5913dbc02a06dff8f3ed08ca9b4e159d82';
+import { log } from '../../src/observability/log.js?v=202610270611.d0f43b5913dbc02a06dff8f3ed08ca9b4e159d82';
 
 function animateAll() {
   const t = Date.now() * 0.001;
@@ -80,10 +80,10 @@ function cleanupMeshes() {
 }
 
 const avatars = [
-  { src: '../img/gavin.jpg?v=202610270610.3298633fee8e60d806715456a611a2737b9f17b9', alt: 'Gavin' },
-  { src: '../img/greg.jpg?v=202610270610.3298633fee8e60d806715456a611a2737b9f17b9', alt: 'Greg' },
-  { src: '../img/josh.jpg?v=202610270610.3298633fee8e60d806715456a611a2737b9f17b9', alt: 'Josh' },
-  { src: '../img/nam.jpg?v=202610270610.3298633fee8e60d806715456a611a2737b9f17b9', alt: 'Nam' }
+  { src: '../img/gavin.jpg?v=202610270611.d0f43b5913dbc02a06dff8f3ed08ca9b4e159d82', alt: 'Gavin' },
+  { src: '../img/greg.jpg?v=202610270611.d0f43b5913dbc02a06dff8f3ed08ca9b4e159d82', alt: 'Greg' },
+  { src: '../img/josh.jpg?v=202610270611.d0f43b5913dbc02a06dff8f3ed08ca9b4e159d82', alt: 'Josh' },
+  { src: '../img/nam.jpg?v=202610270611.d0f43b5913dbc02a06dff8f3ed08ca9b4e159d82', alt: 'Nam' }
 ];
 
 function initXavierites() {
