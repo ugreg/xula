@@ -1,5 +1,5 @@
 // flat wireframe meshes on canvas2d. unlit line art does not need a GL context.
-import { onTick } from '../../../src/scene-loop.js?v=202610280541.1932decc9592024f97254ffe723b733e46e7fa1f';
+import { onTick } from '../../../src/scene-loop.js?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7';
 
 const FOV = (50 * Math.PI) / 180;
 const CAM_Z = 3;
@@ -8,7 +8,7 @@ const DPR = globalThis.devicePixelRatio || 1;
 const hex = (n) => `#${n.toString(16).padStart(6, '0')}`;
 const SQ = [[-1, -1], [-1, 1], [1, 1], [1, -1]];
 
-const voxel = (x, y, z, s, color) => {
+export const voxel = (x, y, z, s, color) => {
   const h = s / 2;
   const v = (a, b, c) => [x + a * h, y + b * h, z + c * h];
   const paths = [-1, 1].map((dz) => [...SQ.map(([a, b]) => v(a, b, dz)), v(-1, -1, dz)]);
@@ -17,11 +17,11 @@ const voxel = (x, y, z, s, color) => {
 };
 
 // voxels: [x, y, z, size, color][]
-const icon = (voxels) => ({ parts: voxels.map(([x, y, z, s, c]) => voxel(x, y, z, s, c)) });
+export const icon = (voxels) => ({ parts: voxels.map(([x, y, z, s, c]) => voxel(x, y, z, s, c)) });
 
-const cube = (s, color) => ({ parts: [{ ...voxel(0, 0, 0, s, color), dots: [], dotR: 0 }] });
+export const cube = (s, color) => ({ parts: [{ ...voxel(0, 0, 0, s, color), dots: [], dotR: 0 }] });
 
-const pyramid = (r, h, color) => {
+export const pyramid = (r, h, color) => {
   const apex = [0, h / 2, 0];
   const base = [0, 1, 2, 3].map((i) => {
     const a = (i / 4) * Math.PI * 2;
@@ -30,7 +30,7 @@ const pyramid = (r, h, color) => {
   return { parts: [{ color, paths: [...base.map((b) => [apex, b]), [...base, base[0]]] }] };
 };
 
-const sphere = (r, color) => {
+export const sphere = (r, color) => {
   const pt = (t, p) => [r * Math.sin(t) * Math.cos(p), r * Math.cos(t), r * Math.sin(t) * Math.sin(p)];
   const paths = [];
   for (let i = 0; i < 4; i++) paths.push(Array.from({ length: 17 }, (_, k) => pt((k / 16) * Math.PI, (i * Math.PI) / 4)));
@@ -38,30 +38,14 @@ const sphere = (r, color) => {
   return { parts: [{ color, paths }] };
 };
 
-const octahedron = (r, color) => {
+export const octahedron = (r, color) => {
   const v = [[r, 0, 0], [-r, 0, 0], [0, r, 0], [0, -r, 0], [0, 0, r], [0, 0, -r]];
   const paths = [[0, 4], [0, 5], [1, 4], [1, 5], [2, 4], [2, 5], [3, 4], [3, 5]].map(([a, b]) => [v[a], v[b]]);
   paths.push([v[0], v[2], v[1], v[3], v[0]]);
   return { parts: [{ color, paths }] };
 };
 
-// the shape language every backend speaks: a tagged descriptor, no engine types in it
-const BUILDERS = {
-  cube: (d) => cube(d.r, d.color),
-  pyramid: (d) => pyramid(d.r, d.h, d.color),
-  sphere: (d) => sphere(d.r, d.color),
-  octahedron: (d) => octahedron(d.r, d.color),
-  icon: (d) => icon(d.voxels),
-};
-
-export const build = (desc) => BUILDERS[desc.kind]?.(desc) ?? null;
-
-export function create(canvas, desc, opts) {
-  const mesh = build(desc);
-  return mesh ? createWireframe(canvas, mesh, opts) : { stop() {} };
-}
-
-function createWireframe(canvas, mesh, { size = 64, spin = 0.02, tilt = 0.15, tiltRate = 1, lineWidth = 1 } = {}) {
+export function createWireframe(canvas, mesh, { size = 64, spin = 0.02, tilt = 0.15, tiltRate = 1, lineWidth = 1 } = {}) {
   const ctx = canvas.getContext('2d');
   if (!ctx) return { stop() {} };
 

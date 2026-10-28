@@ -23,7 +23,7 @@ rewrite() {
 }
 
 FILES=''
-for f in "$DIR/index.html" "$DIR/style.css" "$DIR"/pages/*.html "$DIR"/pages/components/*.html "$DIR"/pages/src/*.js "$DIR"/pages/src/common/*.js "$DIR"/pages/src/ogl/*.js "$DIR"/pages/src/zdog/*.js "$DIR"/pages/components/src/*.js "$DIR"/src/*.js "$DIR"/src/observability/*.js; do
+for f in "$DIR/index.html" "$DIR/style.css" "$DIR"/pages/*.html "$DIR"/pages/components/*.html "$DIR"/pages/src/*.js "$DIR"/pages/src/common/*.js "$DIR"/pages/components/src/*.js "$DIR"/src/*.js "$DIR"/src/observability/*.js; do
   [ -f "$f" ] && FILES="$FILES $f"
 done
 
@@ -37,8 +37,7 @@ done
 for f in $FILES; do
   rewrite "$f" \
     -e "s|from '(\.{1,2}/[A-Za-z0-9._/-]+\.js)'|from '\1?v=$BUILD_VERSION'|g" \
-    -e "s|import '(\.{1,2}/[A-Za-z0-9._/-]+\.js)'|import '\1?v=$BUILD_VERSION'|g" \
-    -e "s|import\('(\.{1,2}/[A-Za-z0-9._/-]+\.js)'\)|import('\1?v=$BUILD_VERSION')|g"
+    -e "s|import '(\.{1,2}/[A-Za-z0-9._/-]+\.js)'|import '\1?v=$BUILD_VERSION'|g"
 done
 
 for f in $FILES; do
