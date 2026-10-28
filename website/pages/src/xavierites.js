@@ -1,28 +1,36 @@
-import '../../src/theme.js?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7';
-import { createWireframe, cube, pyramid, sphere, octahedron } from './common/wireframe.js?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7';
+import '../../src/theme.js';
+import { createShape, onBackendChange } from './common/renderer.js';
 
-// 4 meshes shared by 12 canvases: these are plain arrays, nothing per-canvas to build
+// 4 shapes shared by 12 canvases: plain descriptors, nothing per-canvas to build
 const SHAPES = [
-  cube(0.45, 0x5c78e2),
-  pyramid(0.35, 0.5, 0xa855f7),
-  sphere(0.325, 0x06b6d4),
-  octahedron(0.35, 0x5865F2)
+  { kind: 'cube', r: 0.45, color: 0x5c78e2 },
+  { kind: 'pyramid', r: 0.35, h: 0.5, color: 0xa855f7 },
+  { kind: 'sphere', r: 0.325, color: 0x06b6d4 },
+  { kind: 'octahedron', r: 0.35, color: 0x5865F2 }
 ];
 
 const avatars = [
-  { src: '../img/gavin.jpg?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7', alt: 'Gavin' },
-  { src: '../img/greg.jpg?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7', alt: 'Greg' },
-  { src: '../img/josh.jpg?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7', alt: 'Josh' },
-  { src: '../img/nam.jpg?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7', alt: 'Nam' }
+  { src: '../img/gavin.jpg', alt: 'Gavin' },
+  { src: '../img/greg.jpg', alt: 'Greg' },
+  { src: '../img/josh.jpg', alt: 'Josh' },
+  { src: '../img/nam.jpg', alt: 'Nam' }
 ];
 
-const views = [];
+const SHAPE_OPTS = { size: 140, spin: 0.025, tilt: 0.2, tiltRate: 0.8, lineWidth: 1.5 };
 
-function initXavierites() {
+const views = new Set();
+let gen = 0;
+
+async function initXavierites() {
+  const myGen = ++gen;
+  for (const view of views) view.stop();
+  views.clear();
+
   const track = document.getElementById('avatarTrack');
   if (!track) return;
   track.innerHTML = '';
   const fragment = document.createDocumentFragment();
+  const pending = [];
 
   for (let i = 0; i < avatars.length * 3; i++) {
     const img = document.createElement('img');
@@ -39,16 +47,26 @@ function initXavierites() {
     wrapper.appendChild(canvas);
     fragment.appendChild(wrapper);
 
-    views.push(createWireframe(canvas, SHAPES[i % SHAPES.length], { size: 140, spin: 0.025, tilt: 0.2, tiltRate: 0.8, lineWidth: 1.5 }));
+    pending.push(
+      createShape(canvas, SHAPES[i % SHAPES.length], SHAPE_OPTS).then((view) => {
+        if (myGen !== gen) {
+          view.stop(); // a newer engine switch already won
+          return;
+        }
+        views.add(view);
+      })
+    );
     canvas.style.width = canvas.style.height = '100%';
   }
 
   track.appendChild(fragment);
+  await Promise.all(pending);
 }
 
 initXavierites();
+onBackendChange(initXavierites);
 window.sceneRegistry = window.sceneRegistry || {};
 window.sceneRegistry['xavierites'] = {
-  cleanup: () => views.splice(0).forEach((v) => v.stop()),
+  cleanup: () => views.forEach((v) => v.stop()),
   restart: initXavierites
 };

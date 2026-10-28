@@ -1,13 +1,24 @@
 <header style="position: fixed; top: 0; left: 0; right: 0; z-index: 200; padding: 20px; backdrop-filter: blur(20px); background: var(--glass-bg); border-bottom: 1px solid var(--glass-border);">
   <nav style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: center; align-items: center; position: relative;">
-    <img src="/img/xu.png?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7" alt="XULA" class="header-logo">
+    <div class="renderer-switch" role="radiogroup" aria-label="Shape renderer">
+      <input type="radio" name="renderer" id="renderer-canvas" value="canvas2d" checked>
+      <label for="renderer-canvas">Canvas</label>
+      <input type="radio" name="renderer" id="renderer-ogl" value="ogl">
+      <label for="renderer-ogl">OGL</label>
+      <input type="radio" name="renderer" id="renderer-zdog" value="zdog">
+      <label for="renderer-zdog">Zdog</label>
+    </div>
+
+    <img src="/img/xu.png?v=202610280514.abd370e70abd33f0ba7eb95597483194f698e88b" alt="XULA" class="header-logo">
 
     <label class="toggle theme" style="position: absolute; right: 0;" aria-label="Toggle dark/light mode">
       <input type="checkbox" id="themeToggle">
       <span class="slider">
-        <img class="icon-left" src="/img/icon/sol.svg?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7" alt="">
-        <img class="icon-right" src="/img/icon/luna.svg?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7" alt="">
+        <img class="icon-left" src="/img/icon/sol.svg?v=202610280514.abd370e70abd33f0ba7eb95597483194f698e88b" alt="">
+        <img class="icon-right" src="/img/icon/luna.svg?v=202610280514.abd370e70abd33f0ba7eb95597483194f698e88b" alt="">
       </span>
     </label>
   </nav>
 </header>
+
+<script type="module" src="/pages/components/src/renderer-switch.js"></script>

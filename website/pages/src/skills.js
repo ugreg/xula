@@ -1,4 +1,4 @@
-import { createWireframe, icon } from './common/wireframe.js?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7';
+import { createShape, onBackendChange } from './common/renderer.js';
 
 // x, y, z, size, color
 const ICONS = {
@@ -11,18 +11,30 @@ const ICONS = {
   money: [[0, 0, 0, 1, 0x27ae60], [0, -0.4, 0, 1, 0x2ecc71], [0.3, 0, 0.5, 0.3, 0xf1c40f], [-0.3, 0, 0.5, 0.3, 0xf1c40f], [0, 0, -0.3, 0.9, 0x2ecc71]]
 };
 
-const views = [];
+const views = new Set();
+let gen = 0;
 
-function initSkills() {
+async function initSkills() {
+  const myGen = ++gen;
+  for (const view of views) view.stop();
+  views.clear();
+
   for (const [type, voxels] of Object.entries(ICONS)) {
     const canvas = document.querySelector(`canvas[data-icon="${type}"]`);
-    if (canvas) views.push(createWireframe(canvas, icon(voxels), { size: 64 }));
+    if (!canvas) continue;
+    const view = await createShape(canvas, { kind: 'icon', voxels }, { size: 64 });
+    if (myGen !== gen) {
+      view.stop(); // a newer engine switch already won
+      continue;
+    }
+    views.add(view);
   }
 }
 
 initSkills();
+onBackendChange(initSkills);
 window.sceneRegistry = window.sceneRegistry || {};
 window.sceneRegistry['skills'] = {
-  cleanup: () => views.splice(0).forEach((v) => v.stop()),
+  cleanup: () => views.forEach((v) => v.stop()),
   restart: initSkills
 };

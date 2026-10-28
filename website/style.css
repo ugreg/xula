@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'CaskaydiaMono NFM';
-  src: url('font/CaskaydiaMonoNerdFontMono-Regular.woff2?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7') format('woff2');
+  src: url('font/CaskaydiaMonoNerdFontMono-Regular.woff2?v=202610280514.abd370e70abd33f0ba7eb95597483194f698e88b') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -2130,4 +2130,53 @@ body.loading .terminal-card {
   animation: loading-spin 1.2s linear infinite;
   flex-shrink: 0;
   background: transparent;
+}
+
+/* shape engine switch in the header */
+.renderer-switch {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  background: var(--card-bg);
+}
+
+.renderer-switch input {
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+}
+
+.renderer-switch label {
+  padding: 5px 9px;
+  border-radius: 7px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+.renderer-switch input:checked + label {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.renderer-switch input:focus-visible + label {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (max-width: 768px) {
+  .renderer-switch {
+    display: none;
+  }
 }
