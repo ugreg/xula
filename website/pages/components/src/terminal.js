@@ -1,8 +1,8 @@
-import { buildSchedule, eventDate } from './schedule.js?v=202610280717.4c1f077bfdbf1ad341cad3f757b7de2bea09b85d';
+import { buildSchedule, eventDate } from './schedule.js?v=202610282045.f2a79c8a21639e48471f959203859e72bb9845ca';
 
 const COMMANDS = [
-  ['events', 'print upcoming events'],
-  ['refresh', 'clear the terminal'],
+  ['events, e', 'print upcoming events'],
+  ['refresh, r, clear, cls, c', 'clear the terminal'],
 ];
 
 const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -86,9 +86,14 @@ function initTerminal() {
       case 'help':
         printHelp();
         return;
+      case 'e':
       case 'events':
         printEvents();
         return;
+      case 'c':
+      case 'cls':
+      case 'clear':
+      case 'r':
       case 'refresh':
         refresh();
         return;
