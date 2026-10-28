@@ -1,21 +1,19 @@
-let animationFrameId = null;
-let currentAnimateFn = null;
+const ticks = new Set();
+let frameId = null;
 
-export function createSceneLoop(animateFn) {
-  currentAnimateFn = animateFn;
-
-  function loop() {
-    animationFrameId = requestAnimationFrame(loop);
-    if (currentAnimateFn) animateFn();
-  }
-
-  animationFrameId = requestAnimationFrame(loop);
+function frame() {
+  for (const fn of ticks) fn();
+  frameId = ticks.size ? requestAnimationFrame(frame) : null;
 }
 
-export function stopAnimation() {
-  if (animationFrameId !== null) {
-    cancelAnimationFrame(animationFrameId);
-    animationFrameId = null;
-  }
-  currentAnimateFn = null;
+export function onTick(fn) {
+  ticks.add(fn);
+  if (frameId === null) frameId = requestAnimationFrame(frame);
+  return () => {
+    ticks.delete(fn);
+    if (!ticks.size && frameId !== null) {
+      cancelAnimationFrame(frameId);
+      frameId = null;
+    }
+  };
 }

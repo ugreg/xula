@@ -1,5 +1,5 @@
-import '../../../src/theme.js?v=202610270717.fc7541fee80632fb33becc9e221f0e74ac9f8c04';
-import { MONTHS, START_MONTH, SEPTEMBER, DECEMBER, buildSchedule, eventDate } from './schedule.js?v=202610270717.fc7541fee80632fb33becc9e221f0e74ac9f8c04';
+import '../../../src/theme.js?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7';
+import { MONTHS, START_MONTH, SEPTEMBER, DECEMBER, buildSchedule, eventDate } from './schedule.js?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7';
 
 const html = (strings, ...vals) =>
   strings.reduce((acc, s, i) => acc + s + (vals[i] ?? ''), '');
@@ -15,14 +15,14 @@ const calendarState = {
   view: 'list'
 };
 
-const joinBtn = '<a href="https://discord.com/invite/eRzNTw6hFm" target="_blank" rel="noopener noreferrer" class="discord-btn-tiny"><img src="../img/icon/discord.svg?v=202610270717.fc7541fee80632fb33becc9e221f0e74ac9f8c04" alt="Discord" style="width:12px;height:12px;">Join</a>';
+const joinBtn = '<a href="https://discord.com/invite/eRzNTw6hFm" target="_blank" rel="noopener noreferrer" class="discord-btn-tiny"><img src="../img/icon/discord.svg?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7" alt="Discord" style="width:12px;height:12px;">Join</a>';
 
-const discordIconBtn = '<a href="https://discord.com/invite/eRzNTw6hFm" target="_blank" rel="noopener noreferrer" class="discord-btn-icon" aria-label="Join Discord"><img src="../img/icon/discord.svg?v=202610270717.fc7541fee80632fb33becc9e221f0e74ac9f8c04" alt="Discord"></a>';
+const discordIconBtn = '<a href="https://discord.com/invite/eRzNTw6hFm" target="_blank" rel="noopener noreferrer" class="discord-btn-icon" aria-label="Join Discord"><img src="../img/icon/discord.svg?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7" alt="Discord"></a>';
 
-const gregAvatar = '<img src="../img/greg.jpg?v=202610270717.fc7541fee80632fb33becc9e221f0e74ac9f8c04" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
-const gavinAvatar = '<img src="../img/gavin.jpg?v=202610270717.fc7541fee80632fb33becc9e221f0e74ac9f8c04" alt="Gavin" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
-const wesAvatar = '<img src="../img/icon/user.svg?v=202610270717.fc7541fee80632fb33becc9e221f0e74ac9f8c04" alt="Wes" class="event-avatar" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
-const gregAvatarSmall = '<img src="../img/greg.jpg?v=202610270717.fc7541fee80632fb33becc9e221f0e74ac9f8c04" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:2px;">';
+const gregAvatar = '<img src="../img/greg.jpg?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
+const gavinAvatar = '<img src="../img/gavin.jpg?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7" alt="Gavin" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
+const wesAvatar = '<img src="../img/icon/user.svg?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7" alt="Wes" class="event-avatar" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:4px;">';
+const gregAvatarSmall = '<img src="../img/greg.jpg?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7" alt="Greg" style="width:20px;height:20px;border-radius:50%;vertical-align:middle;margin-right:2px;">';
 
 const AVATAR = { Greg: gregAvatar, Wes: wesAvatar };
 

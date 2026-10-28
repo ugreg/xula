@@ -1,7 +1,5 @@
-import '../../src/theme.js?v=202610270717.fc7541fee80632fb33becc9e221f0e74ac9f8c04';
+import '../../src/theme.js?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7';
 import * as THREE from 'three';
-
-const voxelMeshes = [];
 
 function initArrow() {
   try {
@@ -53,63 +51,47 @@ function initArrow() {
     d2.position.set(-2, 1, -2);
     scene.add(d2);
 
-    voxelMeshes.push({ mesh: arrowMesh, scene, camera, renderer, type: 'arrow' });
+    return { mesh: arrowMesh, scene, camera, renderer, geometry, material };
   } catch (e) {
     console.error('[three] initArrow error:', e);
   }
+  return null;
 }
 
-import { createSceneLoop, stopAnimation } from '../../src/scene-loop.js?v=202610270717.fc7541fee80632fb33becc9e221f0e74ac9f8c04';
-import { log } from '../../src/observability/log.js?v=202610270717.fc7541fee80632fb33becc9e221f0e74ac9f8c04';
+import { onTick } from '../../src/scene-loop.js?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7';
+import { log } from '../../src/observability/log.js?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7';
 
-function animateAll() {
-  const t = Date.now() * 0.001;
-
-  for (const item of voxelMeshes) {
-    if (item.type === 'arrow') {
-      item.mesh.rotation.y += 0.02;
-    }
-    if (item.type === 'icon') {
-      item.mesh.rotation.y += 0.02;
-      item.mesh.rotation.x = Math.sin(t) * 0.15;
-    }
-    if (item.type === 'avatar-shape') {
-      item.mesh.rotation.y += 0.025;
-      item.mesh.rotation.x = Math.sin(t * 0.8) * 0.2;
-    }
-    item.renderer.render(item.scene, item.camera);
-  }
-}
+// the only WebGL context on the site: MeshStandardMaterial reads light, so this one earns the GPU
+let arrow = null;
+let stopTick = null;
 
 function cleanupMeshes() {
-  voxelMeshes.forEach(item => {
-    item.mesh.geometry.dispose();
-    log.info('home.html', 'disposed geometry:', item.mesh.geometry.type);
-    if (Array.isArray(item.mesh.material)) {
-      item.mesh.material.forEach(m => { m.dispose(); log.info('home.html', 'disposed material:', m.type); });
-    } else {
-      item.mesh.material.dispose();
-      log.info('home.html', 'disposed material:', item.mesh.material.type);
-    }
-    item.renderer.dispose();
-    log.info('home.html', 'disposed renderer');
-  });
-  voxelMeshes.length = 0;
-  log.info('home.html', 'cleanup complete:', voxelMeshes.length, 'meshes remaining');
+  if (!arrow) return;
+  stopTick?.();
+  stopTick = null;
+  arrow.geometry.dispose();
+  arrow.material.dispose();
+  arrow.renderer.dispose();
+  arrow = null;
+  log.info('home.html', 'arrow disposed');
 }
 
 function initHome() {
-  initArrow();
+  arrow = initArrow();
   const spinner = document.getElementById('arrowSpinner');
   const canvas = document.getElementById('arrowCanvas');
   if (spinner) spinner.style.display = 'none';
   if (canvas) canvas.style.display = 'block';
-  createSceneLoop(animateAll);
+  if (!arrow) return;
+  stopTick = onTick(() => {
+    arrow.mesh.rotation.y += 0.02;
+    arrow.renderer.render(arrow.scene, arrow.camera);
+  });
 }
 
 initHome();
 window.sceneRegistry = window.sceneRegistry || {};
 window.sceneRegistry['home'] = {
-  cleanup: () => { cleanupMeshes(); stopAnimation(); },
-  restart: () => { initHome(); }
+  cleanup: cleanupMeshes,
+  restart: initHome
 };

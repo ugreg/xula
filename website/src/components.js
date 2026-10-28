@@ -1,4 +1,4 @@
-import { stamp } from './build.js?v=202610270717.fc7541fee80632fb33becc9e221f0e74ac9f8c04';
+import { stamp } from './build.js?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7';
 
 export const MOBILE_QUERY = '(max-width: 768px)';
 export const mobileQuery = window.matchMedia(MOBILE_QUERY);
