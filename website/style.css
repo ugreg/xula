@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'CaskaydiaMono NFM';
-  src: url('font/CaskaydiaMonoNerdFontMono-Regular.woff2?v=202610282140.60ab7aecf18f6d187948740820950d88bb27c840') format('woff2');
+  src: url('font/CaskaydiaMonoNerdFontMono-Regular.woff2?v=202610282151.0dfb48d7445b92086bb30bf6ad42e1eb625786c1') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -255,7 +255,7 @@ a:hover {
   height: 18px;
 }
 
-.discord-btn {
+.xula-button {
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -263,15 +263,41 @@ a:hover {
   border-radius: 12px;
   font-size: 16px;
   font-weight: 600;
-  color: #fff;
-  background: linear-gradient(135deg, #5865F2, #4752C4);
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid #a07840;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease;
   text-decoration: none;
+}
+
+.discord-btn {
+  color: #fff;
+  background: linear-gradient(135deg, #5865F2, #4752C4);
+  border: none;
+  box-shadow: none;
+
+  animation: discord-nudge 10s ease-in-out infinite;
+}
+
+@keyframes discord-nudge {
+  0%, 6%, 100% { translate: none; rotate: none; }
+  1% { translate: -3px 0; rotate: -0.8deg; }
+  2.5% { translate: 3px 0; rotate: 0.8deg; }
+  4% { translate: -2px 0; rotate: -0.5deg; }
+  5.5% { translate: 1px 0; rotate: 0.2deg; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .discord-btn { animation: none; }
 }
 
 .discord-btn-tiny {
   display: inline-flex;
   align-items: center;
+  text-decoration: none;
+  cursor: pointer;
   gap: 4px;
   padding: 2px 6px;
   border-radius: 4px;
@@ -279,48 +305,14 @@ a:hover {
   font-weight: 500;
   color: #fff;
   background: #5865F2;
-  text-decoration: none;
   vertical-align: middle;
   margin-left: 4px;
   pointer-events: auto;
-  cursor: pointer;
 }
 
-/* discord logo is currentColor = black inside <img>, force white on the accent button */
 .discord-btn img,
 .discord-btn-tiny img {
   filter: brightness(0) invert(1);
-}
-
-@media (min-width: 769px) {
-  .discord-btn:hover {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 12px 24px rgba(0, 0, 0, 0.2);
-    transform: translateY(-2px);
-  }
-}
-
-.discord-arrow {
-  width: 48px;
-  height: 48px;
-  margin: 40px auto 0;
-  position: relative;
-  animation: arrow-bounce 4s ease-in-out infinite;
-  align-self: center;
-  overflow: visible;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.discord-arrow canvas {
-  width: 48px;
-  height: 48px;
-  display: block;
-}
-
-@keyframes arrow-bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-15px); }
 }
 
 .home-terminal.visible,
@@ -328,8 +320,6 @@ a:hover {
   opacity: 1;
 }
 
-/* click-through while hidden; the input and reset button need real pointer
-   events once the card is on screen */
 .terminal-card.visible {
   pointer-events: auto;
 }
@@ -376,25 +366,6 @@ body.calendar-open .terminal-card {
   color: #d4a574;
 }
 
-/* Calendar buttons - shared look for the FAB and the hero button */
-.calendar-fab,
-.hero-calendar-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 14px 28px;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--text);
-  background: var(--bg);
-  border: 1px solid #a07840;
-  cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease;
-  text-decoration: none;
-}
-
 .calendar-fab:hover,
 .hero-calendar-btn:hover {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 12px 24px rgba(0, 0, 0, 0.2);
@@ -418,7 +389,6 @@ body.calendar-open .terminal-card {
   filter: none;
 }
 
-/* Calendar FAB - fixed, hidden while the modal is open */
 .calendar-fab {
   position: fixed;
   right: 24px;
@@ -431,13 +401,11 @@ body.calendar-open .calendar-fab {
   pointer-events: none;
 }
 
-/* FAB stays hidden until the user scrolls */
 .calendar-fab:not(.visible) {
   opacity: 0;
   pointer-events: none;
 }
 
-/* Hero calendar button - static in flow, always visible, no border */
 .hero-calendar-btn {
   border: none;
 }
@@ -446,17 +414,11 @@ body.calendar-open .calendar-fab {
   margin-top: 24px;
 }
 
-.hero .discord-arrow {
-  margin-top: 64px;
+.discord-btn:hover,
+.discord-btn-tiny:hover {
+  color: #fff;
 }
 
-/* Discord buttons - prevent black text on hover in light mode */
-:root.light .discord-btn:hover,
-:root.light .discord-btn-tiny:hover {
-  color: #fff !important;
-}
-
-/* Calendar Modal */
 .calendar-modal {
   position: fixed;
   inset: 0;
@@ -466,10 +428,7 @@ body.calendar-open .calendar-fab {
   justify-content: center;
   opacity: 0;
   pointer-events: none;
-  /* opacity alone still hit-tests, and descendants that declare
-     pointer-events: auto punch back through it and eat clicks on the page
-     underneath. visibility prunes the whole subtree, and keeps a closed modal
-     out of the tab order too. the delayed flip preserves the fade-out */
+
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0s linear 0.3s;
 }
@@ -841,7 +800,6 @@ body.calendar-open .calendar-fab {
   transform: translateY(0);
 }
 
-
 :root {
   --accent-color: #00f2ff;
   --text-primary: var(--text);
@@ -1006,17 +964,16 @@ body.calendar-open .calendar-fab {
 }
 
 .discord-btn-icon {
-  display: inline-flex;
-  align-items: center;
   justify-content: center;
+  gap: 0;
   width: 18px;
   height: 18px;
   padding: 0;
   border-radius: 5px;
   background: #5865F2;
-  text-decoration: none;
+  border: none;
+  box-shadow: none;
   pointer-events: auto;
-  cursor: pointer;
   flex: none;
 }
 
@@ -1035,7 +992,6 @@ body.calendar-open .calendar-fab {
 .calendar-body .days div.date-cell:has(.discord-btn-icon):hover {
   background: var(--card-hover-bg);
 }
-
 
 .events-list {
   width: 100%;
@@ -1112,7 +1068,6 @@ body.calendar-open .calendar-fab {
   user-select: none;
 }
 
-/* Icon avatars (currentColor = black inside <img>) follow the theme */
 .event-avatar {
   filter: var(--icon-filter);
 }
@@ -1456,7 +1411,6 @@ body.loading .terminal-card {
   opacity: 1;
 }
 
-/* theme toggle variant — overrides accent color */
 .toggle.theme {
   margin-left: 16px;
   z-index: 100;
@@ -1483,11 +1437,6 @@ body.loading .terminal-card {
   border-color: var(--accent);
 }
 
-/* layers: .background-gradient -2, .noise-overlay -1 < .carousel 100 desktop /
-   50 mobile (a stacking context, so nothing inside it can out-rank a sibling
-   outside it) < .footer and .stats-arrow-btn 150-200 < .page-indicator 400 /
-   1100 mobile < .terminal-card and .calendar-modal 1000 < .calendar-fab 1001 <
-   #loading-screen 99999 */
 .terminal-card {
   font-family: var(--font-term);
   position: fixed;
@@ -1818,7 +1767,6 @@ body.loading .terminal-card {
     z-index: 200;
   }
 
-  /* pages grow with their content, never shorter than one screen */
   .carousel-page {
     display: block;
     width: 100%;
@@ -1842,13 +1790,10 @@ body.loading .terminal-card {
   display: block;
 }
 
-
-
 .stats-content h2 {
   color: var(--text);
 }
 
-/* xavierites: less bottom padding */
 #page-xavierites .stats-content {
   padding-bottom: 40px !important;
 }
@@ -1856,8 +1801,6 @@ body.loading .terminal-card {
 #page-skills .stats-content {
   padding-top: 0 !important;
 }
-
-
 
 .stats-content {
   min-height: 100%;
@@ -1897,7 +1840,6 @@ body.loading .terminal-card {
   margin: 0 auto;
   border: 1px solid var(--card-border);
 }
-
 
 @media (max-width: 768px) {
   .stats-arrow-btn {
@@ -2113,27 +2055,6 @@ body.loading .terminal-card {
   }
 }
 
-@keyframes loading-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.loading-spinner {
-  display: inline-block;
-  box-sizing: border-box;
-  width: 24px;
-  height: 24px;
-  border: 3px solid rgba(212, 165, 116, 0.2);
-  border-top-color: #d4a574;
-  border-radius: 50%;
-  animation: loading-spin 1.2s linear infinite;
-  flex-shrink: 0;
-  background: transparent;
-}
-
-/* one gpu canvas draws every wireframe. it has to sit above .carousel (z-index 100), whose
-   pages paint an opaque background, but below the footer (150) and header (200). */
 #gpu-stage {
   position: fixed;
   inset: 0;
