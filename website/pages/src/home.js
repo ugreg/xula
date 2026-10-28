@@ -1,4 +1,4 @@
-import '../../src/theme.js?v=202610282045.f2a79c8a21639e48471f959203859e72bb9845ca';
+import '../../src/theme.js?v=202610282140.60ab7aecf18f6d187948740820950d88bb27c840';
 import * as THREE from 'three';
 
 function initArrow() {
@@ -58,8 +58,8 @@ function initArrow() {
   return null;
 }
 
-import { onTick } from '../../src/scene-loop.js?v=202610282045.f2a79c8a21639e48471f959203859e72bb9845ca';
-import { log } from '../../src/observability/log.js?v=202610282045.f2a79c8a21639e48471f959203859e72bb9845ca';
+import { onTick } from '../../src/scene-loop.js?v=202610282140.60ab7aecf18f6d187948740820950d88bb27c840';
+import { log } from '../../src/observability/log.js?v=202610282140.60ab7aecf18f6d187948740820950d88bb27c840';
 
 // the only WebGL context on the site: MeshStandardMaterial reads light, so this one earns the GPU
 let arrow = null;

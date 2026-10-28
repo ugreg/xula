@@ -1,5 +1,6 @@
-import '../../src/theme.js?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7';
-import { createWireframe, cube, pyramid, sphere, octahedron } from './common/wireframe.js?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7';
+import '../../src/theme.js?v=202610282140.60ab7aecf18f6d187948740820950d88bb27c840';
+import { cube, pyramid, sphere, octahedron } from './common/wireframe.js?v=202610282140.60ab7aecf18f6d187948740820950d88bb27c840';
+import { addSlot } from './common/stage.js?v=202610282140.60ab7aecf18f6d187948740820950d88bb27c840';
 
 // 4 meshes shared by 12 canvases: these are plain arrays, nothing per-canvas to build
 const SHAPES = [
@@ -10,10 +11,10 @@ const SHAPES = [
 ];
 
 const avatars = [
-  { src: '../img/gavin.jpg?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7', alt: 'Gavin' },
-  { src: '../img/greg.jpg?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7', alt: 'Greg' },
-  { src: '../img/josh.jpg?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7', alt: 'Josh' },
-  { src: '../img/nam.jpg?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7', alt: 'Nam' }
+  { src: '../img/gavin.jpg?v=202610282140.60ab7aecf18f6d187948740820950d88bb27c840', alt: 'Gavin' },
+  { src: '../img/greg.jpg?v=202610282140.60ab7aecf18f6d187948740820950d88bb27c840', alt: 'Greg' },
+  { src: '../img/josh.jpg?v=202610282140.60ab7aecf18f6d187948740820950d88bb27c840', alt: 'Josh' },
+  { src: '../img/nam.jpg?v=202610282140.60ab7aecf18f6d187948740820950d88bb27c840', alt: 'Nam' }
 ];
 
 const views = [];
@@ -39,7 +40,7 @@ function initXavierites() {
     wrapper.appendChild(canvas);
     fragment.appendChild(wrapper);
 
-    views.push(createWireframe(canvas, SHAPES[i % SHAPES.length], { size: 140, spin: 0.025, tilt: 0.2, tiltRate: 0.8, lineWidth: 1.5 }));
+    views.push(addSlot(canvas, SHAPES[i % SHAPES.length], { size: 140, spin: 0.025, tilt: 0.2, tiltRate: 0.8, lineWidth: 1.5 }));
     canvas.style.width = canvas.style.height = '100%';
   }
 
@@ -49,6 +50,6 @@ function initXavierites() {
 initXavierites();
 window.sceneRegistry = window.sceneRegistry || {};
 window.sceneRegistry['xavierites'] = {
-  cleanup: () => views.splice(0).forEach((v) => v.stop()),
+  cleanup: () => views.splice(0).forEach((off) => off()),
   restart: initXavierites
 };

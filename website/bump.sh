@@ -23,7 +23,7 @@ rewrite() {
 }
 
 FILES=''
-for f in "$DIR/index.html" "$DIR/style.css" "$DIR"/pages/*.html "$DIR"/pages/components/*.html "$DIR"/pages/src/*.js "$DIR"/pages/src/common/*.js "$DIR"/pages/components/src/*.js "$DIR"/src/*.js "$DIR"/src/observability/*.js; do
+for f in "$DIR/index.html" "$DIR/style.css" "$DIR"/pages/*.html "$DIR"/pages/components/*.html "$DIR"/pages/src/*.js "$DIR"/pages/src/common/*.js "$DIR"/pages/components/src/*.js "$DIR"/src/*.js "$DIR"/src/observability/*.js "$DIR"/src/webgl/*.js "$DIR"/src/webgpu/*.js; do
   [ -f "$f" ] && FILES="$FILES $f"
 done
 

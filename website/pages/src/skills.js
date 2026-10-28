@@ -1,4 +1,5 @@
-import { createWireframe, icon } from './common/wireframe.js?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7';
+import { icon } from './common/wireframe.js?v=202610282140.60ab7aecf18f6d187948740820950d88bb27c840';
+import { addSlot } from './common/stage.js?v=202610282140.60ab7aecf18f6d187948740820950d88bb27c840';
 
 // x, y, z, size, color
 const ICONS = {
@@ -16,13 +17,13 @@ const views = [];
 function initSkills() {
   for (const [type, voxels] of Object.entries(ICONS)) {
     const canvas = document.querySelector(`canvas[data-icon="${type}"]`);
-    if (canvas) views.push(createWireframe(canvas, icon(voxels), { size: 64 }));
+    if (canvas) views.push(addSlot(canvas, icon(voxels), { size: 64 }));
   }
 }
 
 initSkills();
 window.sceneRegistry = window.sceneRegistry || {};
 window.sceneRegistry['skills'] = {
-  cleanup: () => views.splice(0).forEach((v) => v.stop()),
+  cleanup: () => views.splice(0).forEach((off) => off()),
   restart: initSkills
 };

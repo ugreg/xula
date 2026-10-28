@@ -1,5 +1,5 @@
 // flat wireframe meshes on canvas2d. unlit line art does not need a GL context.
-import { onTick } from '../../../src/scene-loop.js?v=202610270729.133702c3219d19dfa3bc8c0fa12e015cbd506fc7';
+import { onTick } from '../../../src/scene-loop.js?v=202610282140.60ab7aecf18f6d187948740820950d88bb27c840';
 
 const FOV = (50 * Math.PI) / 180;
 const CAM_Z = 3;
@@ -43,6 +43,21 @@ export const octahedron = (r, color) => {
   const paths = [[0, 4], [0, 5], [1, 4], [1, 5], [2, 4], [2, 5], [3, 4], [3, 5]].map(([a, b]) => [v[a], v[b]]);
   paths.push([v[0], v[2], v[1], v[3], v[0]]);
   return { parts: [{ color, paths }] };
+};
+
+// gl line list: x, y, z, r, g, b per vertex, one entry per segment. the corner dots the
+// canvas2d path fills are line-only geometry in gl, so they are dropped here.
+export const toLines = (mesh) => {
+  const out = [];
+  for (const part of mesh.parts) {
+    const r = ((part.color >> 16) & 255) / 255;
+    const g = ((part.color >> 8) & 255) / 255;
+    const b = (part.color & 255) / 255;
+    for (const path of part.paths) {
+      for (let i = 1; i < path.length; i++) out.push(...path[i - 1], r, g, b, ...path[i], r, g, b);
+    }
+  }
+  return new Float32Array(out);
 };
 
 export function createWireframe(canvas, mesh, { size = 64, spin = 0.02, tilt = 0.15, tiltRate = 1, lineWidth = 1 } = {}) {

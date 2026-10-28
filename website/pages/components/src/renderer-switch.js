@@ -1,7 +1,18 @@
-import { setBackend } from '../../src/common/renderer.js?v=202610280541.1932decc9592024f97254ffe723b733e46e7fa1f';
+import { getMode, onModeChange, setMode } from '../../src/common/stage.js?v=202610282140.60ab7aecf18f6d187948740820950d88bb27c840';
 
 const group = document.querySelector('.renderer-switch');
 
 group?.addEventListener('change', (e) => {
-  if (e.target instanceof HTMLInputElement) setBackend(e.target.value);
+  if (e.target instanceof HTMLInputElement) setMode(e.target.value);
+});
+
+const gpu = group?.querySelector('#renderer-webgpu');
+if (gpu && !navigator.gpu) {
+  gpu.disabled = true;
+  group.querySelector('label[for="renderer-webgpu"]').title = 'WebGPU is not available in this browser';
+}
+
+// the stage falls back to canvas2d when an engine fails to start, so keep the buttons honest
+onModeChange(() => {
+  for (const input of group?.querySelectorAll('input') ?? []) input.checked = input.value === getMode();
 });
