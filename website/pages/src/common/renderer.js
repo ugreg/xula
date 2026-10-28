@@ -2,9 +2,9 @@
 // backends are dynamic imports, so a page only ever downloads the engine it is using.
 // shortcut: the choice lives in memory only, a reload goes back to canvas2d.
 const BACKENDS = {
-  canvas2d: () => import('./wireframe.js'),
-  ogl: () => import('../ogl/index.js'),
-  zdog: () => import('../zdog/index.js'),
+  canvas2d: () => import('./wireframe.js?v=202610280541.1932decc9592024f97254ffe723b733e46e7fa1f'),
+  ogl: () => import('../ogl/index.js?v=202610280541.1932decc9592024f97254ffe723b733e46e7fa1f'),
+  zdog: () => import('../zdog/index.js?v=202610280541.1932decc9592024f97254ffe723b733e46e7fa1f'),
 };
 
 export const DEFAULT_BACKEND = 'canvas2d';
@@ -20,10 +20,12 @@ export function setBackend(name) {
 
 export async function createShape(canvas, desc, opts) {
   try {
-    return (await BACKENDS[backend]()).create(canvas, desc, opts);
+    const mod = await BACKENDS[backend]();
+    return await mod.create(canvas, desc, opts);
   } catch (e) {
     console.error(`[renderer] ${backend} failed, falling back to canvas2d`, e);
-    return (await BACKENDS[DEFAULT_BACKEND]()).create(canvas, desc, opts);
+    const fallback = await BACKENDS[DEFAULT_BACKEND]();
+    return await fallback.create(canvas, desc, opts);
   }
 }
 

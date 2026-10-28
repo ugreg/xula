@@ -1,8 +1,8 @@
 // ogl backend. one webgl context for the whole page: every shape renders into one shared
 // offscreen buffer and is copied into its own canvas, so 19 shapes still cost 1 context.
 import { Renderer, Camera, Transform, Geometry, Program, Mesh } from 'ogl';
-import { onTick } from '../../../src/scene-loop.js';
-import { build } from '../common/wireframe.js';
+import { onTick } from '../../../src/scene-loop.js?v=202610280541.1932decc9592024f97254ffe723b733e46e7fa1f';
+import { build } from '../common/wireframe.js?v=202610280541.1932decc9592024f97254ffe723b733e46e7fa1f';
 
 const DPR = globalThis.devicePixelRatio || 1;
 

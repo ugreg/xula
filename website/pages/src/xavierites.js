@@ -1,5 +1,5 @@
-import '../../src/theme.js';
-import { createShape, onBackendChange } from './common/renderer.js';
+import '../../src/theme.js?v=202610280541.1932decc9592024f97254ffe723b733e46e7fa1f';
+import { createShape, onBackendChange } from './common/renderer.js?v=202610280541.1932decc9592024f97254ffe723b733e46e7fa1f';
 
 // 4 shapes shared by 12 canvases: plain descriptors, nothing per-canvas to build
 const SHAPES = [
@@ -10,10 +10,10 @@ const SHAPES = [
 ];
 
 const avatars = [
-  { src: '../img/gavin.jpg', alt: 'Gavin' },
-  { src: '../img/greg.jpg', alt: 'Greg' },
-  { src: '../img/josh.jpg', alt: 'Josh' },
-  { src: '../img/nam.jpg', alt: 'Nam' }
+  { src: '../img/gavin.jpg?v=202610280541.1932decc9592024f97254ffe723b733e46e7fa1f', alt: 'Gavin' },
+  { src: '../img/greg.jpg?v=202610280541.1932decc9592024f97254ffe723b733e46e7fa1f', alt: 'Greg' },
+  { src: '../img/josh.jpg?v=202610280541.1932decc9592024f97254ffe723b733e46e7fa1f', alt: 'Josh' },
+  { src: '../img/nam.jpg?v=202610280541.1932decc9592024f97254ffe723b733e46e7fa1f', alt: 'Nam' }
 ];
 
 const SHAPE_OPTS = { size: 140, spin: 0.025, tilt: 0.2, tiltRate: 0.8, lineWidth: 1.5 };
@@ -53,10 +53,11 @@ async function initXavierites() {
           view.stop(); // a newer engine switch already won
           return;
         }
+        // sized after create: the backend has already written its own css size onto the canvas
+        canvas.style.width = canvas.style.height = '100%';
         views.add(view);
       })
     );
-    canvas.style.width = canvas.style.height = '100%';
   }
 
   track.appendChild(fragment);

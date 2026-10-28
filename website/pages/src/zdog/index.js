@@ -1,6 +1,6 @@
 // zdog backend. flat pseudo-3d on canvas2d, no GL context. zdog draws solid faces, so this
 // is the "what does it look like" option, not the "same picture, other engine" option.
-import { onTick } from '../../../src/scene-loop.js';
+import { onTick } from '../../../src/scene-loop.js?v=202610280541.1932decc9592024f97254ffe723b733e46e7fa1f';
 
 const DPR = globalThis.devicePixelRatio || 1;
 const URL = 'https://cdn.jsdelivr.net/npm/zdog@1.1.3/dist/zdog.dist.min.js';

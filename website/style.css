@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'CaskaydiaMono NFM';
-  src: url('font/CaskaydiaMonoNerdFontMono-Regular.woff2?v=202610280514.abd370e70abd33f0ba7eb95597483194f698e88b') format('woff2');
+  src: url('font/CaskaydiaMonoNerdFontMono-Regular.woff2?v=202610280541.1932decc9592024f97254ffe723b733e46e7fa1f') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -2154,6 +2154,9 @@ body.loading .terminal-card {
 }
 
 .renderer-switch label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
   padding: 5px 9px;
   border-radius: 7px;
   font-size: 0.65rem;
@@ -2163,6 +2166,23 @@ body.loading .terminal-card {
   color: var(--text-muted);
   cursor: pointer;
   user-select: none;
+}
+
+/* icons and the C/O/Z short labels are mobile only, desktop shows the full names */
+.renderer-switch .rs-icon,
+.renderer-switch .rs-short {
+  display: none;
+}
+
+.renderer-switch .rs-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.renderer-switch .rs-short {
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .renderer-switch input:checked + label {
@@ -2175,8 +2195,26 @@ body.loading .terminal-card {
   outline-offset: 2px;
 }
 
+/* phones: the full names do not fit next to the logo, so each chip is icon + initial */
 @media (max-width: 768px) {
   .renderer-switch {
+    left: 4px;
+    gap: 1px;
+    padding: 2px;
+    border-radius: 9px;
+  }
+
+  .renderer-switch label {
+    padding: 4px 6px;
+    border-radius: 7px;
+  }
+
+  .renderer-switch .rs-name {
     display: none;
+  }
+
+  .renderer-switch .rs-icon,
+  .renderer-switch .rs-short {
+    display: block;
   }
 }

@@ -38,7 +38,7 @@ for f in $FILES; do
   rewrite "$f" \
     -e "s|from '(\.{1,2}/[A-Za-z0-9._/-]+\.js)'|from '\1?v=$BUILD_VERSION'|g" \
     -e "s|import '(\.{1,2}/[A-Za-z0-9._/-]+\.js)'|import '\1?v=$BUILD_VERSION'|g" \
-    -e "s|import\('(\.{1,2}/[A-Za-z0-9._/-]+\.js)'\)|import('\\1?v=$BUILD_VERSION')|g"
+    -e "s|import\('(\.{1,2}/[A-Za-z0-9._/-]+\.js)'\)|import('\1?v=$BUILD_VERSION')|g"
 done
 
 for f in $FILES; do
