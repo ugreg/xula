@@ -1,10 +1,10 @@
 // one gpu canvas for the whole page: every wireframe slot draws into its own rect, so the
 // site spends 1 gpu context on shapes instead of one per canvas. engine swaps at runtime,
 // canvas2d (per-slot) stays as the fallback for browsers with no gpu context.
-import { onTick } from '../../../src/scene-loop.js?v=202610282358.5d159ea18e039d84856bb769ee171be2a5cdd905';
-import { createWireframe, toLines } from './wireframe.js?v=202610282358.5d159ea18e039d84856bb769ee171be2a5cdd905';
-import * as webgl from '../../../src/webgl/index.js?v=202610282358.5d159ea18e039d84856bb769ee171be2a5cdd905';
-import * as webgpu from '../../../src/webgpu/index.js?v=202610282358.5d159ea18e039d84856bb769ee171be2a5cdd905';
+import { onTick } from '../../../src/scene-loop.js?v=202610290006.a1fd56308a9ce06ce56587222f1cbd77090f96f7';
+import { createWireframe, toLines } from './wireframe.js?v=202610290006.a1fd56308a9ce06ce56587222f1cbd77090f96f7';
+import * as webgl from '../../../src/webgl/index.js?v=202610290006.a1fd56308a9ce06ce56587222f1cbd77090f96f7';
+import * as webgpu from '../../../src/webgpu/index.js?v=202610290006.a1fd56308a9ce06ce56587222f1cbd77090f96f7';
 
 const FOV = (50 * Math.PI) / 180;
 const CAM_Z = 3;
