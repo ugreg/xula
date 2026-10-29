@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'CaskaydiaMono NFM';
-  src: url('font/CaskaydiaMonoNerdFontMono-Regular.woff2?v=202610290502.05016aaea2c8d1e454707b7432adf9d05641a25a') format('woff2');
+  src: url('font/CaskaydiaMonoNerdFontMono-Regular.woff2?v=202610290503.37229b5005359dcaae1fd81b897a86a50da0f224') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -268,16 +268,23 @@ a:hover {
   background: var(--bg);
   border: 1px solid #a07840;
   cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease;
   text-decoration: none;
+}
+
+.xula-fab {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1001;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 .discord-btn {
   color: #fff;
   background: linear-gradient(135deg, #5865F2, #4752C4);
   border: none;
-  box-shadow: none;
 }
 
 .discord-btn-tiny {
@@ -328,7 +335,7 @@ body.calendar-open .terminal-card {
 .scroll-top-btn {
   position: fixed;
   right: 24px;
-  bottom: 24px;
+  bottom: 84px;
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -355,10 +362,10 @@ body.calendar-open .terminal-card {
   transform: translateY(-2px);
 }
 
-.scroll-top-btn svg {
+.scroll-top-btn img {
   width: 20px;
   height: 20px;
-  color: #d4a574;
+  filter: var(--icon-filter);
 }
 
 
@@ -383,11 +390,7 @@ body.calendar-open .terminal-card {
 }
 
 .calendar-fab {
-  position: fixed;
-  right: 24px;
-  bottom: 24px;
   padding: 14px;
-  z-index: 1001;
 }
 
 body.calendar-open .calendar-fab {
@@ -2043,9 +2046,16 @@ body.loading .terminal-card {
     font-size: 14px;
   }
 
-  .calendar-fab {
+  .xula-fab {
     right: 16px;
     bottom: 16px;
+  }
+
+  .scroll-top-btn {
+    bottom: 66px;
+  }
+
+  .calendar-fab {
     padding: 10px;
   }
 
@@ -2104,6 +2114,7 @@ body.loading .terminal-card {
 .renderer-switch label {
   display: flex;
   align-items: center;
+  gap: 5px;
   padding: 5px 9px;
   border-radius: 7px;
   font-size: 0.65rem;
@@ -2118,6 +2129,16 @@ body.loading .terminal-card {
 .renderer-switch input:checked + label {
   background: var(--accent);
   color: #1a1a1a;
+}
+
+.renderer-switch img {
+  width: 14px;
+  height: 14px;
+  filter: var(--icon-filter);
+}
+
+.renderer-switch input:checked + label img {
+  filter: none;
 }
 
 .renderer-switch input:disabled + label {

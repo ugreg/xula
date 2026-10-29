@@ -1,6 +1,6 @@
-import { log } from './observability/log.js?v=202610290502.05016aaea2c8d1e454707b7432adf9d05641a25a';
-import { stamp, V } from './build.js?v=202610290502.05016aaea2c8d1e454707b7432adf9d05641a25a';
-import { loadComponents, mobileQuery } from './components.js?v=202610290502.05016aaea2c8d1e454707b7432adf9d05641a25a';
+import { log } from './observability/log.js?v=202610290503.37229b5005359dcaae1fd81b897a86a50da0f224';
+import { stamp, V } from './build.js?v=202610290503.37229b5005359dcaae1fd81b897a86a50da0f224';
+import { loadComponents, mobileQuery } from './components.js?v=202610290503.37229b5005359dcaae1fd81b897a86a50da0f224';
 
 function copyFallback(text) {
   const area = document.createElement('textarea');
@@ -185,25 +185,9 @@ window.addEventListener('load', async () => {
   updateCalendarFab(carousel ? carousel.scrollTop : window.scrollY);
 });
 
-window.addEventListener('scroll', () => {
-  const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
-  const showScrollTop = window.scrollY > totalScroll * 0.5;
-  if (scrollTopButton) {
-    scrollTopButton.classList.toggle('visible', showScrollTop);
-  }
-
-  const t = getTerminal();
-  const scrollPos = carousel ? carousel.scrollTop : window.scrollY;
-  if (t && !isMobile) {
-    t.classList.toggle('visible', scrollPos === 0);
-  }
-
-  updateCalendarFab(scrollPos);
-});
-
-if (scrollTopButton) {
+if (scrollTopButton && carousel) {
   scrollTopButton.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    carousel.scrollTo({ top: 0, behavior: 'smooth' });
   });
 }
 
@@ -215,6 +199,11 @@ if (carousel) {
     }
 
     updateCalendarFab(carousel.scrollTop);
+
+    if (scrollTopButton) {
+      const half = (carousel.scrollHeight - carousel.clientHeight) * 0.5;
+      scrollTopButton.classList.toggle('visible', carousel.scrollTop > half);
+    }
   }, { passive: true });
 }
 
