@@ -1,4 +1,4 @@
-import { getMode, onModeChange, setMode } from '../../src/common/stage.js?v=202610290503.37229b5005359dcaae1fd81b897a86a50da0f224';
+import { getMode, onModeChange, setMode } from '../../src/common/stage.js?v=202610290653.21940158c08b20ee85aaa20fce0edc7c581b141d';
 
 const group = document.querySelector('.renderer-switch');
 
