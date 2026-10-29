@@ -1,4 +1,4 @@
-import { buildSchedule, eventDate } from './schedule.js?v=202610282357.77298aac0bbcdae90971c01d10f07563ef88f441';
+import { buildSchedule, eventDate } from './schedule.js?v=202610282358.5d159ea18e039d84856bb769ee171be2a5cdd905';
 
 const COMMANDS = [
   ['events, e', 'print upcoming events'],
@@ -25,7 +25,6 @@ function initTerminal() {
     const el = document.createElement('div');
     if (className) el.className = className;
     out.appendChild(el);
-    body.scrollTop = body.scrollHeight;
     return el;
   };
 
@@ -111,6 +110,7 @@ function initTerminal() {
     part(line, '$', 'prompt-sign');
     part(line, raw);
     run(raw);
+    body.scrollTop = body.scrollHeight;
   });
 
 }

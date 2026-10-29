@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'CaskaydiaMono NFM';
-  src: url('font/CaskaydiaMonoNerdFontMono-Regular.woff2?v=202610282357.77298aac0bbcdae90971c01d10f07563ef88f441') format('woff2');
+  src: url('font/CaskaydiaMonoNerdFontMono-Regular.woff2?v=202610282358.5d159ea18e039d84856bb769ee171be2a5cdd905') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -1478,7 +1478,7 @@ body.loading .terminal-card {
 }
 
 .terminal-card .body {
-  padding: 15px;
+  padding: 15px 15px 0;
   font-size: 14px;
   line-height: 1.6;
   flex: 1 1 auto;
@@ -1530,7 +1530,8 @@ body.loading .terminal-card {
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-top: 15px;
+  flex: 0 0 auto;
+  padding: 15px;
   color: #888;
 }
 
