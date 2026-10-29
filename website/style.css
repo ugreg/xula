@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'CaskaydiaMono NFM';
-  src: url('font/CaskaydiaMonoNerdFontMono-Regular.woff2?v=202610282358.5d159ea18e039d84856bb769ee171be2a5cdd905') format('woff2');
+  src: url('font/CaskaydiaMonoNerdFontMono-Regular.woff2?v=202610290502.05016aaea2c8d1e454707b7432adf9d05641a25a') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -261,6 +261,7 @@ a:hover {
   gap: 10px;
   padding: 14px 28px;
   border-radius: 12px;
+  line-height: 1;
   font-size: 16px;
   font-weight: 600;
   color: var(--text);
@@ -277,20 +278,6 @@ a:hover {
   background: linear-gradient(135deg, #5865F2, #4752C4);
   border: none;
   box-shadow: none;
-
-  animation: discord-nudge 10s ease-in-out infinite;
-}
-
-@keyframes discord-nudge {
-  0%, 6%, 100% { translate: none; rotate: none; }
-  1% { translate: -3px 0; rotate: -0.8deg; }
-  2.5% { translate: 3px 0; rotate: 0.8deg; }
-  4% { translate: -2px 0; rotate: -0.5deg; }
-  5.5% { translate: 1px 0; rotate: 0.2deg; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .discord-btn { animation: none; }
 }
 
 .discord-btn-tiny {
@@ -313,6 +300,15 @@ a:hover {
 .discord-btn img,
 .discord-btn-tiny img {
   filter: brightness(0) invert(1);
+  animation: discord-nudge 5s ease-in-out 1s infinite;
+}
+
+@keyframes discord-nudge {
+  0%, 6%, 100% { translate: none; rotate: none; }
+  1% { translate: -1px 0px; rotate: -1.8deg; }
+  2.5% { translate: 1px 0px; rotate: 1.8deg; }
+  4% { translate: -0.2px 0px; rotate: -1.5deg; }
+  5.5% { translate: 0.1px 0px; rotate: 1.2deg; }
 }
 
 .home-terminal.visible,
@@ -337,7 +333,7 @@ body.calendar-open .terminal-card {
   height: 44px;
   border-radius: 50%;
   background: var(--scroll-btn-bg);
-  border: 1px solid var(--scroll-btn-border);
+  border: none;
   backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
@@ -356,7 +352,6 @@ body.calendar-open .terminal-card {
 
 .scroll-top-btn:hover {
   background: var(--scroll-btn-hover-bg);
-  border-color: var(--scroll-btn-hover-border);
   transform: translateY(-2px);
 }
 
@@ -366,22 +361,20 @@ body.calendar-open .terminal-card {
   color: #d4a574;
 }
 
-.calendar-fab:hover,
-.hero-calendar-btn:hover {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 12px 24px rgba(0, 0, 0, 0.2);
-  transform: translateY(-2px);
-}
 
 .calendar-fab img,
-.hero-calendar-btn img {
+.hero-calendar-btn img,
+.discord-btn img {
   width: 20px;
   height: 20px;
   filter: brightness(0) invert(1);
 }
 
-:root.light .calendar-fab,
-:root.light .hero-calendar-btn {
-  border-color: var(--accent);
+.calendar-fab:hover,
+.hero-calendar-btn:hover,
+.discord-btn:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 12px 24px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
 }
 
 :root.light .calendar-fab img,
@@ -393,6 +386,7 @@ body.calendar-open .terminal-card {
   position: fixed;
   right: 24px;
   bottom: 24px;
+  padding: 14px;
   z-index: 1001;
 }
 
@@ -414,6 +408,8 @@ body.calendar-open .calendar-fab {
   margin-top: 24px;
 }
 
+/* the generic a:hover resolves to an inherited near-black (--accent-hover is never
+   defined), which would black out text on these always-dark-filled buttons */
 .discord-btn:hover,
 .discord-btn-tiny:hover {
   color: #fff;
@@ -428,7 +424,10 @@ body.calendar-open .calendar-fab {
   justify-content: center;
   opacity: 0;
   pointer-events: none;
-
+  /* opacity alone still hit-tests, and descendants that declare
+     pointer-events: auto punch back through it and eat clicks on the page
+     underneath. visibility prunes the whole subtree, and keeps a closed modal
+     out of the tab order too. the delayed flip preserves the fade-out */
   visibility: hidden;
   transition: opacity 0.3s ease, visibility 0s linear 0.3s;
 }
@@ -476,7 +475,6 @@ body.calendar-open .calendar-fab {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: var(--glass-bg);
   border: 2px solid var(--accent);
   color: var(--text-secondary);
   cursor: pointer;
@@ -927,6 +925,13 @@ body.calendar-open .calendar-fab {
 .nav-btn:hover {
   color: var(--accent);
   background: rgba(255, 255, 255, 0.1);
+}
+
+.nav-btn img {
+  display: block;
+  width: 24px;
+  height: 24px;
+  filter: var(--icon-filter);
 }
 
 .calendar-body .days div {
@@ -1437,6 +1442,11 @@ body.loading .terminal-card {
   border-color: var(--accent);
 }
 
+/* layers: .background-gradient -2, .noise-overlay -1 < .carousel 100 desktop /
+   50 mobile (a stacking context, so nothing inside it can out-rank a sibling
+   outside it) < .footer and .stats-arrow-btn 150-200 < .page-indicator 400 /
+   1100 mobile < .terminal-card and .calendar-modal 1000 < .calendar-fab 1001 <
+   #loading-screen 99999 */
 .terminal-card {
   font-family: var(--font-term);
   position: fixed;
@@ -2027,7 +2037,8 @@ body.loading .terminal-card {
   }
 
   .calendar-fab,
-  .hero-calendar-btn {
+  .hero-calendar-btn,
+  .discord-btn {
     padding: 10px 20px;
     font-size: 14px;
   }
@@ -2035,10 +2046,12 @@ body.loading .terminal-card {
   .calendar-fab {
     right: 16px;
     bottom: 16px;
+    padding: 10px;
   }
 
   .calendar-fab img,
-  .hero-calendar-btn img {
+  .hero-calendar-btn img,
+  .discord-btn img {
     width: 18px;
     height: 18px;
   }
@@ -2056,6 +2069,8 @@ body.loading .terminal-card {
   }
 }
 
+/* one gpu canvas draws every wireframe. it has to sit above .carousel (z-index 100), whose
+   pages paint an opaque background, but below the footer (150) and header (200). */
 #gpu-stage {
   position: fixed;
   inset: 0;

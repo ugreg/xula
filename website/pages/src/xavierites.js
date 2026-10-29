@@ -1,6 +1,6 @@
-import '../../src/theme.js?v=202610290006.a1fd56308a9ce06ce56587222f1cbd77090f96f7';
-import { cube, pyramid, sphere, octahedron } from './common/wireframe.js?v=202610290006.a1fd56308a9ce06ce56587222f1cbd77090f96f7';
-import { addSlot } from './common/stage.js?v=202610290006.a1fd56308a9ce06ce56587222f1cbd77090f96f7';
+import '../../src/theme.js?v=202610290502.05016aaea2c8d1e454707b7432adf9d05641a25a';
+import { cube, pyramid, sphere, octahedron } from './common/wireframe.js?v=202610290502.05016aaea2c8d1e454707b7432adf9d05641a25a';
+import { addSlot } from './common/stage.js?v=202610290502.05016aaea2c8d1e454707b7432adf9d05641a25a';
 
 // 4 meshes shared by 12 canvases: these are plain arrays, nothing per-canvas to build
 const SHAPES = [
@@ -11,10 +11,10 @@ const SHAPES = [
 ];
 
 const avatars = [
-  { src: '../img/gavin.jpg?v=202610290006.a1fd56308a9ce06ce56587222f1cbd77090f96f7', alt: 'Gavin' },
-  { src: '../img/greg.jpg?v=202610290006.a1fd56308a9ce06ce56587222f1cbd77090f96f7', alt: 'Greg' },
-  { src: '../img/josh.jpg?v=202610290006.a1fd56308a9ce06ce56587222f1cbd77090f96f7', alt: 'Josh' },
-  { src: '../img/nam.jpg?v=202610290006.a1fd56308a9ce06ce56587222f1cbd77090f96f7', alt: 'Nam' }
+  { src: '../img/gavin.jpg?v=202610290502.05016aaea2c8d1e454707b7432adf9d05641a25a', alt: 'Gavin' },
+  { src: '../img/greg.jpg?v=202610290502.05016aaea2c8d1e454707b7432adf9d05641a25a', alt: 'Greg' },
+  { src: '../img/josh.jpg?v=202610290502.05016aaea2c8d1e454707b7432adf9d05641a25a', alt: 'Josh' },
+  { src: '../img/nam.jpg?v=202610290502.05016aaea2c8d1e454707b7432adf9d05641a25a', alt: 'Nam' }
 ];
 
 const views = [];
