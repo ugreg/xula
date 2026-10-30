@@ -1,6 +1,6 @@
-import { log } from './observability/log.js?v=202610290653.21940158c08b20ee85aaa20fce0edc7c581b141d';
-import { stamp, V } from './build.js?v=202610290653.21940158c08b20ee85aaa20fce0edc7c581b141d';
-import { loadComponents, mobileQuery } from './components.js?v=202610290653.21940158c08b20ee85aaa20fce0edc7c581b141d';
+import { log } from './observability/log.js?v=202610292128.dbbc4a839ad394f71ba3e1c8418d0dc3094e06c5';
+import { stamp, V } from './build.js?v=202610292128.dbbc4a839ad394f71ba3e1c8418d0dc3094e06c5';
+import { loadComponents, mobileQuery } from './components.js?v=202610292128.dbbc4a839ad394f71ba3e1c8418d0dc3094e06c5';
 
 function copyFallback(text) {
   const area = document.createElement('textarea');
@@ -37,7 +37,6 @@ function setupBuildVersion() {
   });
 }
 
-const scrollTopButton = document.querySelector('.scroll-top-btn');
 const carousel = document.getElementById('carousel');
 const statsArrowBtn = document.querySelector('.stats-arrow-btn:not(.back)');
 const backArrowBtn = document.querySelector('.stats-arrow-btn.back');
@@ -185,12 +184,6 @@ window.addEventListener('load', async () => {
   updateCalendarFab(carousel ? carousel.scrollTop : window.scrollY);
 });
 
-if (scrollTopButton && carousel) {
-  scrollTopButton.addEventListener('click', () => {
-    carousel.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-}
-
 if (carousel) {
   carousel.addEventListener('scroll', () => {
     const t = getTerminal();
@@ -199,11 +192,6 @@ if (carousel) {
     }
 
     updateCalendarFab(carousel.scrollTop);
-
-    if (scrollTopButton) {
-      const half = (carousel.scrollHeight - carousel.clientHeight) * 0.5;
-      scrollTopButton.classList.toggle('visible', carousel.scrollTop > half);
-    }
   }, { passive: true });
 }
 

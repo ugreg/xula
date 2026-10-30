@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'CaskaydiaMono NFM';
-  src: url('font/CaskaydiaMonoNerdFontMono-Regular.woff2?v=202610290653.21940158c08b20ee85aaa20fce0edc7c581b141d') format('woff2');
+  src: url('font/CaskaydiaMonoNerdFontMono-Regular.woff2?v=202610292128.dbbc4a839ad394f71ba3e1c8418d0dc3094e06c5') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -45,10 +45,6 @@
   --btn-secondary-border: rgba(255, 255, 255, 0.2);
   --btn-secondary-hover-bg: rgba(255, 255, 255, 0.15);
   --btn-secondary-hover-border: rgba(255, 255, 255, 0.3);
-  --scroll-btn-bg: rgba(26, 26, 26, 0.85);
-  --scroll-btn-border: rgba(255, 255, 255, 0.15);
-  --scroll-btn-hover-bg: rgba(212, 165, 116, 0.2);
-  --scroll-btn-hover-border: rgba(212, 165, 116, 0.4);
   --icon-filter: invert(1);
   --font-term: 'CaskaydiaMono NFM', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
 }
@@ -80,10 +76,6 @@
   --btn-secondary-border: rgba(255, 255, 255, 0.2);
   --btn-secondary-hover-bg: rgba(255, 255, 255, 0.15);
   --btn-secondary-hover-border: rgba(255, 255, 255, 0.3);
-  --scroll-btn-bg: rgba(26, 26, 26, 0.85);
-  --scroll-btn-border: rgba(255, 255, 255, 0.15);
-  --scroll-btn-hover-bg: rgba(212, 165, 116, 0.2);
-  --scroll-btn-hover-border: rgba(212, 165, 116, 0.4);
   --icon-filter: invert(1);
 }
 
@@ -114,10 +106,6 @@
   --btn-secondary-border: rgba(0, 0, 0, 0.15);
   --btn-secondary-hover-bg: rgba(0, 0, 0, 0.08);
   --btn-secondary-hover-border: rgba(0, 0, 0, 0.25);
-  --scroll-btn-bg: rgba(245, 245, 240, 0.85);
-  --scroll-btn-border: rgba(0, 0, 0, 0.1);
-  --scroll-btn-hover-bg: rgba(184, 137, 79, 0.15);
-  --scroll-btn-hover-border: rgba(184, 137, 79, 0.4);
 }
 
 .background-gradient {
@@ -334,43 +322,6 @@ body.calendar-open .terminal-card {
   opacity: 0;
   pointer-events: none;
 }
-
-.scroll-top-btn {
-  position: fixed;
-  right: 24px;
-  bottom: 84px;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: var(--scroll-btn-bg);
-  border: none;
-  backdrop-filter: blur(10px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease, transform 0.2s ease, background 0.2s ease;
-  z-index: 100;
-}
-
-.scroll-top-btn.visible {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.scroll-top-btn:hover {
-  background: var(--scroll-btn-hover-bg);
-  transform: translateY(-2px);
-}
-
-.scroll-top-btn img {
-  width: 20px;
-  height: 20px;
-  filter: var(--icon-filter);
-}
-
 
 .calendar-fab img,
 .hero-calendar-btn img,
@@ -1335,7 +1286,6 @@ html {
 body.loading main,
 body.loading header,
 body.loading footer,
-body.loading .scroll-top-btn,
 body.loading .home-terminal,
 body.loading .terminal-card {
   visibility: hidden;
@@ -2052,10 +2002,6 @@ body.loading .terminal-card {
   .xula-fab {
     right: 16px;
     bottom: 16px;
-  }
-
-  .scroll-top-btn {
-    bottom: 66px;
   }
 
   .calendar-fab {

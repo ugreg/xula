@@ -40,19 +40,32 @@ for f in $FILES; do
     -e "s|import '(\.{1,2}/[A-Za-z0-9._/-]+\.js)'|import '\1?v=$BUILD_VERSION'|g"
 done
 
-for f in $FILES; do
-  rewrite "$f" \
+# only urls the browser fetches while parsing the document; partials and js strings stamp themselves at runtime
+for f in "$DIR/index.html" "$DIR/style.css" "$DIR"/pages/*.html; do
+  [ -f "$f" ] && rewrite "$f" \
     -e "s#([\"'(])((\.\./|\./|/)?(img|font)/[A-Za-z0-9._/-]*\.($IMG))([\"')])#\1\2?v=$BUILD_VERSION\6#g"
 done
 
+# every html entry point needs the meta: runtime stamp() reads it, partials and js strings carry no build-time version
+for f in "$DIR/index.html" "$DIR"/pages/*.html; do
+  [ -f "$f" ] && rewrite "$f" \
+    -e "s|(<meta name=\"build-version\" content=\")[^\"]*(\")|\1$BUILD_VERSION\2|"
+done
+
 rewrite "$DIR/index.html" \
-  -e "s|(<meta name=\"build-version\" content=\")[^\"]*(\")|\1$BUILD_VERSION\2|" \
   -e "s|(href=\"style\.css)(\")|\1?v=$BUILD_VERSION\2|" \
   -e "s|(src=\"src/script\.js)(\")|\1?v=$BUILD_VERSION\2|"
 
 for want in "<meta name=\"build-version\" content=\"$BUILD_VERSION\"" "href=\"style.css?v=$BUILD_VERSION\"" "src=\"src/script.js?v=$BUILD_VERSION\""; do
   if ! grep -qF "$want" "$DIR/index.html"; then
     echo "bump.sh: missing '$want' in index.html" >&2
+    exit 1
+  fi
+done
+
+for f in "$DIR"/pages/*.html; do
+  if ! grep -qF "<meta name=\"build-version\" content=\"$BUILD_VERSION\"" "$f"; then
+    echo "bump.sh: missing build-version meta in $f" >&2
     exit 1
   fi
 done

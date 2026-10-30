@@ -1,5 +1,5 @@
 // flat wireframe meshes on canvas2d. unlit line art does not need a GL context.
-import { onTick } from '../../../src/scene-loop.js?v=202610290653.21940158c08b20ee85aaa20fce0edc7c581b141d';
+import { onTick } from '../../../src/scene-loop.js?v=202610292128.dbbc4a839ad394f71ba3e1c8418d0dc3094e06c5';
 
 const FOV = (50 * Math.PI) / 180;
 const CAM_Z = 3;
