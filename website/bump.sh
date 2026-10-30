@@ -40,13 +40,13 @@ for f in $FILES; do
     -e "s|import '(\.{1,2}/[A-Za-z0-9._/-]+\.js)'|import '\1?v=$BUILD_VERSION'|g"
 done
 
-# only urls the browser fetches while parsing the document; partials and js strings stamp themselves at runtime
+# only urls the browser fetches while parsing the document; components and js strings stamp themselves at runtime
 for f in "$DIR/index.html" "$DIR/style.css" "$DIR"/pages/*.html; do
   [ -f "$f" ] && rewrite "$f" \
     -e "s#([\"'(])((\.\./|\./|/)?(img|font)/[A-Za-z0-9._/-]*\.($IMG))([\"')])#\1\2?v=$BUILD_VERSION\6#g"
 done
 
-# every html entry point needs the meta: runtime stamp() reads it, partials and js strings carry no build-time version
+# every html entry point needs the meta: runtime stamp() reads it, components and js strings carry no build-time version
 for f in "$DIR/index.html" "$DIR"/pages/*.html; do
   [ -f "$f" ] && rewrite "$f" \
     -e "s|(<meta name=\"build-version\" content=\")[^\"]*(\")|\1$BUILD_VERSION\2|"

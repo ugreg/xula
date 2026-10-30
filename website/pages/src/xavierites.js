@@ -1,7 +1,7 @@
-import '../../src/theme.js?v=202610292128.dbbc4a839ad394f71ba3e1c8418d0dc3094e06c5';
-import { cube, pyramid, sphere, octahedron } from './common/wireframe.js?v=202610292128.dbbc4a839ad394f71ba3e1c8418d0dc3094e06c5';
-import { addSlot } from './common/stage.js?v=202610292128.dbbc4a839ad394f71ba3e1c8418d0dc3094e06c5';
-import { stamp } from '../../src/build.js?v=202610292128.dbbc4a839ad394f71ba3e1c8418d0dc3094e06c5';
+import '../../src/theme.js?v=202610300527.a119f052c7cb2447afb8b438ac960b444e8365c5';
+import { cube, pyramid, sphere, octahedron } from './common/wireframe.js?v=202610300527.a119f052c7cb2447afb8b438ac960b444e8365c5';
+import { addSlot } from './common/stage.js?v=202610300527.a119f052c7cb2447afb8b438ac960b444e8365c5';
+import { stamp } from '../../src/build.js?v=202610300527.a119f052c7cb2447afb8b438ac960b444e8365c5';
 
 // 4 meshes shared by 12 canvases: these are plain arrays, nothing per-canvas to build
 const SHAPES = [

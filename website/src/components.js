@@ -1,9 +1,9 @@
-import { stamp } from './build.js?v=202610292128.dbbc4a839ad394f71ba3e1c8418d0dc3094e06c5';
+import { stamp } from './build.js?v=202610300527.a119f052c7cb2447afb8b438ac960b444e8365c5';
 
 export const MOBILE_QUERY = '(max-width: 768px)';
 export const mobileQuery = window.matchMedia(MOBILE_QUERY);
 
-// partials are fetched after the build, so their asset urls take the live build version, not the one baked at build time
+// components are fetched after the build, so their asset urls take the live build version, not the one baked at build time
 const ASSET_RE = /(?:\.\.\/|\.\/|\/)?(?:img|font)\/[A-Za-z0-9._/-]*\.(?:png|jpg|svg|woff2|ico)(?!\?)/g;
 
 async function includeOne(el) {
