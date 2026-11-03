@@ -1,0 +1,39 @@
+#!/bin/sh
+# 
+set -eu
+cd "$(git rev-parse --show-toplevel)"
+
+BAD=$(grep -rnE "['\`][^'\`]*\/(img|font)\/[^'\`]*\.(png|jpg|jpeg|svg|woff2|ico)(\?[^'\`]*)?['\`]" \
+  website --include='*.js' | grep -v 'src/build.js' | grep -vE 'stamp\(' || true)
+if [ -n "$BAD" ]; then
+  echo "$BAD" >&2
+  echo "pre-push: asset url in js is not wrapped in stamp()" >&2
+  exit 1
+fi
+
+PARSER=$(grep -rnoE "['\"(](\.{1,2}/)?[A-Za-z0-9._/-]+\.(css|js|png|jpg|jpeg|svg|woff2|ico)(\?[^\"'()]*)?['\")]" \
+  website --include='*.html' --include='*.css' | grep -v '^website/pages/components/' | grep -vE '\?v=' || true)
+if [ -n "$PARSER" ]; then
+  echo "$PARSER" >&2
+  echo 'pre-push: parse-time asset url has no version. run ./website/bump.sh' >&2
+  exit 1
+fi
+
+FILES=$(find website -name '*.html' -o -name '*.css' -o -name '*.js')
+
+RAW=$(grep -hoE '\?v=[^"'"'"' )]*' $FILES | wc -l | tr -d ' ')
+OK=$(grep -hoE '\?v=[0-9]{12}\.[0-9a-f]{40}' $FILES | wc -l | tr -d ' ')
+if [ "$RAW" != "$OK" ]; then
+  echo "pre-push: $((RAW - OK)) of $RAW asset urls carry no version. run ./website/bump.sh" >&2
+  exit 1
+fi
+
+if [ "$(grep -hoE '\?v=[0-9]{12}\.[0-9a-f]{40}' $FILES | sort -u | wc -l | tr -d ' ')" != 1 ]; then
+  echo 'pre-push: mixed asset versions in website/. run ./website/bump.sh' >&2
+  exit 1
+fi
+
+if ! git diff --quiet -- website; then
+  echo 'pre-push: website/ has unstaged edits. commit them, or git checkout -- website' >&2
+  exit 1
+fi

@@ -7,9 +7,10 @@ IMG='png|jpg|svg|woff2|ico'
 if [ -n "${1:-}" ]; then
   BUILD_VERSION=$1
 else
-  SHA=$(git -C "$DIR" rev-parse HEAD 2>/dev/null || echo '')
+  # stamp commits are excluded so running bump twice is a no-op
+  SHA=$(git -C "$DIR" log -1 --format=%H --invert-grep --grep='^chore: stamp' -- . 2>/dev/null || echo '')
   if [ -n "$SHA" ]; then
-    BUILD_VERSION=$(TZ=UTC git -C "$DIR" log -1 --date=format-local:%Y%m%d%H%M --format=%cd HEAD).$SHA
+    BUILD_VERSION=$(TZ=UTC git -C "$DIR" log -1 --date=format-local:%Y%m%d%H%M --format=%cd "$SHA" -- .).$SHA
   else
     BUILD_VERSION=$(date -u +%Y%m%d%H%M)
   fi
@@ -52,9 +53,11 @@ for f in "$DIR/index.html" "$DIR"/pages/*.html; do
     -e "s|(<meta name=\"build-version\" content=\")[^\"]*(\")|\1$BUILD_VERSION\2|"
 done
 
-rewrite "$DIR/index.html" \
-  -e "s|(href=\"style\.css)(\")|\1?v=$BUILD_VERSION\2|" \
-  -e "s|(src=\"src/script\.js)(\")|\1?v=$BUILD_VERSION\2|"
+for f in "$DIR/index.html" "$DIR"/pages/*.html; do
+  [ -f "$f" ] && rewrite "$f" \
+    -e "s#(href=\"(\.{1,2}/)?style\.css)(\")#\1?v=$BUILD_VERSION\3#" \
+    -e "s#(src=\"(\.{1,2}/)?(src|pages/src)/[A-Za-z0-9._/-]+\.js)(\")#\1?v=$BUILD_VERSION\4#"
+done
 
 for want in "<meta name=\"build-version\" content=\"$BUILD_VERSION\"" "href=\"style.css?v=$BUILD_VERSION\"" "src=\"src/script.js?v=$BUILD_VERSION\""; do
   if ! grep -qF "$want" "$DIR/index.html"; then
