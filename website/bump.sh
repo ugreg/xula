@@ -59,7 +59,7 @@ for f in "$DIR/index.html" "$DIR"/pages/*.html; do
     -e "s#(src=\"(\.{1,2}/)?(src|pages/src)/[A-Za-z0-9._/-]+\.js)(\")#\1?v=$BUILD_VERSION\4#"
 done
 
-for want in "<meta name=\"build-version\" content=\"$BUILD_VERSION\"" "href=\"style.css?v=$BUILD_VERSION\"" "src=\"src/script.js?v=$BUILD_VERSION\""; do
+for want in "<meta name=\"build-version\" content=\"$BUILD_VERSION\"" "href=\"style.css?v=$BUILD_VERSION\"" "src=\"src/main.js?v=$BUILD_VERSION\""; do
   if ! grep -qF "$want" "$DIR/index.html"; then
     echo "bump.sh: missing '$want' in index.html" >&2
     exit 1

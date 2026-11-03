@@ -3,6 +3,12 @@
 set -eu
 cd "$(git rev-parse --show-toplevel)"
 
+# git skips a hook it cannot execute, and that hint is easy to miss on an editor commit
+[ -x .githooks/pre-commit ] || {
+  echo 'pre-push: .githooks/pre-commit is not executable, so nothing is being stamped. run: chmod +x .githooks/pre-commit' >&2
+  exit 1
+}
+
 BAD=$(grep -rnE "['\`][^'\`]*\/(img|font)\/[^'\`]*\.(png|jpg|jpeg|svg|woff2|ico)(\?[^'\`]*)?['\`]" \
   website --include='*.js' | grep -v 'src/build.js' | grep -vE 'stamp\(' || true)
 if [ -n "$BAD" ]; then

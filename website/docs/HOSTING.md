@@ -30,7 +30,7 @@ Each url has a version query, nothing served warm, like `?v=206910264200.d0a599b
 | --- | --- | --- |
 | `/` | none | REVALIDATED |
 | `/index.html`, `/pages/home.html` | none | MISS |
-| `/style.css`, `/src/script.js` | `max-age=2592000` + `public, max-age=2592000` | MISS |
+| `/style.css`, `/src/main.js` | `max-age=2592000` + `public, max-age=2592000` | MISS |
 | `/img/icon/discord.svg` | same 30-day pair | MISS |
 
 - split is by file type, not path: `.html` never gets a long `max-age`, `.css`/`.js`/`.svg` always do.
