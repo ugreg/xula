@@ -1,5 +1,5 @@
-import { icon } from './common/wireframe.js?v=202610300527.a119f052c7cb2447afb8b438ac960b444e8365c5';
-import { addSlot } from './common/stage.js?v=202610300527.a119f052c7cb2447afb8b438ac960b444e8365c5';
+import { icon } from './common/wireframe.js?v=202610301619.4a3646b5f6f223e0bfdd75d85950eef4a73f253b';
+import { addSlot } from './common/stage.js?v=202610301619.4a3646b5f6f223e0bfdd75d85950eef4a73f253b';
 
 // x, y, z, size, color
 const ICONS = {

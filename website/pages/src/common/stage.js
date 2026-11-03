@@ -1,10 +1,10 @@
 // one gpu canvas for the whole page: every wireframe slot draws into its own rect, so the
 // site spends 1 gpu context on shapes instead of one per canvas. engine swaps at runtime,
 // canvas2d (per-slot) stays as the fallback for browsers with no gpu context.
-import { onTick } from '../../../src/scene-loop.js?v=202610300527.a119f052c7cb2447afb8b438ac960b444e8365c5';
-import { createWireframe, toLines } from './wireframe.js?v=202610300527.a119f052c7cb2447afb8b438ac960b444e8365c5';
-import * as webgl from '../../../src/webgl/index.js?v=202610300527.a119f052c7cb2447afb8b438ac960b444e8365c5';
-import * as webgpu from '../../../src/webgpu/index.js?v=202610300527.a119f052c7cb2447afb8b438ac960b444e8365c5';
+import { onTick } from '../../../src/scene-loop.js?v=202610301619.4a3646b5f6f223e0bfdd75d85950eef4a73f253b';
+import { createWireframe, toLines } from './wireframe.js?v=202610301619.4a3646b5f6f223e0bfdd75d85950eef4a73f253b';
+import * as webgl from '../../../src/webgl/index.js?v=202610301619.4a3646b5f6f223e0bfdd75d85950eef4a73f253b';
+import * as webgpu from '../../../src/webgpu/index.js?v=202610301619.4a3646b5f6f223e0bfdd75d85950eef4a73f253b';
 
 const FOV = (50 * Math.PI) / 180;
 const CAM_Z = 3;
@@ -96,7 +96,11 @@ const attach = (slot) => {
 const detach = (slot, current = engine) => {
   if (!slot.res) return;
   if (current) current.free(slot.res);
-  else slot.res.stop();
+  else {
+    slot.res.stop();
+    // a stopped canvas keeps its last frame, so wipe it or the shape stays on screen
+    slot.el.getContext('2d')?.clearRect(0, 0, slot.el.width, slot.el.height);
+  }
   slot.res = null;
 };
 
@@ -130,6 +134,8 @@ const idle = () => {
   if (stopFrame && (!engine || slots.length === 0)) {
     stopFrame();
     stopFrame = null;
+    // #gpu-stage is fixed over the viewport and nothing else repaints it once the loop stops
+    if (engine) frame();
   }
 };
 

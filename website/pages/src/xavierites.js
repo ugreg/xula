@@ -1,15 +1,20 @@
-import '../../src/theme.js?v=202610300527.a119f052c7cb2447afb8b438ac960b444e8365c5';
-import { cube, pyramid, sphere, octahedron } from './common/wireframe.js?v=202610300527.a119f052c7cb2447afb8b438ac960b444e8365c5';
-import { addSlot } from './common/stage.js?v=202610300527.a119f052c7cb2447afb8b438ac960b444e8365c5';
-import { stamp } from '../../src/build.js?v=202610300527.a119f052c7cb2447afb8b438ac960b444e8365c5';
+import '../../src/theme.js?v=202610301619.4a3646b5f6f223e0bfdd75d85950eef4a73f253b';
+import { cube, pyramid, sphere, octahedron } from './common/wireframe.js?v=202610301619.4a3646b5f6f223e0bfdd75d85950eef4a73f253b';
+import { addSlot } from './common/stage.js?v=202610301619.4a3646b5f6f223e0bfdd75d85950eef4a73f253b';
+import { stamp } from '../../src/build.js?v=202610301619.4a3646b5f6f223e0bfdd75d85950eef4a73f253b';
+import { mobileQuery } from '../../src/components.js?v=202610301619.4a3646b5f6f223e0bfdd75d85950eef4a73f253b';
 
 // 4 meshes shared by 12 canvases: these are plain arrays, nothing per-canvas to build
-const SHAPES = [
-  cube(0.45, 0x5c78e2),
-  pyramid(0.35, 0.5, 0xa855f7),
-  sphere(0.325, 0x06b6d4),
-  octahedron(0.35, 0x5865F2)
-];
+const shapes = () => {
+  // one knob for all 4 meshes: the mobile sizes are the base numbers, desktop scales them up
+  const scale = mobileQuery.matches ? 2 : 3;
+  return [
+    cube(0.45 * scale, 0x5c78e2),
+    pyramid(0.35 * scale, 0.5 * scale, 0xa855f7),
+    sphere(0.325 * scale, 0x06b6d4),
+    octahedron(0.35 * scale, 0x5865F2)
+  ];
+};
 
 const avatars = [
   { src: stamp('../img/gavin.jpg'), alt: 'Gavin' },
@@ -21,6 +26,7 @@ const avatars = [
 const views = [];
 
 function initXavierites() {
+  const SHAPES = shapes();
   const track = document.getElementById('avatarTrack');
   if (!track) return;
   track.innerHTML = '';
