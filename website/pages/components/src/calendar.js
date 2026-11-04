@@ -1,6 +1,6 @@
-import '../../../src/theme.js?v=202611040405.a003cfad36f320a69d60c326cfcae84a70a7b699';
-import { MONTHS, START_MONTH, SEPTEMBER, DECEMBER, buildSchedule, eventDate } from './schedule.js?v=202611040405.a003cfad36f320a69d60c326cfcae84a70a7b699';
-import { stamp } from '../../../src/build.js?v=202611040405.a003cfad36f320a69d60c326cfcae84a70a7b699';
+import '../../../src/theme.js?v=202611040620.5d300248ae570c4ca37655159ba683bc0b90e0de';
+import { MONTHS, START_MONTH, SEPTEMBER, DECEMBER, buildSchedule, eventDate } from './schedule.js?v=202611040620.5d300248ae570c4ca37655159ba683bc0b90e0de';
+import { stamp } from '../../../src/build.js?v=202611040620.5d300248ae570c4ca37655159ba683bc0b90e0de';
 
 const html = (strings, ...vals) =>
   strings.reduce((acc, s, i) => acc + s + (vals[i] ?? ''), '');
