@@ -1,8 +1,8 @@
-import '../../src/theme.js?v=202611040620.5d300248ae570c4ca37655159ba683bc0b90e0de';
-import { cube, pyramid, sphere, octahedron } from '../../src/graphics/wireframe.js?v=202611040620.5d300248ae570c4ca37655159ba683bc0b90e0de';
-import { addSlot } from '../../src/graphics/stage.js?v=202611040620.5d300248ae570c4ca37655159ba683bc0b90e0de';
-import { stamp } from '../../src/build.js?v=202611040620.5d300248ae570c4ca37655159ba683bc0b90e0de';
-import { mobileQuery } from '../../src/components.js?v=202611040620.5d300248ae570c4ca37655159ba683bc0b90e0de';
+import '../../src/theme.js?v=202611040621.df6442ca249e8607a44b5e0eb76a45bdbba0c44d';
+import { cube, pyramid, sphere, octahedron } from '../../src/graphics/wireframe.js?v=202611040621.df6442ca249e8607a44b5e0eb76a45bdbba0c44d';
+import { addSlot } from '../../src/graphics/stage.js?v=202611040621.df6442ca249e8607a44b5e0eb76a45bdbba0c44d';
+import { stamp } from '../../src/build.js?v=202611040621.df6442ca249e8607a44b5e0eb76a45bdbba0c44d';
+import { mobileQuery } from '../../src/components.js?v=202611040621.df6442ca249e8607a44b5e0eb76a45bdbba0c44d';
 
 // 4 meshes shared by 12 canvases: these are plain arrays, nothing per-canvas to build
 const shapes = () => {

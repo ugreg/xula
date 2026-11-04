@@ -1,3 +1,3 @@
-import { loadComponents } from '../../src/components.js?v=202611040620.5d300248ae570c4ca37655159ba683bc0b90e0de';
+import { loadComponents } from '../../src/components.js?v=202611040621.df6442ca249e8607a44b5e0eb76a45bdbba0c44d';
 
 loadComponents();

@@ -1,6 +1,6 @@
-import { log } from './observability/log.js?v=202611032245.72bde81d33eb050fde43da9bbda349973dffe681';
-import { stamp, V } from './build.js?v=202611032245.72bde81d33eb050fde43da9bbda349973dffe681';
-import { loadComponents, mobileQuery } from './components.js?v=202611032245.72bde81d33eb050fde43da9bbda349973dffe681';
+import { log } from './observability/log.js?v=202611040621.df6442ca249e8607a44b5e0eb76a45bdbba0c44d';
+import { stamp, V } from './build.js?v=202611040621.df6442ca249e8607a44b5e0eb76a45bdbba0c44d';
+import { loadComponents, mobileQuery } from './components.js?v=202611040621.df6442ca249e8607a44b5e0eb76a45bdbba0c44d';
 
 function copyFallback(text) {
   const area = document.createElement('textarea');
@@ -156,7 +156,7 @@ function setupCalendarModal() {
 window.addEventListener('load', async () => {
   document.body.classList.remove('loading');
   await loadAllPages();
-  setupAutoScroll();
+  setupHorizontalScroll();
   setupCalendarModal();
 
   const themeToggle = document.getElementById('themeToggle');
@@ -312,7 +312,7 @@ if (carousel) {
   });
 }
 
-function setupAutoScroll() {
+function setupHorizontalScroll() {
   const grids = document.querySelectorAll('.extensions-grid, .stats-grid');
   grids.forEach((grid) => {
     let scrollInterval;
@@ -320,7 +320,7 @@ function setupAutoScroll() {
     let isTouching = false;
 
     const startScroll = () => {
-      if (scrollInterval) return;
+      if (scrollInterval || !mobileQuery.matches) return;
       scrollInterval = setInterval(() => {
         if (isHovering || isTouching) return;
         const maxScroll = grid.scrollWidth - grid.clientWidth;
@@ -338,6 +338,12 @@ function setupAutoScroll() {
     grid.addEventListener('touchstart', () => { isTouching = true; });
     grid.addEventListener('touchend', () => { isTouching = false; });
 
+    // the grids only scroll sideways below the breakpoint, so above it the interval would spin on nothing
+    mobileQuery.addEventListener('change', (e) => {
+      if (e.matches) return startScroll();
+      clearInterval(scrollInterval);
+      scrollInterval = null;
+    });
     startScroll();
   });
 }
