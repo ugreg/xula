@@ -1,6 +1,6 @@
-import { log } from './observability/log.js?v=202611040621.5c16230fe10a0c86e6f02ae139936981447de9a9';
-import { stamp, V } from './build.js?v=202611040621.5c16230fe10a0c86e6f02ae139936981447de9a9';
-import { loadComponents, mobileQuery } from './components.js?v=202611040621.5c16230fe10a0c86e6f02ae139936981447de9a9';
+import { log } from './observability/log.js?v=202611040638.688b1d8f5e718b5a72c737bbb0c280f17a5619fd';
+import { stamp, V } from './build.js?v=202611040638.688b1d8f5e718b5a72c737bbb0c280f17a5619fd';
+import { loadComponents, mobileQuery } from './components.js?v=202611040638.688b1d8f5e718b5a72c737bbb0c280f17a5619fd';
 
 function copyFallback(text) {
   const area = document.createElement('textarea');
