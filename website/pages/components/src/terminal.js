@@ -1,8 +1,8 @@
-import { buildSchedule, eventDate } from './schedule.js?v=202610270717.fc7541fee80632fb33becc9e221f0e74ac9f8c04';
+import { buildSchedule, eventDate } from './schedule.js?v=202611040638.688b1d8f5e718b5a72c737bbb0c280f17a5619fd';
 
 const COMMANDS = [
-  ['events', 'print upcoming events'],
-  ['refresh', 'clear the terminal'],
+  ['events, e', 'print upcoming events'],
+  ['refresh, r, clear, cls, c', 'clear the terminal'],
 ];
 
 const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -25,7 +25,6 @@ function initTerminal() {
     const el = document.createElement('div');
     if (className) el.className = className;
     out.appendChild(el);
-    body.scrollTop = body.scrollHeight;
     return el;
   };
 
@@ -86,9 +85,14 @@ function initTerminal() {
       case 'help':
         printHelp();
         return;
+      case 'e':
       case 'events':
         printEvents();
         return;
+      case 'c':
+      case 'cls':
+      case 'clear':
+      case 'r':
       case 'refresh':
         refresh();
         return;
@@ -106,6 +110,7 @@ function initTerminal() {
     part(line, '$', 'prompt-sign');
     part(line, raw);
     run(raw);
+    body.scrollTop = body.scrollHeight;
   });
 
 }

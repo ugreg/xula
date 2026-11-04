@@ -7,9 +7,10 @@ IMG='png|jpg|svg|woff2|ico'
 if [ -n "${1:-}" ]; then
   BUILD_VERSION=$1
 else
-  SHA=$(git -C "$DIR" rev-parse HEAD 2>/dev/null || echo '')
+  # stamp commits are excluded so running bump twice is a no-op
+  SHA=$(git -C "$DIR" log -1 --format=%H --invert-grep --grep='^chore: stamp' -- . 2>/dev/null || echo '')
   if [ -n "$SHA" ]; then
-    BUILD_VERSION=$(TZ=UTC git -C "$DIR" log -1 --date=format-local:%Y%m%d%H%M --format=%cd HEAD).$SHA
+    BUILD_VERSION=$(TZ=UTC git -C "$DIR" log -1 --date=format-local:%Y%m%d%H%M --format=%cd "$SHA" -- .).$SHA
   else
     BUILD_VERSION=$(date -u +%Y%m%d%H%M)
   fi
@@ -23,7 +24,7 @@ rewrite() {
 }
 
 FILES=''
-for f in "$DIR/index.html" "$DIR/style.css" "$DIR"/pages/*.html "$DIR"/pages/components/*.html "$DIR"/pages/src/*.js "$DIR"/pages/components/src/*.js "$DIR"/src/*.js "$DIR"/src/observability/*.js; do
+for f in "$DIR/index.html" "$DIR/style.css" "$DIR"/pages/*.html "$DIR"/pages/components/*.html "$DIR"/pages/src/*.js "$DIR"/pages/components/src/*.js "$DIR"/src/*.js "$DIR"/src/graphics/*.js "$DIR"/src/graphics/*/*.js "$DIR"/src/observability/*.js; do
   [ -f "$f" ] && FILES="$FILES $f"
 done
 
@@ -40,19 +41,34 @@ for f in $FILES; do
     -e "s|import '(\.{1,2}/[A-Za-z0-9._/-]+\.js)'|import '\1?v=$BUILD_VERSION'|g"
 done
 
-for f in $FILES; do
-  rewrite "$f" \
+# only urls the browser fetches while parsing the document; components and js strings stamp themselves at runtime
+for f in "$DIR/index.html" "$DIR/style.css" "$DIR"/pages/*.html; do
+  [ -f "$f" ] && rewrite "$f" \
     -e "s#([\"'(])((\.\./|\./|/)?(img|font)/[A-Za-z0-9._/-]*\.($IMG))([\"')])#\1\2?v=$BUILD_VERSION\6#g"
 done
 
-rewrite "$DIR/index.html" \
-  -e "s|(<meta name=\"build-version\" content=\")[^\"]*(\")|\1$BUILD_VERSION\2|" \
-  -e "s|(href=\"style\.css)(\")|\1?v=$BUILD_VERSION\2|" \
-  -e "s|(src=\"src/script\.js)(\")|\1?v=$BUILD_VERSION\2|"
+# every html entry point needs the meta: runtime stamp() reads it, components and js strings carry no build-time version
+for f in "$DIR/index.html" "$DIR"/pages/*.html; do
+  [ -f "$f" ] && rewrite "$f" \
+    -e "s|(<meta name=\"build-version\" content=\")[^\"]*(\")|\1$BUILD_VERSION\2|"
+done
 
-for want in "<meta name=\"build-version\" content=\"$BUILD_VERSION\"" "href=\"style.css?v=$BUILD_VERSION\"" "src=\"src/script.js?v=$BUILD_VERSION\""; do
+for f in "$DIR/index.html" "$DIR"/pages/*.html; do
+  [ -f "$f" ] && rewrite "$f" \
+    -e "s#(href=\"(\.{1,2}/)?style\.css)(\")#\1?v=$BUILD_VERSION\3#" \
+    -e "s#(src=\"(\.{1,2}/)?(src|pages/src)/[A-Za-z0-9._/-]+\.js)(\")#\1?v=$BUILD_VERSION\4#"
+done
+
+for want in "<meta name=\"build-version\" content=\"$BUILD_VERSION\"" "href=\"style.css?v=$BUILD_VERSION\"" "src=\"src/main.js?v=$BUILD_VERSION\""; do
   if ! grep -qF "$want" "$DIR/index.html"; then
     echo "bump.sh: missing '$want' in index.html" >&2
+    exit 1
+  fi
+done
+
+for f in "$DIR"/pages/*.html; do
+  if ! grep -qF "<meta name=\"build-version\" content=\"$BUILD_VERSION\"" "$f"; then
+    echo "bump.sh: missing build-version meta in $f" >&2
     exit 1
   fi
 done

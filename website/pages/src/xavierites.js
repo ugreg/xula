@@ -1,120 +1,62 @@
-import '../../src/theme.js?v=202610270717.fc7541fee80632fb33becc9e221f0e74ac9f8c04';
-import * as THREE from 'three';
+import '../../src/theme.js?v=202611040638.688b1d8f5e718b5a72c737bbb0c280f17a5619fd';
+import { cube, pyramid, sphere, octahedron } from '../../src/graphics/wireframe.js?v=202611040638.688b1d8f5e718b5a72c737bbb0c280f17a5619fd';
+import { addSlot } from '../../src/graphics/stage.js?v=202611040638.688b1d8f5e718b5a72c737bbb0c280f17a5619fd';
+import { stamp } from '../../src/build.js?v=202611040638.688b1d8f5e718b5a72c737bbb0c280f17a5619fd';
+import { mobileQuery } from '../../src/components.js?v=202611040638.688b1d8f5e718b5a72c737bbb0c280f17a5619fd';
 
-const voxelMeshes = [];
-
-const avatarShapeIndex = { current: 0 };
-
-function createAvatarShape() {
-  const canvas = document.createElement('canvas');
-  canvas.setAttribute('data-avatar-shape', 'true');
-  canvas.width = 180;
-  canvas.height = 180;
-
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
-  camera.position.z = 3;
-
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-  renderer.setSize(180, 180, false);
-  renderer.setPixelRatio(window.devicePixelRatio);
-
-  const types = ['cube', 'pyramid', 'sphere', 'octahedron'];
-  const type = types[avatarShapeIndex.current % types.length];
-  avatarShapeIndex.current++;
-
-  const colors = [0x5c78e2, 0xa855f7, 0x06b6d4, 0x5865F2];
-  const color = colors[(avatarShapeIndex.current - 1) % colors.length];
-
-  let geometry;
-
-  if (type === 'cube') {
-    geometry = new THREE.BoxGeometry(0.45, 0.45, 0.45);
-  } else if (type === 'pyramid') {
-    geometry = new THREE.ConeGeometry(0.35, 0.5, 4);
-  } else if (type === 'sphere') {
-    geometry = new THREE.SphereGeometry(0.325, 16, 12);
-  } else {
-    geometry = new THREE.OctahedronGeometry(0.35);
-  }
-
-  const edges = new THREE.EdgesGeometry(geometry);
-  const lineMaterial = new THREE.LineBasicMaterial({ color, linewidth: 1.5 });
-  const mesh = new THREE.LineSegments(edges, lineMaterial);
-  scene.add(mesh);
-  scene.add(new THREE.AmbientLight(0xffffff, 0.9));
-  const light = new THREE.DirectionalLight(0xffffff, 1.5);
-  light.position.set(2, 2, 3);
-  scene.add(light);
-
-  voxelMeshes.push({ mesh, scene, camera, renderer, type: 'avatar-shape' });
-  return canvas;
-}
-
-import { createSceneLoop, stopAnimation } from '../../src/scene-loop.js?v=202610270717.fc7541fee80632fb33becc9e221f0e74ac9f8c04';
-import { log } from '../../src/observability/log.js?v=202610270717.fc7541fee80632fb33becc9e221f0e74ac9f8c04';
-
-function animateAll() {
-  const t = Date.now() * 0.001;
-
-  for (const item of voxelMeshes) {
-    if (item.type === 'avatar-shape') {
-      item.mesh.rotation.y += 0.025;
-      item.mesh.rotation.x = Math.sin(t * 0.8) * 0.2;
-    }
-    item.renderer.render(item.scene, item.camera);
-  }
-}
-
-function cleanupMeshes() {
-  voxelMeshes.forEach(item => {
-    item.mesh.geometry.dispose();
-    log.info('xavierites.html', 'disposed geometry:', item.mesh.geometry.type);
-    item.mesh.material.dispose();
-    log.info('xavierites.html', 'disposed material:', item.mesh.material.type);
-    item.renderer.dispose();
-    log.info('xavierites.html', 'disposed renderer');
-  });
-  voxelMeshes.length = 0;
-  log.info('xavierites.html', 'cleanup complete:', voxelMeshes.length, 'meshes remaining');
-}
+// 4 meshes shared by 12 canvases: these are plain arrays, nothing per-canvas to build
+const shapes = () => {
+  // one knob for all 4 meshes: the mobile sizes are the base numbers, desktop scales them up
+  const scale = mobileQuery.matches ? 2 : 3;
+  return [
+    cube(0.45 * scale, 0x5c78e2),
+    pyramid(0.35 * scale, 0.5 * scale, 0xa855f7),
+    sphere(0.325 * scale, 0x06b6d4),
+    octahedron(0.35 * scale, 0x5865F2)
+  ];
+};
 
 const avatars = [
-  { src: '../img/gavin.jpg?v=202610270717.fc7541fee80632fb33becc9e221f0e74ac9f8c04', alt: 'Gavin' },
-  { src: '../img/greg.jpg?v=202610270717.fc7541fee80632fb33becc9e221f0e74ac9f8c04', alt: 'Greg' },
-  { src: '../img/josh.jpg?v=202610270717.fc7541fee80632fb33becc9e221f0e74ac9f8c04', alt: 'Josh' },
-  { src: '../img/nam.jpg?v=202610270717.fc7541fee80632fb33becc9e221f0e74ac9f8c04', alt: 'Nam' }
+  { src: stamp('../img/gavin.jpg'), alt: 'Gavin' },
+  { src: stamp('../img/greg.jpg'), alt: 'Greg' },
+  { src: stamp('../img/josh.jpg'), alt: 'Josh' },
+  { src: stamp('../img/nam.jpg'), alt: 'Nam' }
 ];
 
+const views = [];
+
 function initXavierites() {
+  const SHAPES = shapes();
   const track = document.getElementById('avatarTrack');
   if (!track) return;
   track.innerHTML = '';
   const fragment = document.createDocumentFragment();
-  for (let repeat = 0; repeat < 3; repeat++) {
-    for (const avatar of avatars) {
-      const img = document.createElement('img');
-      img.loading = 'lazy';
-      img.src = avatar.src;
-      img.alt = avatar.alt;
-      fragment.appendChild(img);
-      const shapeCanvas = createAvatarShape();
-      const wrapper = document.createElement('div');
-      wrapper.className = 'avatar-shape';
-      wrapper.style.flexShrink = '0';
-      wrapper.appendChild(shapeCanvas);
-      fragment.appendChild(wrapper);
-    }
+
+  for (let i = 0; i < avatars.length * 3; i++) {
+    const img = document.createElement('img');
+    img.loading = 'lazy';
+    img.src = avatars[i % avatars.length].src;
+    img.alt = avatars[i % avatars.length].alt;
+    fragment.appendChild(img);
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'avatar-shape';
+    wrapper.style.flexShrink = '0';
+    const canvas = document.createElement('canvas');
+    canvas.setAttribute('data-avatar-shape', 'true');
+    wrapper.appendChild(canvas);
+    fragment.appendChild(wrapper);
+
+    views.push(addSlot(canvas, SHAPES[i % SHAPES.length], { size: 140, spin: 0.025, tilt: 0.2, tiltRate: 0.8, lineWidth: 1.5 }));
+    canvas.style.width = canvas.style.height = '100%';
   }
+
   track.appendChild(fragment);
-  createSceneLoop(animateAll);
 }
 
 initXavierites();
 window.sceneRegistry = window.sceneRegistry || {};
 window.sceneRegistry['xavierites'] = {
-  cleanup: () => { cleanupMeshes(); stopAnimation(); },
-  restart: () => { initXavierites(); }
+  cleanup: () => views.splice(0).forEach((off) => off()),
+  restart: initXavierites
 };
-
-

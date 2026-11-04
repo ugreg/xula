@@ -1,0 +1,1 @@
+git skips a hook it cannot execute, and the hint is easy to miss on an editor commit. If `git status` fills with version-only files after you commit, run `chmod +x .githooks/*` then `git update-index --chmod=+x .githooks/pre-commit`. A fresh clone also needs `git config core.hooksPath .githooks` once.
