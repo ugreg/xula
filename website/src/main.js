@@ -1,6 +1,6 @@
-import { log } from './observability/log.js?v=202610270717.fc7541fee80632fb33becc9e221f0e74ac9f8c04';
-import { stamp, V } from './build.js?v=202610270717.fc7541fee80632fb33becc9e221f0e74ac9f8c04';
-import { loadComponents, mobileQuery } from './components.js?v=202610270717.fc7541fee80632fb33becc9e221f0e74ac9f8c04';
+import { log } from './observability/log.js?v=202611040638.688b1d8f5e718b5a72c737bbb0c280f17a5619fd';
+import { stamp, V } from './build.js?v=202611040638.688b1d8f5e718b5a72c737bbb0c280f17a5619fd';
+import { loadComponents, mobileQuery } from './components.js?v=202611040638.688b1d8f5e718b5a72c737bbb0c280f17a5619fd';
 
 function copyFallback(text) {
   const area = document.createElement('textarea');
@@ -37,7 +37,6 @@ function setupBuildVersion() {
   });
 }
 
-const scrollTopButton = document.querySelector('.scroll-top-btn');
 const carousel = document.getElementById('carousel');
 const statsArrowBtn = document.querySelector('.stats-arrow-btn:not(.back)');
 const backArrowBtn = document.querySelector('.stats-arrow-btn.back');
@@ -47,7 +46,6 @@ function getTerminal() {
   return document.getElementById('homeTerminal');
 }
 
-// fixed calendar FAB appears after this fraction of a viewport scrolled
 const CALENDAR_FAB_SCROLL_RATIO = 0.5;
 
 function getCalendarFab() {
@@ -158,7 +156,7 @@ function setupCalendarModal() {
 window.addEventListener('load', async () => {
   document.body.classList.remove('loading');
   await loadAllPages();
-  setupAutoScroll();
+  setupHorizontalScroll();
   setupCalendarModal();
 
   const themeToggle = document.getElementById('themeToggle');
@@ -185,28 +183,6 @@ window.addEventListener('load', async () => {
 
   updateCalendarFab(carousel ? carousel.scrollTop : window.scrollY);
 });
-
-window.addEventListener('scroll', () => {
-  const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
-  const showScrollTop = window.scrollY > totalScroll * 0.5;
-  if (scrollTopButton) {
-    scrollTopButton.classList.toggle('visible', showScrollTop);
-  }
-
-  const t = getTerminal();
-  const scrollPos = carousel ? carousel.scrollTop : window.scrollY;
-  if (t && !isMobile) {
-    t.classList.toggle('visible', scrollPos === 0);
-  }
-
-  updateCalendarFab(scrollPos);
-});
-
-if (scrollTopButton) {
-  scrollTopButton.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-}
 
 if (carousel) {
   carousel.addEventListener('scroll', () => {
@@ -251,7 +227,6 @@ if (dots) {
 if (carousel) {
   let touchStartX = 0;
   let touchStartY = 0;
-  let touchStartTime = 0;
   let isSwiping = false;
 
   function updatePageFromScroll() {
@@ -337,7 +312,7 @@ if (carousel) {
   });
 }
 
-function setupAutoScroll() {
+function setupHorizontalScroll() {
   const grids = document.querySelectorAll('.extensions-grid, .stats-grid');
   grids.forEach((grid) => {
     let scrollInterval;
@@ -345,7 +320,7 @@ function setupAutoScroll() {
     let isTouching = false;
 
     const startScroll = () => {
-      if (scrollInterval) return;
+      if (scrollInterval || !mobileQuery.matches) return;
       scrollInterval = setInterval(() => {
         if (isHovering || isTouching) return;
         const maxScroll = grid.scrollWidth - grid.clientWidth;
@@ -363,6 +338,12 @@ function setupAutoScroll() {
     grid.addEventListener('touchstart', () => { isTouching = true; });
     grid.addEventListener('touchend', () => { isTouching = false; });
 
+    // the grids only scroll sideways below the breakpoint, so above it the interval would spin on nothing
+    mobileQuery.addEventListener('change', (e) => {
+      if (e.matches) return startScroll();
+      clearInterval(scrollInterval);
+      scrollInterval = null;
+    });
     startScroll();
   });
 }
